@@ -1,0 +1,11 @@
+<resources>
+    <string-array name="item_units">
+        <item>Cost</item>
+        <item>Unit</item>
+        <item>Liter</item>
+        <item>Kilogram</item>
+        <item>Gram</item>
+        <item>Ounce</item>
+        <item>Pound</item>
+    </string-array>
+</resources>
