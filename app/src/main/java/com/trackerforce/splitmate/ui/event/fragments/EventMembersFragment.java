@@ -60,8 +60,6 @@ public class EventMembersFragment extends AbstractEventFragment {
         pusher = PusherClient.getInstance();
         pusher.connect(getContext(), getEventId());
         pusher.subscribe(PusherEvents.REMOVE_MEMBER.toString(), this::onMemberRemoved);
-
-        onRefresh(getView());
     }
 
     @Override

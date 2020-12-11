@@ -24,28 +24,30 @@ public class DashNotificationsFragment extends AbstractDashFragment implements I
 
     @Override
     public void onRefresh(@Nullable View view, boolean force) {
-        if (getView() != null) {
-            getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.INVISIBLE);
-            getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.VISIBLE);
-            getEventController().myEventsInvited(new ServiceCallback<Event[]>() {
-                @Override
-                public void onSuccess(Event[] data) {
-                    if (adapter != null) {
-                        adapter.updateAdapter(data);
+        loadEvents(force);
+    }
 
-                        getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
-                        getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.VISIBLE);
-                    }
-                }
+    private void loadEvents(boolean force) {
+        getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.INVISIBLE);
+        getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.VISIBLE);
+        getEventController().myEventsInvited(new ServiceCallback<Event[]>() {
+            @Override
+            public void onSuccess(Event[] data) {
+                if (adapter != null) {
+                    adapter.updateAdapter(data);
 
-                @Override
-                public void onError(String error) {
-                    AppUtils.showMessage(getContext(), error);
                     getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
                     getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.VISIBLE);
                 }
-            }, force);
-        }
+            }
+
+            @Override
+            public void onError(String error) {
+                AppUtils.showMessage(getContext(), error);
+                getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
+                getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.VISIBLE);
+            }
+        }, force);
     }
 
     @Override

@@ -28,8 +28,6 @@ import java.text.SimpleDateFormat;
 
 public class EventViewFragment extends AbstractEventFragment {
 
-    private boolean resumeAvailable = false;
-
     @SuppressLint("SimpleDateFormat")
     private final SimpleDateFormat simpleDateFormat =
             new SimpleDateFormat("E, dd MMM yyyy hh:mm aa");
@@ -44,43 +42,11 @@ public class EventViewFragment extends AbstractEventFragment {
 
         setOnClickListener(R.id.btnRefresh, v -> loadEvent(true));
         setOnClickListener(R.id.btnEditEvent, this::onEdit);
-        onRefresh(getView());
     }
 
     @Override
     public void onRefresh(@Nullable View view) {
         loadEvent(false);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (resumeAvailable) {
-            if (getEvent() != null) {
-                getEventController().getLocalEventById(getEvent().getId(), new ServiceCallback<Event>() {
-                    @Override
-                    public void onSuccess(Event data) {
-                        setEvent(data);
-                        loadPreviewFragment();
-
-                        getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
-                        getComponent(R.id.groupControls, Group.class).setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onError(String error) {
-                        AppUtils.showMessage(getContext(), error);
-
-                        getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
-                        getComponent(R.id.groupControls, Group.class).setVisibility(View.VISIBLE);
-                    }
-                });
-            }
-        } else {
-            getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
-            resumeAvailable = true;
-        }
     }
 
     @Override
@@ -103,7 +69,7 @@ public class EventViewFragment extends AbstractEventFragment {
                     setEvent(data);
 
                     loadViewFieldValues();
-                    loadPreviewFragment();
+                    loadPreviewFragment(data);
                     getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
                     getComponent(R.id.groupControls, Group.class).setVisibility(View.VISIBLE);
                 }
@@ -117,11 +83,11 @@ public class EventViewFragment extends AbstractEventFragment {
         }
     }
 
-    private void loadPreviewFragment() {
+    private void loadPreviewFragment(Event event) {
         FragmentManager fm = getChildFragmentManager();
         EventPreviewFragment eventPreviewFragment = (EventPreviewFragment) fm.findFragmentById(R.id.fragmentPreview);
         assert eventPreviewFragment != null;
-        eventPreviewFragment.loadPreview();
+        eventPreviewFragment.loadPreview(event);
     }
 
     private void onEdit(@Nullable View view) {
