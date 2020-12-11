@@ -32,11 +32,11 @@ public abstract class AbstractDashFragment extends Fragment
     protected RecyclerView listView;
     protected IEventDashComponent eventDashComponent;
     private SwipeRefreshLayout swipeContainer;
+    private boolean firstLoad = true;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
 
         swipeContainer = getComponent(R.id.swipeContainer, SwipeRefreshLayout.class);
         swipeContainer.setOnRefreshListener(this::onRefreshLayout);
@@ -49,8 +49,6 @@ public abstract class AbstractDashFragment extends Fragment
         textFilterEvents = getComponent(R.id.textFilterEvents, EditText.class);
         textFilterEvents.setOnKeyListener(this::onFilter);
         setOnClickListener(R.id.btnToggleEventFilter, this::onToggleFilter);
-
-        onRefresh(getView(), false);
     }
 
     @Override
@@ -63,6 +61,16 @@ public abstract class AbstractDashFragment extends Fragment
         viewGroup.getLayoutTransition().setAnimateParentHierarchy(false);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (firstLoad) {
+            onRefresh(getView(), false);
+            firstLoad = false;
+        }
     }
 
     @Override

@@ -66,7 +66,6 @@ public class EventItemsFragment extends AbstractEventFragment {
         pusher.subscribe(PusherEvents.DELETE_ITEM.toString(), this::onNotifyItemDeleted);
         pusher.subscribe(PusherEvents.EDIT_ITEM.toString(), this::onNotifyItemEdited);
         pusher.subscribe(PusherEvents.CREATE_ITEM.toString(), this::onNotifyItemCreated);
-        onRefresh(getView());
     }
 
     @Override

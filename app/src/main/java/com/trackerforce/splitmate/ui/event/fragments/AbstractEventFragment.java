@@ -23,6 +23,7 @@ public abstract class AbstractEventFragment extends Fragment implements Splitmat
 
     protected int layout;
     protected boolean bypassOnLoad = false;
+    private boolean firstLoad = true;
 
     public AbstractEventFragment(int layout) {
         super();
@@ -52,6 +53,16 @@ public abstract class AbstractEventFragment extends Fragment implements Splitmat
             viewGroup.getLayoutTransition().setAnimateParentHierarchy(false);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (firstLoad) {
+            onRefresh(getView());
+            firstLoad = false;
+        }
     }
 
     public String getEventId() {

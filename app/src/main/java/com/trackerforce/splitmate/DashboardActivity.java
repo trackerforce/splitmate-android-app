@@ -7,9 +7,7 @@ import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 import com.trackerforce.splitmate.ui.SplitmateActivity;
-import com.trackerforce.splitmate.ui.dashboard.fragments.DashArchiveFragment;
 import com.trackerforce.splitmate.ui.dashboard.fragments.DashEventsFragment;
-import com.trackerforce.splitmate.ui.dashboard.fragments.DashNotificationsFragment;
 import com.trackerforce.splitmate.ui.fragment.FragmentListener;
 import com.trackerforce.splitmate.utils.Config;
 
@@ -65,14 +63,6 @@ public class DashboardActivity extends SplitmateActivity {
         if (Activity.RESULT_OK == resultCode) {
             fragmentListener.notifySubscriber(DashEventsFragment.TITLE);
         }
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        fragmentListener.notifySubscriber(DashEventsFragment.TITLE);
-        fragmentListener.notifySubscriber(DashArchiveFragment.TITLE);
-        fragmentListener.notifySubscriber(DashNotificationsFragment.TITLE);
     }
 
     public FragmentListener getFragmentListener() {

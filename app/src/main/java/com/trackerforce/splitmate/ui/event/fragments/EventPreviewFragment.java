@@ -47,9 +47,7 @@ public class EventPreviewFragment extends AbstractEventFragment {
     }
 
     @Override
-    public void onRefresh(@Nullable View view) {
-        loadPreview();
-    }
+    public void onRefresh(@Nullable View view) {}
 
     @Override
     public void onDestroy() {
@@ -62,8 +60,7 @@ public class EventPreviewFragment extends AbstractEventFragment {
         pusher.unsubscribe(PusherEvents.REMOVE_MEMBER.toString());
     }
 
-    public void loadPreview() {
-        final Event event = getEvent();
+    public void loadPreview(Event event) {
         totalCost = event.getTotalCost();
 
         int members = Integer.parseInt(String.valueOf(event.getMembers() != null ? event.getMembers().length : "0"));
@@ -93,7 +90,7 @@ public class EventPreviewFragment extends AbstractEventFragment {
             @Override
             public void onSuccess(Event data) {
                 setEvent(data);
-                loadPreview();
+                loadPreview(data);
             }
 
             @Override
