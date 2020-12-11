@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NewItemActivity">
+
+    <TextView
+        android:id="@+id/newItemTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/dark_grey"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:isScrollContainer="false"
+        android:paddingStart="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="@string/titleNewItem"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:drawableTint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearItemEditorPanel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newItemTitle">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:animateLayoutChanges="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/linearItemDetail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/panel_rounded_border"
+                android:gravity="end"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/labelDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/panel_header_rounded"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:text="@string/labelDetails"
+                    android:textAlignment="center"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/txtItemName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:ems="10"
+                    android:hint="@string/hintItem"
+                    android:importantForAutofill="no"
+                    android:inputType="textPersonName" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listValues"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btnAddDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:backgroundTint="@color/white"
+                    android:clickable="true"
+                    android:contentDescription="@string/app_name"
+                    android:focusable="true"
+                    app:borderWidth="0dp"
+                    app:fabSize="mini"
+                    app:srcCompat="@android:drawable/ic_input_add" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearPollPanel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/panel_rounded_border"
+                android:gravity="end"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearItemDetail">
+
+                <TextView
+                    android:id="@+id/labelPoll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/panel_header_rounded"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:text="@string/labelPoll"
+                    android:textAlignment="center"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/txtPollName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:ems="10"
+                    android:hint="@string/hintPollName"
+                    android:importantForAutofill="no"
+                    android:inputType="textPersonName" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listPoll"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btnAddPollValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:backgroundTint="@color/white"
+                    android:clickable="true"
+                    android:contentDescription="@string/app_name"
+                    android:focusable="true"
+                    app:borderWidth="0dp"
+                    app:fabSize="mini"
+                    app:srcCompat="@android:drawable/ic_input_add" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/linearItemEditorPanel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/buttonCreateEditItem"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/labelCreatedBy" />
+
+        <TextView
+            android:id="@+id/txtItemCreator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/textSample"
+            android:textColor="?attr/editTextColor"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonCreateEditItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?attr/colorControlNormal"
+        android:text="@string/createItem"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.SplitmateApp.Button.Rounded" />
+
+    <Button
+        android:id="@+id/buttonRemoveItem"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="?android:attr/windowBackgroundFallback"
+        android:visibility="gone"
+        app:icon="@android:drawable/ic_menu_delete"
+        app:iconSize="20dp"
+        app:iconTint="?attr/editTextColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

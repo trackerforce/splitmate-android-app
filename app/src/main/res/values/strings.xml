@@ -1,0 +1,142 @@
+<resources>
+    <!--    Global  -->
+    <string name="app_name">SplitMATE</string>
+    <string name="logoDescription">SplitMATE</string>
+    <string name="labelVersion">v1.0.0</string>
+    <string name="btnNew">New</string>
+    <string name="btnEdit">Edit</string>
+    <string name="btnAdd">Add</string>
+    <string name="btnEnter">Enter</string>
+    <string name="textSample">This is a sample</string>
+    <string name="switcherOnline">Toggle Online</string>
+    <string name="switcherOffline">Toggle Offline</string>
+    <string name="switcherDark">Toggle Dark</string>
+    <string name="switchLight">Toggle Light</string>
+    <string name="labelAccountType_Member">Free Account</string>
+    <string name="labelAccountType_Founder">Founder Account</string>
+
+    <!--    Messages  -->
+    <string name="msgNotConnected">You must be connected</string>
+    <string name="msgEventIdIsEmpty">Event Id must not be empty</string>
+    <string name="msgItemIdIsEmpty">Item Id must not be empty</string>
+    <string name="msgEmailIsEmpty">Email must not be empty</string>
+    <string name="msgEventMustExist">Event must exist</string>
+    <string name="msgItemNameIsEmpty">Item name must not be empty</string>
+    <string name="msgFailedCreateEvent">Failed on creating Event</string>
+    <string name="msgFailedEditingEvent">Failed on editing Event</string>
+    <string name="msgFailedDeletingEvent">Failed on deleting Event</string>
+    <string name="msgFailedSendReminder">Failed on sending reminder</string>
+    <string name="msgFailedAddingItem">Failed on adding item</string>
+    <string name="msgFailedEditingItem">Failed on editing item</string>
+    <string name="msgFailedDeletingItem">Failed on deleting item</string>
+    <string name="msgFailedPickingItem">Failed on picking up item</string>
+    <string name="msgFailedUnpickingItem">Failed on unpicking item</string>
+    <string name="msgFailedInviteUser">Failed to invite user(s)</string>
+    <string name="msgFailedReturnEvents">Failed to return user event(s)</string>
+    <string name="msgFailedRemoveMember">Failed to remove member</string>
+    <string name="msgFailedTransferEvent">Failed to transfer an Event organizer</string>
+    <string name="msgSuccessTransferEvent">Event organizer transferred to %s</string>
+    <string name="msgConfirmRemoveMember">Are you sure you want to remove %s</string>
+    <string name="msgEventHasRemoved">Event has been removed</string>
+    <string name="msgItemHasRemoved">Item has been removed</string>
+    <string name="msgLimitReached">"You have reached the limit"</string>
+    <string name="msgConfirmDeleteAccount">This action cannot be reverted. Are you sure?</string>
+
+    <!--    Login   -->
+    <string name="labelLogin">Login</string>
+    <string name="labelLogout">Logout</string>
+    <string name="labelSignUp">Sign Up</string>
+    <string name="hintUsernameEmail">Username/Email</string>
+    <string name="hintPassword">Password</string>
+    <string name="hintName">Name</string>
+    <string name="hintUsername">Username</string>
+    <string name="hintEmail">Email</string>
+
+    <!--    Account     -->
+    <string name="menu_account">Account</string>
+    <string name="btnDeleteAccount">Delete</string>
+    <string name="btnResetPassword">Reset Password</string>
+
+    <!--    Dashboard   -->
+    <string name="menu_home">Dashboard</string>
+    <string name="tabEvents">Events</string>
+    <string name="tabArchive">Archive</string>
+    <string name="tabNotifications">Notifications</string>
+    <string name="btnViewEdit">View/Edit</string>
+    <string name="hintFilter">Filter</string>
+    <string name="nav_header_subtitle">username</string>
+
+    <!--    Event Detail    -->
+    <string name="labelEvent">Event</string>
+    <string name="labelItems">Items</string>
+    <string name="labelMembers">Members</string>
+    <string name="labelAssignedTo">Assigned to:</string>
+    <string name="labelMemberUsername">\@username\</string>
+
+    <string name="labelName">Name</string>
+    <string name="labelLocation">Location</string>
+    <string name="labelNotes">Notes</string>
+    <string name="labelWhen">When</string>
+    <string name="labelOrganizedBy">Organized by</string>
+
+    <string name="titlePreview">Preview</string>
+    <string name="labelTotalCost">Total cost</string>
+    <string name="labelIndividual">Individual cost</string>
+    <string name="labelTotalMembers">Members</string>
+    <string name="labelVotingPolls">Voting Polls</string>
+    <string name="labelItemsPending">Items pending</string>
+    <string name="hintCost">$1,000.00</string>
+    <string name="hintQt">10</string>
+
+    <!--    Invitation  -->
+    <string name="hintMember">Email or @username</string>
+    <string name="addMember">Add Member</string>
+    <string name="inviteMembers">Invite Members</string>
+    <string name="btnInvite">Send Invite</string>
+
+    <!--    New Event   -->
+    <string name="titleNewEvent">New Event</string>
+    <string name="titleEditEvent">Editing Event</string>
+    <string name="hintEvent">Event Name</string>
+    <string name="hintNotes">Notes</string>
+    <string name="eventDate">Event Date</string>
+    <string name="hintDate">Date</string>
+    <string name="hintTime">Time</string>
+    <string name="createEvent">Create Event</string>
+    <string name="editEvent">Edit Event</string>
+    <string name="hintLocation">Location</string>
+
+    <!--    New Item    -->
+    <string name="titleNewItem">New Item</string>
+    <string name="titleEditItem">Editing Item</string>
+    <string name="hintItem">Item Name</string>
+    <string name="hintCategory">Category</string>
+    <string name="hintType">Type</string>
+    <string name="hintItemValue">Value</string>
+    <string name="labelCreatedBy">Created by</string>
+    <string name="labelDetails">Item Details</string>
+    <string name="switchPoll">Create Poll</string>
+    <string name="labelPoll">Poll</string>
+    <string name="hintPollName">Poll Name</string>
+    <string name="createItem">Create Item</string>
+    <string name="editItem">Edit Item</string>
+
+    <!--    Poll    -->
+    <string name="btnBack">Back</string>
+    <string name="txtCounter">0%</string>
+
+    <!--    Transfer    -->
+    <string name="btnTransfer">Transfer</string>
+
+    <!--    Settings    -->
+    <string name="titleSettings">Settings</string>
+    <string name="labelEULA">End User License Agreement</string>
+    <string name="labelPrivacyPolice">Privacy Policy</string>
+    <string name="labelSignOut">Sign Out</string>
+    <string name="preferences_header">Preferences</string>
+    <string name="settingsUI">Dark mode</string>
+    <string name="settingsAutoSync">Auto Sync</string>
+    <string name="settingsConnectivity">Silent (Offline)</string>
+    <string name="summaryOffline">When enabled, only requested actions and auto-sync will use your data</string>
+
+</resources>

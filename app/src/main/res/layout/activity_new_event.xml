@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NewEventActivity">
+
+    <TextView
+        android:id="@+id/newEventTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/dark_grey"
+        android:isScrollContainer="false"
+        android:paddingStart="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="@string/titleNewEvent"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:drawableTint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/txtEventName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/hintEvent"
+        android:inputType="textPersonName"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.12"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newEventTitle"
+        android:importantForAutofill="no" />
+
+    <EditText
+        android:id="@+id/txtDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:drawableStart="@android:drawable/ic_menu_today"
+        android:ems="10"
+        android:hint="@string/hintDate"
+        android:importantForAutofill="no"
+        android:inputType="date"
+        android:nextFocusRight="@id/txtTime"
+        android:nextFocusUp="@id/txtEventName"
+        android:nextFocusDown="@id/txtLocation"
+        android:nextFocusForward="@id/txtTime"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtEventName" />
+
+    <EditText
+        android:id="@+id/txtTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:drawableStart="@android:drawable/ic_menu_recent_history"
+        android:ems="8"
+        android:hint="@string/hintTime"
+        android:importantForAutofill="no"
+        android:inputType="datetime"
+        android:nextFocusDown="@id/txtLocation"
+        android:nextFocusForward="@id/txtLocation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/txtDate"
+        app:layout_constraintTop_toBottomOf="@+id/txtEventName" />
+
+    <EditText
+        android:id="@+id/txtLocation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:drawableStart="@android:drawable/ic_menu_mapmode"
+        android:hint="@string/hintLocation"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        android:nextFocusDown="@id/txtEventDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtDate" />
+
+    <EditText
+        android:id="@+id/txtEventDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:drawableStart="@android:drawable/ic_menu_edit"
+        android:gravity="start"
+        android:hint="@string/hintNotes"
+        android:importantForAutofill="no"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtLocation" />
+
+    <Button
+        android:id="@+id/buttonCreateEditEvent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtDate"
+        android:backgroundTint="?attr/colorControlNormal"
+        android:text="@string/createEvent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.SplitmateApp.Button.Rounded" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

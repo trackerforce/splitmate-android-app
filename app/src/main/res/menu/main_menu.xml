@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menuItemDashboad"
+        android:title="@string/menu_home" />
+    <item
+        android:id="@+id/toggleConn"
+        android:title="@string/switcherOffline"
+        android:visible="true" />
+    <item
+        android:id="@+id/toggleUI"
+        android:title="@string/switcherDark" />
+</menu>

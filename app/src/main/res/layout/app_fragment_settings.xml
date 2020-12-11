@@ -1,0 +1,131 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:animateLayoutChanges="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnCloseWebview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="?attr/colorControlNormal"
+        android:clickable="true"
+        android:contentDescription="@string/app_name"
+        android:focusable="true"
+        android:visibility="invisible"
+        app:borderWidth="0dp"
+        app:elevation="1dp"
+        app:fabSize="mini"
+        app:layout_constraintEnd_toEndOf="@+id/settings"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+    <FrameLayout
+        android:id="@+id/settings"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayoutSettings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/imgSplitmate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <View
+            android:id="@+id/divider6"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:id="@+id/txtEULA"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:text="@string/labelEULA"
+            android:textAlignment="center"
+            android:textColor="?attr/editTextColor"
+            android:textSize="18sp" />
+
+        <View
+            android:id="@+id/divider5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:id="@+id/txtPrivacy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:text="@string/labelPrivacyPolice"
+            android:textAlignment="center"
+            android:textColor="?attr/editTextColor"
+            android:textSize="18sp" />
+
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:id="@+id/txtSignout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:text="@string/labelSignOut"
+            android:textAlignment="center"
+            android:textColor="?attr/editTextColor"
+            android:textSize="18sp" />
+
+        <View
+            android:id="@+id/divider7"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="?android:attr/listDivider" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imgSplitmate"
+        android:layout_width="0dp"
+        android:layout_height="97dp"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/sm_logo" />
+</androidx.constraintlayout.widget.ConstraintLayout>
