@@ -1,5 +1,7 @@
 ![Splitmate API](https://raw.githubusercontent.com/trackerforce/splitmate-assets/master/logo/sm_logo.png)
 
+![Android CI](https://github.com/trackerforce/splitmate-android-app/workflows/Android%20CI/badge.svg?branch=master)
+
 SplitMATE is a simple and intuitive event manager that provides a collaborative and transparent environment for organizers and event members.
 
 # About
