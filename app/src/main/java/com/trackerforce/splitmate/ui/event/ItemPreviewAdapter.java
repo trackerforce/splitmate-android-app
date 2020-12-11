@@ -287,7 +287,7 @@ public class ItemPreviewAdapter extends ListAdapter<Item, ItemPreviewAdapter.Ite
                     final ErrorResponse errorResponse = (ErrorResponse) obj;
                     ItemViewHolder.this.onError(convertView, errorResponse, item);
                 }
-            });
+            }, true);
         }
 
         private void onError(View convertView, ErrorResponse errorResponse, Item item) {

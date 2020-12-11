@@ -207,7 +207,7 @@ public class EventItemsFragment extends AbstractEventFragment {
                 public void onError(String error) {
                     Log.d(TAG, error);
                 }
-            });
+            }, true);
 
         });
     }
@@ -236,7 +236,7 @@ public class EventItemsFragment extends AbstractEventFragment {
                 public void onError(String error) {
                     Log.d(TAG, error);
                 }
-            });
+            }, true);
         });
     }
 

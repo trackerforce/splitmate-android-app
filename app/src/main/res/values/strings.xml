@@ -8,8 +8,8 @@
     <string name="btnAdd">Add</string>
     <string name="btnEnter">Enter</string>
     <string name="textSample">This is a sample</string>
-    <string name="switcherOnline">Toggle Online</string>
-    <string name="switcherOffline">Toggle Offline</string>
+    <string name="switcherOnline">Toggle Normal</string>
+    <string name="switcherOffline">Toggle Economic</string>
     <string name="switcherDark">Toggle Dark</string>
     <string name="switchLight">Toggle Light</string>
     <string name="labelAccountType_Member">Free Account</string>
@@ -35,12 +35,15 @@
     <string name="msgFailedReturnEvents">Failed to return user event(s)</string>
     <string name="msgFailedRemoveMember">Failed to remove member</string>
     <string name="msgFailedTransferEvent">Failed to transfer an Event organizer</string>
+    <string name="msgFailedLogin">Invalid user/password</string>
     <string name="msgSuccessTransferEvent">Event organizer transferred to %s</string>
     <string name="msgConfirmRemoveMember">Are you sure you want to remove %s</string>
     <string name="msgEventHasRemoved">Event has been removed</string>
     <string name="msgItemHasRemoved">Item has been removed</string>
     <string name="msgLimitReached">"You have reached the limit"</string>
     <string name="msgConfirmDeleteAccount">This action cannot be reverted. Are you sure?</string>
+    <string name="msgFieldMustBeValid">%s must be valid</string>
+    <string name="msgOpsTryItAgain">Ops, try it again</string>
 
     <!--    Login   -->
     <string name="labelLogin">Login</string>
@@ -136,7 +139,7 @@
     <string name="preferences_header">Preferences</string>
     <string name="settingsUI">Dark mode</string>
     <string name="settingsAutoSync">Auto Sync</string>
-    <string name="settingsConnectivity">Silent (Offline)</string>
-    <string name="summaryOffline">When enabled, only requested actions and auto-sync will use your data</string>
+    <string name="settingsConnectivity">Economic mode</string>
+    <string name="summaryOffline">When enabled, only requested actions and auto-sync will consume your data</string>
 
 </resources>

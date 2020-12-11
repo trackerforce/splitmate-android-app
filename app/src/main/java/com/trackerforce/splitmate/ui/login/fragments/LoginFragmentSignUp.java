@@ -53,7 +53,7 @@ public class LoginFragmentSignUp extends Fragment implements SplitmateView {
         final String email = getTextViewValue(R.id.textEmail);
         final String password = getTextViewValue(R.id.textPassword);
 
-        ProgressDialog progressDialog = openLoading("Authenticating", "Verifying credentials");
+        ProgressDialog progressDialog = openLoading("Registering", "Creating account");
         userController.signUp(name, username, email, password, new ServiceCallback<User>() {
             @Override
             public void onSuccess(User data) {
