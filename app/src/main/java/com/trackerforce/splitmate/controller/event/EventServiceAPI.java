@@ -51,6 +51,7 @@ public class EventServiceAPI {
             @Override
             public void onFailure(@NonNull Call<Event> call, @NonNull Throwable t) {
                 callback.onError(AppUtils.getString(context, R.string.msgFailedCreateEvent));
+                Log.d(TAG, t.getMessage());
             }
         });
     }
@@ -76,6 +77,7 @@ public class EventServiceAPI {
             @Override
             public void onFailure(@NonNull Call<Event> call, @NonNull Throwable t) {
                 callback.onError(AppUtils.getString(context, R.string.msgFailedEditingEvent));
+                Log.d(TAG, t.getMessage());
             }
         });
     }
@@ -100,6 +102,7 @@ public class EventServiceAPI {
             @Override
             public void onFailure(@NonNull Call<Event> call, @NonNull Throwable t) {
                 callback.onError(AppUtils.getString(context, R.string.msgFailedAddingItem));
+                Log.d(TAG, t.getMessage());
             }
         });
     }
@@ -124,6 +127,7 @@ public class EventServiceAPI {
             @Override
             public void onFailure(@NonNull Call<Event> call, @NonNull Throwable t) {
                 callback.onError(AppUtils.getString(context, R.string.msgFailedEditingItem));
+                Log.d(TAG, t.getMessage());
             }
         });
     }
@@ -148,6 +152,7 @@ public class EventServiceAPI {
             @Override
             public void onFailure(@NonNull Call<Event> call, @NonNull Throwable t) {
                 callback.onError(AppUtils.getString(context, R.string.msgFailedDeletingItem));
+                Log.d(TAG, t.getMessage());
             }
         });
     }
@@ -172,6 +177,7 @@ public class EventServiceAPI {
             @Override
             public void onFailure(@NonNull Call<Event> call, @NonNull Throwable t) {
                 callback.onError(AppUtils.getString(context, R.string.msgFailedPickingItem));
+                Log.d(TAG, t.getMessage());
             }
         });
     }
@@ -196,6 +202,7 @@ public class EventServiceAPI {
             @Override
             public void onFailure(@NonNull Call<Event> call, @NonNull Throwable t) {
                 callback.onError(AppUtils.getString(context, R.string.msgFailedUnpickingItem));
+                Log.d(TAG, t.getMessage());
             }
         });
     }
@@ -221,6 +228,7 @@ public class EventServiceAPI {
            @Override
            public void onFailure(@NonNull Call<Map<String, String>> call, @NonNull Throwable t) {
                callback.onError(AppUtils.getString(context, R.string.msgFailedDeletingEvent));
+               Log.d(TAG, t.getMessage());
            }
        });
     }
@@ -240,6 +248,7 @@ public class EventServiceAPI {
             @Override
             public void onFailure(@NonNull Call<Event> call, @NonNull Throwable t) {
                 callback.onError(AppUtils.getString(context, R.string.msgFailedRemoveMember));
+                Log.d(TAG, t.getMessage());
             }
         });
     }
@@ -261,6 +270,7 @@ public class EventServiceAPI {
             @Override
             public void onFailure(@NonNull Call<Map<String, String>> call, @NonNull Throwable t) {
                 callback.onError(AppUtils.getString(context, R.string.msgFailedInviteUser));
+                Log.d(TAG, t.getMessage());
             }
         });
     }
@@ -297,6 +307,7 @@ public class EventServiceAPI {
             @Override
             public void onFailure(@NonNull Call<Event[]> call, @NonNull Throwable t) {
                 callback.onError(AppUtils.getString(context, R.string.msgFailedReturnEvents));
+                Log.d(TAG, t.getMessage());
             }
         });
     }
@@ -321,6 +332,7 @@ public class EventServiceAPI {
             @Override
             public void onFailure(@NonNull Call<Event> call, @NonNull Throwable t) {
                 callback.onError(AppUtils.getString(context, R.string.msgFailedReturnEvents));
+                Log.d(TAG, t.getMessage());
             }
         });
     }
@@ -344,6 +356,7 @@ public class EventServiceAPI {
             @Override
             public void onFailure(@NonNull Call<Item> call, @NonNull Throwable t) {
                 callback.onError(AppUtils.getString(context, R.string.msgFailedReturnEvents));
+                Log.d(TAG, t.getMessage());
             }
         });
     }
@@ -368,6 +381,7 @@ public class EventServiceAPI {
             @Override
             public void onFailure(@NonNull Call<Event> call, @NonNull Throwable t) {
                 callback.onError(AppUtils.getString(context, R.string.msgFailedTransferEvent));
+                Log.d(TAG, t.getMessage());
             }
         });
     }
@@ -392,6 +406,7 @@ public class EventServiceAPI {
             @Override
             public void onFailure(@NonNull Call<Item> call, @NonNull Throwable t) {
                 callback.onError(AppUtils.getString(context, R.string.msgFailedUnpickingItem));
+                Log.d(TAG, t.getMessage());
             }
         });
     }

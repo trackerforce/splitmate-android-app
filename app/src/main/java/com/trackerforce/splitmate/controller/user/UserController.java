@@ -22,7 +22,7 @@ public class UserController {
     }
 
     public void checkAPI(ServiceCallback<String> callback) {
-        if (AppUtils.isOnline(context)) {
+        if (AppUtils.isOnline(context, true)) {
             userServiceAPI.checkAPI(callback);
         } else {
             callback.onSuccess(null);
@@ -34,7 +34,7 @@ public class UserController {
         user.setUsername(login);
         user.setPassword(password);
 
-        if (AppUtils.isOnline(context)) {
+        if (AppUtils.isOnline(context, true)) {
             userServiceAPI.login(user, callback, this.userServiceLocal);
         } else {
             callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
@@ -42,7 +42,7 @@ public class UserController {
     }
 
     public void logout(ServiceCallback<Boolean> callback) {
-        if (AppUtils.isOnline(context)) {
+        if (AppUtils.isOnline(context, true)) {
             userServiceAPI.logout(callback, this.userServiceLocal);
         } else {
             callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
@@ -53,13 +53,14 @@ public class UserController {
                        String password, ServiceCallback<User> callback) {
         String error = "";
 
-        if (name == null || name.isEmpty()) error = "Name must be valid";
-        else if (username == null || username.isEmpty()) error = "Username must be valid";
-        else if (email == null || email.isEmpty()) error = "Email must be valid";
-        else if (password == null || password.isEmpty()) error = "Password must be valid";
+        if (name == null || name.isEmpty()) error = "Name";
+        else if (username == null || username.isEmpty()) error = "Username";
+        else if (email == null || email.isEmpty()) error = "Email";
+        else if (password == null || password.isEmpty()) error = "Password";
 
         if (!error.isEmpty()) {
-            callback.onError(error);
+            final String message = AppUtils.getString(context, R.string.msgFieldMustBeValid);
+            callback.onError(String.format(message, error));
             return;
         }
 
@@ -69,7 +70,7 @@ public class UserController {
         user.setEmail(email);
         user.setPassword(password);
 
-        if (AppUtils.isOnline(context)) {
+        if (AppUtils.isOnline(context, true)) {
             userServiceAPI.signUp(user, callback, this.userServiceLocal);
         } else {
             callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
@@ -77,7 +78,7 @@ public class UserController {
     }
 
     public void getUser(ServiceCallback<User> callback) {
-        if (AppUtils.isOnline(context)) {
+        if (AppUtils.isOnline(context, true)) {
             userServiceAPI.getUser(callback);
         } else {
             userServiceLocal.getUser(callback);
@@ -85,7 +86,7 @@ public class UserController {
     }
 
     public void find(String username, ServiceCallback<User> callback) {
-        if (AppUtils.isOnline(context)) {
+        if (AppUtils.isOnline(context, true)) {
             userServiceAPI.find(username, callback);
         } else {
             callback.onError(AppUtils.getString(context, R.string.msgNotConnected));

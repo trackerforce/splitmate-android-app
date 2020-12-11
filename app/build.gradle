@@ -20,7 +20,7 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "com.ricebeans.splitmate"
+        applicationId "com.trackerforce.splitmate"
         minSdkVersion 24
         targetSdkVersion 30
         versionCode 1

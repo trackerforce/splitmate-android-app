@@ -91,7 +91,7 @@ public class PollActivity extends SplitmateActivity {
                     finish();
                 }
             }
-        });
+        }, false);
     }
 
     private void loadPusher() {

@@ -4,13 +4,13 @@
     <PreferenceCategory app:title="@string/preferences_header">
 
         <SwitchPreferenceCompat
-            app:key="TOGGLE_DARK"
-            app:title="@string/settingsUI" />
-
-        <SwitchPreferenceCompat
             app:defaultValue="true"
             app:key="TOGGLE_AUTO_SYNC"
             app:title="@string/settingsAutoSync" />
+
+        <SwitchPreferenceCompat
+            app:key="TOGGLE_DARK"
+            app:title="@string/settingsUI" />
 
         <SwitchPreferenceCompat
             app:key="TOGGLE_OFFLINE"

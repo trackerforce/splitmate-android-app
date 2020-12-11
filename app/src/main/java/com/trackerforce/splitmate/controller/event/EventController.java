@@ -74,13 +74,14 @@ public class EventController {
         }
     }
 
-    public void getEventItemById(String eventId, String itemId, ServiceCallback<Item> callback) {
+    public void getEventItemById(String eventId, String itemId, ServiceCallback<Item> callback,
+                                 boolean force) {
         if (eventId == null || eventId.isEmpty()) {
             callback.onError(AppUtils.getString(context, R.string.msgEventIdIsEmpty));
         } else if (itemId == null || itemId.isEmpty()) {
             callback.onError(AppUtils.getString(context, R.string.msgItemIdIsEmpty));
         } else {
-            if (AppUtils.isOnline(context)) {
+            if (AppUtils.isOnline(context, force)) {
                 eventServiceAPI.getEventItemById(eventId, itemId, callback, eventServiceLocal);
             } else {
                 eventServiceLocal.getEvenItemById(itemId, callback);

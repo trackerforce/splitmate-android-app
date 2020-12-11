@@ -5,11 +5,13 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.trackerforce.splitmate.R;
 import com.trackerforce.splitmate.controller.ServiceCallback;
 import com.trackerforce.splitmate.controller.event.EventServiceLocal;
 import com.trackerforce.splitmate.model.Login;
 import com.trackerforce.splitmate.model.User;
 import com.trackerforce.splitmate.rest.SplitmateAPI;
+import com.trackerforce.splitmate.utils.AppUtils;
 
 import java.util.Map;
 
@@ -40,7 +42,8 @@ public class UserServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<Map<String, String>> call, @NonNull Throwable t) {
-                callback.onError("API is Offline");
+                callback.onError(AppUtils.getString(context, R.string.msgOpsTryItAgain));
+                Log.d(TAG, t.getMessage());
             }
         });
     }
@@ -56,13 +59,14 @@ public class UserServiceAPI {
                     userServiceLocal.cleanLocalStorage();
                     syncJwt(userServiceLocal, response.body(), callback);
                 } else {
-                    callback.onError("Invalid user/password");
+                    callback.onError(AppUtils.getString(context, R.string.msgFailedLogin));
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<Login> call, @NonNull Throwable t) {
-                callback.onError("Failed to login");
+                callback.onError(AppUtils.getString(context, R.string.msgOpsTryItAgain));
+                Log.d(TAG, t.getMessage());
             }
         });
     }
@@ -83,7 +87,8 @@ public class UserServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<Map<String, String>> call, @NonNull Throwable t) {
-                callback.onError("Failed to logout");
+                callback.onError(AppUtils.getString(context, R.string.msgOpsTryItAgain));
+                Log.d(TAG, t.getMessage());
             }
         });
     }
@@ -104,7 +109,8 @@ public class UserServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<Login> call, @NonNull Throwable t) {
-                callback.onError("Failed to register user");
+                callback.onError(AppUtils.getString(context, R.string.msgOpsTryItAgain));
+                Log.d(TAG, t.getMessage());
             }
         });
     }
@@ -118,7 +124,8 @@ public class UserServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                callback.onError("Failed to get user details");
+                callback.onError(AppUtils.getString(context, R.string.msgOpsTryItAgain));
+                Log.d(TAG, t.getMessage());
             }
         });
     }
@@ -132,7 +139,8 @@ public class UserServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                callback.onError("Failed to find user");
+                callback.onError(AppUtils.getString(context, R.string.msgOpsTryItAgain));
+                Log.d(TAG, t.getMessage());
             }
         });
     }
@@ -153,7 +161,8 @@ public class UserServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                callback.onError("Failed to join event");
+                callback.onError(AppUtils.getString(context, R.string.msgOpsTryItAgain));
+                Log.d(TAG, t.getMessage());
             }
         });
     }
@@ -174,7 +183,8 @@ public class UserServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                callback.onError("Failed to dismiss event");
+                callback.onError(AppUtils.getString(context, R.string.msgOpsTryItAgain));
+                Log.d(TAG, t.getMessage());
             }
         });
     }
@@ -195,7 +205,8 @@ public class UserServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                callback.onError("Failed to dismiss event");
+                callback.onError(AppUtils.getString(context, R.string.msgOpsTryItAgain));
+                Log.d(TAG, t.getMessage());
             }
         });
     }
@@ -216,7 +227,8 @@ public class UserServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                callback.onError("Failed to archive event using: " + action);
+                callback.onError(AppUtils.getString(context, R.string.msgOpsTryItAgain));
+                Log.d(TAG, t.getMessage());
             }
         });
     }
@@ -237,7 +249,8 @@ public class UserServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<Map<String, String>> call, @NonNull Throwable t) {
-                callback.onError("Failed to delete account");
+                callback.onError(AppUtils.getString(context, R.string.msgOpsTryItAgain));
+                Log.d(TAG, t.getMessage());
             }
         });
     }
