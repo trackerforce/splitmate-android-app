@@ -17,12 +17,12 @@ jobs:
         with:
           java-version: 1.8
       - name: Unit tests
-        run: bash ./gradlew test -Psecret="$SPLITMATE_API_SECRET" -api_url="$SPLITMATE_API_URL" --stacktrace
+        run: bash ./gradlew test -Psecret="$SPLITMATE_API_SECRET" -Papi_url="$SPLITMATE_API_URL" --stacktrace
         env:
           SPLITMATE_API_SECRET: ${{ secrets.SPLITMATE_API_SECRET }}
           SPLITMATE_API_URL: ${{ secrets.SPLITMATE_API_URL }}
       - name: Build debug APK
-        run: bash ./gradlew assembleDebug -Psecret="$SPLITMATE_API_SECRET" -api_url="$SPLITMATE_API_URL" --stacktrace
+        run: bash ./gradlew assembleDebug -Psecret="$SPLITMATE_API_SECRET" -Papi_url="$SPLITMATE_API_URL" --stacktrace
         env:
           SPLITMATE_API_SECRET: ${{ secrets.SPLITMATE_API_SECRET }}
           SPLITMATE_API_URL: ${{ secrets.SPLITMATE_API_URL }}
