@@ -26,7 +26,7 @@ android {
         versionCode 1
         versionName "1.0.0"
 
-        buildConfigField("String", "API_URL", "\"${getProperties("url_prod")}\"")
+        buildConfigField("String", "API_URL", "\"${getProperties("api_url")}\"")
         buildConfigField("String", "API_KEY", "\"${getProperties("secret")}\"")
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
