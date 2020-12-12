@@ -15,6 +15,7 @@ public class User implements Serializable {
     private String[] events_pending;
     private String[] events_archived;
     private String eventId;
+    private String token; //Google reCaptcha
 
     public String getId() {
         return _id;
@@ -86,6 +87,10 @@ public class User implements Serializable {
 
     public void setEventId(String eventId) {
         this.eventId = eventId;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     @Override
