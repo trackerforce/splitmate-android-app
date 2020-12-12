@@ -6,7 +6,7 @@ SplitMATE is a simple and intuitive event manager that provides a collaborative 
 
 # About
 
-1. Divide and Conquer! Invite friends to help split the tasks.
+1. Create events and invite friends to help split the tasks.
 2. Include necessary items that will be necessary to accomplish the event.
 3. Track costs, quantities, and much more with o real-time visualization.
 4. Create live polls where you can vote and decide what is the best fit.
