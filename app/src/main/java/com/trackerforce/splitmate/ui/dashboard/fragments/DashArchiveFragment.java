@@ -12,7 +12,7 @@ import com.trackerforce.splitmate.model.Event;
 import com.trackerforce.splitmate.ui.dashboard.components.EventArchiveComponent;
 import com.trackerforce.splitmate.utils.AppUtils;
 
-public class DashArchiveFragment extends AbstractDashFragment {
+public class DashArchiveFragment extends AbstractDashFragment implements ServiceCallback<Event[]> {
 
     public static final String TITLE = "Archive";
 
@@ -26,27 +26,15 @@ public class DashArchiveFragment extends AbstractDashFragment {
         loadEvents(force);
     }
 
-    private void loadEvents(boolean force) {
-        getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.INVISIBLE);
-        getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.VISIBLE);
-        getEventController().myEventsArchived(new ServiceCallback<Event[]>() {
-            @Override
-            public void onSuccess(Event[] data) {
-                if (adapter != null) {
-                    adapter.updateAdapter(data);
+    @Override
+    public void onResume() {
+        super.onResume();
 
-                    getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
-                    getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onError(String error) {
-                AppUtils.showMessage(getContext(), error);
-                getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
-                getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.VISIBLE);
-            }
-        }, force);
+        if (!firstLoad) {
+            getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.INVISIBLE);
+            getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.VISIBLE);
+            getEventController().myEventsArchivedLocal(this);
+        }
     }
 
     @Override
@@ -54,4 +42,26 @@ public class DashArchiveFragment extends AbstractDashFragment {
         return TITLE;
     }
 
+    @Override
+    public void onSuccess(Event[] data) {
+        if (adapter != null) {
+            adapter.updateAdapter(data);
+
+            getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
+            getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onError(String error) {
+        AppUtils.showMessage(getContext(), error);
+        getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
+        getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.VISIBLE);
+    }
+
+    private void loadEvents(boolean force) {
+        getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.INVISIBLE);
+        getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.VISIBLE);
+        getEventController().myEventsArchived(this, force);
+    }
 }

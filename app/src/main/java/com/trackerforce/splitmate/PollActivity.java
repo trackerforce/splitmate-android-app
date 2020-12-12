@@ -1,6 +1,9 @@
 package com.trackerforce.splitmate;
 
 import android.content.Intent;
+import android.view.View;
+import android.widget.ProgressBar;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -54,6 +57,8 @@ public class PollActivity extends SplitmateActivity {
     }
 
     private void loadItem() {
+        getComponent(R.id.swipeContainer, SwipeRefreshLayout.class).setVisibility(View.INVISIBLE);
+        getComponent(R.id.progressBarPoll, ProgressBar.class).setVisibility(View.VISIBLE);
         eventController.getEventItemById(eventId, itemId, new ServiceCallback<Item>() {
             @Override
             public void onSuccess(Item data) {
@@ -64,19 +69,19 @@ public class PollActivity extends SplitmateActivity {
                 adapter.setItemId(itemId);
                 adapter.updateAdapter(data.getPoll());
 
-                swipeContainer.setRefreshing(false);
+                showPoll();
             }
 
             @Override
             public void onError(String error) {
                 AppUtils.showMessage(PollActivity.this, error);
-                swipeContainer.setRefreshing(false);
+                showPoll();
             }
 
             @Override
             public void onError(String error, Object obj) {
-                swipeContainer.setRefreshing(false);
                 final ErrorResponse errorResponse = (ErrorResponse) obj;
+                showPoll();
 
                 if ("event".equals(errorResponse.getDocument())) {
                     AppUtils.showMessage(PollActivity.this,
@@ -106,5 +111,11 @@ public class PollActivity extends SplitmateActivity {
 
     private void onRefreshLayout() {
         loadItem();
+    }
+
+    private void showPoll() {
+        getComponent(R.id.swipeContainer, SwipeRefreshLayout.class).setVisibility(View.VISIBLE);
+        getComponent(R.id.progressBarPoll, ProgressBar.class).setVisibility(View.GONE);
+        swipeContainer.setRefreshing(false);
     }
 }
