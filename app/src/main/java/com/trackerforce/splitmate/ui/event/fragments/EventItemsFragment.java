@@ -97,28 +97,21 @@ public class EventItemsFragment extends AbstractEventFragment {
     }
 
     private void loadEvent(boolean force) {
-        if (getView() != null) {
-            if (bypassOnLoad) {
-                updateAdapter(getEvent());
-                bypassOnLoad = false;
-            } else {
-                getComponent(R.id.listItems, RecyclerView.class).setVisibility(View.INVISIBLE);
-                getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.VISIBLE);
-                getEventController().getEventById(getEventId(), new ServiceCallback<Event>() {
-                    @Override
-                    public void onSuccess(Event data) {
-                        updateAdapter(data);
-                    }
-
-                    @Override
-                    public void onError(String error) {
-                        AppUtils.showMessage(getContext(), error);
-                        getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
-                        getComponent(R.id.listItems, RecyclerView.class).setVisibility(View.VISIBLE);
-                    }
-                }, force);
+        getComponent(R.id.listItems, RecyclerView.class).setVisibility(View.INVISIBLE);
+        getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.VISIBLE);
+        getEventController().getEventById(getEventId(), new ServiceCallback<Event>() {
+            @Override
+            public void onSuccess(Event data) {
+                updateAdapter(data);
             }
-        }
+
+            @Override
+            public void onError(String error) {
+                AppUtils.showMessage(getContext(), error);
+                getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
+                getComponent(R.id.listItems, RecyclerView.class).setVisibility(View.VISIBLE);
+            }
+        }, force);
     }
 
     private void onRefreshLayout() {
