@@ -10,6 +10,8 @@ import com.trackerforce.splitmate.utils.Config;
 import com.trackerforce.splitmate.utils.SplitConstants;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -20,9 +22,12 @@ public class PusherClient extends Application {
 
     private static final String TAG = PusherClient.class.getSimpleName();
     private static PusherClient instance;
+    private final List<String> events;
     private Socket socket;
 
-    private PusherClient() { }
+    private PusherClient() {
+        events = new ArrayList<>();
+    }
 
     public static PusherClient getInstance() {
         if (instance == null)
@@ -59,12 +64,20 @@ public class PusherClient extends Application {
     }
 
     public void subscribe(String event, Emitter.Listener listener) {
-        if (socket.connected())
+        if (socket.connected()) {
             socket.on(event, listener);
+            events.add(event);
+        }
     }
 
     public void unsubscribe(String event) {
         socket.off(event);
+    }
+
+    public void unsubscribeAll() {
+        for (String event : events)
+            socket.off(event);
+        events.clear();
     }
 
     public void notifyEvent(PusherData pusherData) {

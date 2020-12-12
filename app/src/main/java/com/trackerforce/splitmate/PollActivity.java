@@ -11,12 +11,17 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.trackerforce.splitmate.controller.ServiceCallback;
 import com.trackerforce.splitmate.model.ErrorResponse;
 import com.trackerforce.splitmate.model.Item;
+import com.trackerforce.splitmate.model.Poll;
+import com.trackerforce.splitmate.model.pusher.PusherData;
+import com.trackerforce.splitmate.model.pusher.PusherPollItemDTO;
 import com.trackerforce.splitmate.pusher.PusherClient;
 import com.trackerforce.splitmate.pusher.PusherEvents;
 import com.trackerforce.splitmate.ui.SplitmateActivity;
 import com.trackerforce.splitmate.ui.item.PollVotePreviewAdapter;
 import com.trackerforce.splitmate.utils.AppUtils;
 import com.trackerforce.splitmate.utils.SplitConstants;
+
+import java.util.Arrays;
 
 public class PollActivity extends SplitmateActivity {
 
@@ -53,7 +58,7 @@ public class PollActivity extends SplitmateActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        pusher.unsubscribe(PusherEvents.UPDATE_POLL.toString());
+        pusher.unsubscribeAll();
     }
 
     private void loadItem() {
@@ -96,16 +101,35 @@ public class PollActivity extends SplitmateActivity {
                     finish();
                 }
             }
-        }, false);
+        }, true);
     }
 
     private void loadPusher() {
         pusher = PusherClient.getInstance();
         pusher.connect(this, eventId);
         pusher.subscribe(PusherEvents.UPDATE_POLL.toString(), this::onUpdatePoll);
+        pusher.subscribe(PusherEvents.EDIT_ITEM.toString(), this::onUpdateItem);
     }
 
     private void onUpdatePoll(Object... args) {
+        runOnUiThread(() -> {
+            PusherPollItemDTO pusherPollItemDTO = PusherData.getDTO(PusherPollItemDTO.class, args);
+
+            for (Poll poll : adapter.getDataSet()) {
+                if (pusherPollItemDTO.getPollItemId().equals(poll.getId())) {
+                    poll.addVote(pusherPollItemDTO.getVoter());
+                } else {
+                    if (Arrays.binarySearch(poll.getVotes(), pusherPollItemDTO.getVoter()) >= 0) {
+                        poll.removeVote(pusherPollItemDTO.getVoter());
+                    }
+                }
+            }
+
+            adapter.notifyDataSetChanged();
+        });
+    }
+
+    private void onUpdateItem(Object... args) {
         runOnUiThread(this::loadItem);
     }
 

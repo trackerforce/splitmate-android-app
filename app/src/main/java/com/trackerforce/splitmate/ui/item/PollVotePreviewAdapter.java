@@ -20,10 +20,11 @@ import com.trackerforce.splitmate.controller.event.EventController;
 import com.trackerforce.splitmate.model.ErrorResponse;
 import com.trackerforce.splitmate.model.Item;
 import com.trackerforce.splitmate.model.Poll;
-import com.trackerforce.splitmate.model.pusher.PusherItemDTO;
+import com.trackerforce.splitmate.model.pusher.PusherPollItemDTO;
 import com.trackerforce.splitmate.pusher.PusherClient;
 import com.trackerforce.splitmate.pusher.PusherEvents;
 import com.trackerforce.splitmate.utils.AppUtils;
+import com.trackerforce.splitmate.utils.Config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -142,9 +143,10 @@ public class PollVotePreviewAdapter extends ListAdapter<Poll, PollVotePreviewAda
                     updateAdapter(data.getPoll());
 
                     PusherClient pusher = PusherClient.getInstance();
-                    PusherItemDTO pusherItemDTO = new PusherItemDTO(eventId, PusherEvents.UPDATE_POLL);
-                    pusherItemDTO.setItemId(itemId);
-                    pusher.notifyEvent(pusherItemDTO);
+                    PusherPollItemDTO pusherPollItemDTO = new PusherPollItemDTO(eventId, itemId, PusherEvents.UPDATE_POLL);
+                    pusherPollItemDTO.setPollItemId(poll.getId());
+                    pusherPollItemDTO.setVoter(Config.getInstance().getLoggedUser().getUser().getId());
+                    pusher.notifyEvent(pusherPollItemDTO);
                 }
 
                 @Override
