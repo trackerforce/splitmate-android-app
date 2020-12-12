@@ -2,6 +2,8 @@ package com.trackerforce.splitmate.model;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 public class Poll implements Serializable {
@@ -32,6 +34,25 @@ public class Poll implements Serializable {
 
     public void setVotes(String[] votes) {
         this.votes = votes;
+    }
+
+    public void addVote(String vote) {
+        if (votes == null || votes.length == 0) {
+            votes = new String[1];
+            votes[0] = vote;
+        } else {
+            List<String> votesList = new LinkedList<>(Arrays.asList(votes));
+            votesList.add(vote);
+            votes = votesList.toArray(new String[0]);
+        }
+    }
+
+    public void removeVote(String vote) {
+        if (votes != null && votes.length > 0) {
+            List<String> votesList = new LinkedList<>(Arrays.asList(votes));
+            votesList.remove(vote);
+            votes = votesList.toArray(new String[0]);
+        }
     }
 
     @Override

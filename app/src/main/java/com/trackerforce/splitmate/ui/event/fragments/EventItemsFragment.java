@@ -15,12 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.gson.Gson;
 import com.trackerforce.splitmate.NewItemActivity;
 import com.trackerforce.splitmate.R;
 import com.trackerforce.splitmate.controller.ServiceCallback;
 import com.trackerforce.splitmate.model.Event;
 import com.trackerforce.splitmate.model.Item;
+import com.trackerforce.splitmate.model.pusher.PusherData;
 import com.trackerforce.splitmate.model.pusher.PusherItemDTO;
 import com.trackerforce.splitmate.pusher.PusherClient;
 import com.trackerforce.splitmate.pusher.PusherEvents;
@@ -76,11 +76,7 @@ public class EventItemsFragment extends AbstractEventFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        pusher.unsubscribe(PusherEvents.UNPICK_ITEM.toString());
-        pusher.unsubscribe(PusherEvents.PICK_ITEM.toString());
-        pusher.unsubscribe(PusherEvents.DELETE_ITEM.toString());
-        pusher.unsubscribe(PusherEvents.EDIT_ITEM.toString());
-        pusher.unsubscribe(PusherEvents.CREATE_ITEM.toString());
+        pusher.unsubscribeAll();
     }
 
     private void updateAdapter(Event event) {
@@ -142,8 +138,8 @@ public class EventItemsFragment extends AbstractEventFragment {
 
     private void onNotifyItemPick(Object... args) {
         requireActivity().runOnUiThread(() -> {
-            Gson gson = new Gson();
-            PusherItemDTO pusherItemDTO = gson.fromJson(args[0].toString(), PusherItemDTO.class);
+            PusherItemDTO pusherItemDTO = PusherData.getDTO(PusherItemDTO.class, args);
+
             for (Item item : adapter.getDataSet()) {
                 if (item.getId().equals(pusherItemDTO.getItemId())) {
                     getEventController().pickItemLocal(item, pusherItemDTO.getAssigned_to());
@@ -156,8 +152,8 @@ public class EventItemsFragment extends AbstractEventFragment {
 
     private void onNotifyItemUnpick(Object... args) {
         requireActivity().runOnUiThread(() -> {
-            Gson gson = new Gson();
-            PusherItemDTO pusherItemDTO = gson.fromJson(args[0].toString(), PusherItemDTO.class);
+            PusherItemDTO pusherItemDTO = PusherData.getDTO(PusherItemDTO.class, args);
+
             for (Item item : adapter.getDataSet()) {
                 if (item.getId().equals(pusherItemDTO.getItemId())) {
                     getEventController().unpickItemLocal(item);
@@ -170,8 +166,8 @@ public class EventItemsFragment extends AbstractEventFragment {
 
     private void onNotifyItemDeleted(Object... args) {
         requireActivity().runOnUiThread(() -> {
-            Gson gson = new Gson();
-            PusherItemDTO pusherItemDTO = gson.fromJson(args[0].toString(), PusherItemDTO.class);
+            PusherItemDTO pusherItemDTO = PusherData.getDTO(PusherItemDTO.class, args);
+
             for (Item item : adapter.getDataSet()) {
                 if (item.getId().equals(pusherItemDTO.getItemId())) {
                     getEventController().deleteItemLocal(item.getId());
@@ -185,8 +181,7 @@ public class EventItemsFragment extends AbstractEventFragment {
 
     private void onNotifyItemCreated(Object... args) {
         requireActivity().runOnUiThread(() -> {
-            Gson gson = new Gson();
-            PusherItemDTO pusherItemDTO = gson.fromJson(args[0].toString(), PusherItemDTO.class);
+            PusherItemDTO pusherItemDTO = PusherData.getDTO(PusherItemDTO.class, args);
 
             getEventController().getEventItemById(pusherItemDTO.getEventId(),
                     pusherItemDTO.getItemId(), new ServiceCallback<Item>() {
@@ -207,8 +202,7 @@ public class EventItemsFragment extends AbstractEventFragment {
 
     private void onNotifyItemEdited(Object... args) {
         requireActivity().runOnUiThread(() -> {
-            Gson gson = new Gson();
-            PusherItemDTO pusherItemDTO = gson.fromJson(args[0].toString(), PusherItemDTO.class);
+            PusherItemDTO pusherItemDTO = PusherData.getDTO(PusherItemDTO.class, args);
 
             getEventController().getEventItemById(pusherItemDTO.getEventId(),
                     pusherItemDTO.getItemId(), new ServiceCallback<Item>() {

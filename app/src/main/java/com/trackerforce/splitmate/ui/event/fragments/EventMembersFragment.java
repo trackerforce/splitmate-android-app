@@ -14,11 +14,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.gson.Gson;
 import com.trackerforce.splitmate.InvitationActivity;
 import com.trackerforce.splitmate.R;
 import com.trackerforce.splitmate.controller.ServiceCallback;
 import com.trackerforce.splitmate.model.Event;
+import com.trackerforce.splitmate.model.pusher.PusherData;
+import com.trackerforce.splitmate.model.pusher.PusherItemDTO;
 import com.trackerforce.splitmate.model.pusher.PusherMemberDTO;
 import com.trackerforce.splitmate.pusher.PusherClient;
 import com.trackerforce.splitmate.pusher.PusherEvents;
@@ -138,8 +139,8 @@ public class EventMembersFragment extends AbstractEventFragment {
 
     private void onMemberRemoved(Object... args) {
         requireActivity().runOnUiThread(() -> {
-            Gson gson = new Gson();
-            PusherMemberDTO pusherMemberDTO = gson.fromJson(args[0].toString(), PusherMemberDTO.class);
+            PusherMemberDTO pusherMemberDTO = PusherData.getDTO(PusherMemberDTO.class, args);
+
             getEventController().removeMemberLocal(pusherMemberDTO.getChannel(), pusherMemberDTO.getMemberId());
             adapter.getDataSet().removeIf(member -> member.getId().equals(pusherMemberDTO.getMemberId()));
             adapter.notifyDataSetChanged();

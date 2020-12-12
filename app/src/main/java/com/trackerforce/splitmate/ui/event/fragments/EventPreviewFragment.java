@@ -8,10 +8,10 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.gson.Gson;
 import com.trackerforce.splitmate.R;
 import com.trackerforce.splitmate.controller.ServiceCallback;
 import com.trackerforce.splitmate.model.Event;
+import com.trackerforce.splitmate.model.pusher.PusherData;
 import com.trackerforce.splitmate.model.pusher.PusherMemberDTO;
 import com.trackerforce.splitmate.pusher.PusherClient;
 import com.trackerforce.splitmate.pusher.PusherEvents;
@@ -102,12 +102,11 @@ public class EventPreviewFragment extends AbstractEventFragment {
 
     private void onMemberRemoved(Object... args) {
         requireActivity().runOnUiThread(() -> {
-            Gson gson = new Gson();
-            PusherMemberDTO pusherMemberDTO = gson.fromJson(args[0].toString(), PusherMemberDTO.class);
+            PusherMemberDTO pusherMemberDTO = PusherData.getDTO(PusherMemberDTO.class, args);
 
             if (pusherMemberDTO.getMemberId().equals(Config.getInstance().getLoggedUser().getUser().getId())) {
                 getEventController().deleteLocal(getEventId());
-                getActivity().finish();
+                requireActivity().finish();
             } else {
                 onUpdatePreview(args);
             }
