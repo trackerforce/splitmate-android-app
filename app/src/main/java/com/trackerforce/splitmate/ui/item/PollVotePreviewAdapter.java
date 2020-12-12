@@ -123,12 +123,13 @@ public class PollVotePreviewAdapter extends ListAdapter<Poll, PollVotePreviewAda
             int votes = poll.getVotes().length;
             float percentage = totalVotes == 0 ? 0 : ((float) votes/totalVotes) * 100;
             TextView textCounter = itemView.findViewById(R.id.textCounter);
+
             textCounter.setText(String.format("%s%%", (int) percentage));
 
             if (percentage > 0) {
                 textCounter.setWidth((700*((int) percentage))/100);
             } else {
-                textCounter.setWidth(80);
+                textCounter.setWidth(100);
             }
         }
 

@@ -46,12 +46,20 @@ public class EventController {
         }
     }
 
+    public void myEventsCurrentLocal(ServiceCallback<Event[]> callback) {
+        eventServiceLocal.myEventsCurrent(callback);
+    }
+
     public void myEventsArchived(ServiceCallback<Event[]> callback, boolean force) {
         if (AppUtils.isOnline(context, force)) {
             eventServiceAPI.myEventsArchived(callback, eventServiceLocal);
         } else {
             eventServiceLocal.myEventsArchived(callback);
         }
+    }
+
+    public void myEventsArchivedLocal(ServiceCallback<Event[]> callback) {
+        eventServiceLocal.myEventsArchived(callback);
     }
 
     public void myEventsInvited(ServiceCallback<Event[]> callback, boolean force) {

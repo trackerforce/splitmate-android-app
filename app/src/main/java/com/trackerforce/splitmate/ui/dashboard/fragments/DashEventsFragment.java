@@ -18,7 +18,7 @@ import com.trackerforce.splitmate.ui.dashboard.components.EventComponent;
 import com.trackerforce.splitmate.utils.AppUtils;
 import com.trackerforce.splitmate.utils.SplitConstants;
 
-public class DashEventsFragment extends AbstractDashFragment {
+public class DashEventsFragment extends AbstractDashFragment implements ServiceCallback<Event[]> {
 
     public static final String TITLE = "Events";
 
@@ -43,31 +43,41 @@ public class DashEventsFragment extends AbstractDashFragment {
         return TITLE;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (!firstLoad) {
+            getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.INVISIBLE);
+            getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.VISIBLE);
+            getEventController().myEventsCurrentLocal(this);
+        }
+    }
+
+    @Override
+    public void onSuccess(Event[] data) {
+        if (adapter != null) {
+            adapter.updateAdapter(data);
+
+            getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
+            getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onError(String error) {
+        AppUtils.showMessage(getContext(), error);
+        getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
+        getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.VISIBLE);
+    }
+
     private void loadEvents(boolean force) {
         getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.INVISIBLE);
         getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.VISIBLE);
-        getEventController().myEventsCurrent(new ServiceCallback<Event[]>() {
-            @Override
-            public void onSuccess(Event[] data) {
-                if (adapter != null) {
-                    adapter.updateAdapter(data);
-
-                    getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
-                    getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onError(String error) {
-                AppUtils.showMessage(getContext(), error);
-                getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
-                getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.VISIBLE);
-            }
-        }, force);
+        getEventController().myEventsCurrent(this, force);
     }
 
     private void onNewEvent(@Nullable View view) {
         startActivityForResult(new Intent(getContext(), NewEventActivity.class), SplitConstants.EVENT.ordinal());
     }
-
 }

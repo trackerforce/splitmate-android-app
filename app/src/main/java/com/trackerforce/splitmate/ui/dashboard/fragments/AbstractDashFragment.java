@@ -27,12 +27,12 @@ import com.trackerforce.splitmate.ui.fragment.IFragmentSubscriber;
 public abstract class AbstractDashFragment extends Fragment
         implements SplitmateView, IFragmentSubscriber {
 
+    protected boolean firstLoad = true;
     protected EditText textFilterEvents;
     protected EventPreviewAdapter adapter;
     protected RecyclerView listView;
     protected IEventDashComponent eventDashComponent;
     private SwipeRefreshLayout swipeContainer;
-    private boolean firstLoad = true;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
