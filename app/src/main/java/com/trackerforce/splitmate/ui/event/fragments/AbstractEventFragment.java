@@ -17,7 +17,6 @@ import com.trackerforce.splitmate.controller.event.EventController;
 import com.trackerforce.splitmate.controller.user.UserController;
 import com.trackerforce.splitmate.model.Event;
 import com.trackerforce.splitmate.ui.SplitmateView;
-import com.trackerforce.splitmate.utils.AppUtils;
 
 public abstract class AbstractEventFragment extends Fragment implements SplitmateView {
 
@@ -41,12 +40,6 @@ public abstract class AbstractEventFragment extends Fragment implements Splitmat
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        // It improves performance by using the in-memory data
-        // Used at EventItemFragment
-        if (!AppUtils.isOnline(getContext())) {
-            bypassOnLoad = true;
-        }
-
         View view = inflater.inflate(this.layout, container, false);
         ViewGroup viewGroup = view.findViewById(R.id.constraintLayout);
         if (viewGroup != null && viewGroup.getLayoutTransition() != null)
