@@ -8,10 +8,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.safetynet.SafetyNet;
+import com.trackerforce.splitmate.BuildConfig;
 import com.trackerforce.splitmate.DashboardActivity;
 import com.trackerforce.splitmate.R;
 import com.trackerforce.splitmate.controller.ServiceCallback;
@@ -21,6 +26,8 @@ import com.trackerforce.splitmate.ui.SplitmateView;
 import com.trackerforce.splitmate.utils.AppUtils;
 
 public class LoginFragmentSignUp extends Fragment implements SplitmateView {
+
+    private static final String TAG = LoginFragmentSignUp.class.getSimpleName();
 
     public static final String TITLE = "Sign Up";
     private final UserController userController;
@@ -42,26 +49,47 @@ public class LoginFragmentSignUp extends Fragment implements SplitmateView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setOnClickListener(R.id.buttonSignUp, this::onSignUp);
+        setOnClickListener(R.id.buttonSignUp, this::onClickOnSignUp);
     }
 
-    private void onSignUp(View view) {
+    private void onClickOnSignUp(View view) {
         AppUtils.hideKeyboard(requireActivity(), requireView());
 
+        SafetyNet.getClient(getContext())
+            .verifyWithRecaptcha(BuildConfig.GOOGLE_RECAPTCHA_KEY)
+            .addOnSuccessListener(getActivity(),
+                response -> {
+                    String userResponseToken = response.getTokenResult();
+                    if (!userResponseToken.isEmpty()) {
+                        onSignUp(userResponseToken);
+                    }
+                })
+            .addOnFailureListener(getActivity(), e -> {
+                if (e instanceof ApiException) {
+                    ApiException apiException = (ApiException) e;
+                    int statusCode = apiException.getStatusCode();
+                    Log.d(TAG, "Error: " + CommonStatusCodes.getStatusCodeString(statusCode));
+                } else {
+                    Log.d(TAG, "Error: " + e.getMessage());
+                }
+            });
+    }
+
+    private void onSignUp(String token) {
         final String name = getTextViewValue(R.id.textName);
         final String username = getTextViewValue(R.id.textUsername);
         final String email = getTextViewValue(R.id.textEmail);
         final String password = getTextViewValue(R.id.textPassword);
 
-        ProgressDialog progressDialog = openLoading("Registering", "Creating account");
-        userController.signUp(name, username, email, password, new ServiceCallback<User>() {
+        ProgressDialog progressDialog = openLoading("Sign Up", "Creating account");
+        userController.signUp(name, username, email, password, token, new ServiceCallback<User>() {
             @Override
             public void onSuccess(User data) {
                 progressDialog.dismiss();
                 AppUtils.showMessage(requireView().getContext(), String.format("Welcome %s", data.getName()));
 
                 requireActivity().finish();
-                Intent intent = new Intent(view.getContext(), DashboardActivity.class);
+                Intent intent = new Intent(getContext(), DashboardActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);

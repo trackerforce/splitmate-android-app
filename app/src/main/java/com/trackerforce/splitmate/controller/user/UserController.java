@@ -50,7 +50,7 @@ public class UserController {
     }
 
     public void signUp(String name, String username, String email,
-                       String password, ServiceCallback<User> callback) {
+                       String password, String token, ServiceCallback<User> callback) {
         String error = "";
 
         if (name == null || name.isEmpty()) error = "Name";
@@ -69,6 +69,7 @@ public class UserController {
         user.setUsername(username);
         user.setEmail(email);
         user.setPassword(password);
+        user.setToken(token);
 
         if (AppUtils.isOnline(context, true)) {
             userServiceAPI.signUp(user, callback, this.userServiceLocal);

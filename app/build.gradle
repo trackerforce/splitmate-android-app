@@ -28,6 +28,7 @@ android {
 
         buildConfigField("String", "API_URL", "\"${getProperties("api_url")}\"")
         buildConfigField("String", "API_KEY", "\"${getProperties("secret")}\"")
+        buildConfigField("String", "GOOGLE_RECAPTCHA_KEY", "\"${getProperties("google_recaptcha_key")}\"")
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -67,4 +68,6 @@ dependencies {
 
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    implementation 'com.google.android.gms:play-services-safetynet:17.0.0'
 }
