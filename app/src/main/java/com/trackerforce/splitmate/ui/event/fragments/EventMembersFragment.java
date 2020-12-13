@@ -19,7 +19,6 @@ import com.trackerforce.splitmate.R;
 import com.trackerforce.splitmate.controller.ServiceCallback;
 import com.trackerforce.splitmate.model.Event;
 import com.trackerforce.splitmate.model.pusher.PusherData;
-import com.trackerforce.splitmate.model.pusher.PusherItemDTO;
 import com.trackerforce.splitmate.model.pusher.PusherMemberDTO;
 import com.trackerforce.splitmate.pusher.PusherClient;
 import com.trackerforce.splitmate.pusher.PusherEvents;

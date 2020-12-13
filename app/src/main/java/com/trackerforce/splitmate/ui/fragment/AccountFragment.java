@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 
 import com.trackerforce.splitmate.DashboardActivity;
@@ -42,10 +43,11 @@ public class AccountFragment extends Fragment implements SplitmateView {
     }
 
     private void setAccountPlan() {
+        getComponent(R.id.groupPlanPerk, Group.class).setVisibility(View.GONE);
         ((DashboardActivity) requireActivity()).getUserController().getUser(new ServiceCallback<User>() {
             @Override
             public void onSuccess(User data) {
-                switch (data.getPlan()) {
+                switch (data.getV_Plan().getName()) {
                     case "MEMBER":
                         getTextView(R.id.txtAccountType).setText(getResources().getString(R.string.labelAccountType_Member));
                         break;
@@ -55,6 +57,7 @@ public class AccountFragment extends Fragment implements SplitmateView {
                                 .setBackgroundColor(getResources().getColor(R.color.gold, getContext().getTheme()));
                         break;
                 }
+                getComponent(R.id.groupPlanPerk, Group.class).setVisibility(View.VISIBLE);
             }
 
             @Override

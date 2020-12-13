@@ -11,7 +11,7 @@ public class User implements Serializable {
     private String username;
     private String email;
     private String password;
-    private String plan;
+    private Plan v_plan;
     private String[] events_pending;
     private String[] events_archived;
     private String eventId;
@@ -57,12 +57,12 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public String getPlan() {
-        return plan;
+    public Plan getV_Plan() {
+        return v_plan;
     }
 
-    public void setPlan(String plan) {
-        this.plan = plan;
+    public void setV_Plan(Plan v_plan) {
+        this.v_plan = v_plan;
     }
 
     public String[] getEvents_pending() {
@@ -108,7 +108,6 @@ public class User implements Serializable {
                 ", name='" + name + '\'' +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
-                ", plan='" + plan + '\'' +
                 ", events_pending=" + Arrays.toString(events_pending) +
                 ", events_archived=" + Arrays.toString(events_archived) +
                 '}';

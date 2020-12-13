@@ -3,6 +3,8 @@ package com.trackerforce.splitmate.dao.wrapper;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import com.google.gson.Gson;
+import com.trackerforce.splitmate.model.Plan;
 import com.trackerforce.splitmate.model.User;
 
 public class UserWrapper implements EntityWrapper<User> {
@@ -24,8 +26,10 @@ public class UserWrapper implements EntityWrapper<User> {
         user.setName(cursor.getString(cursor.getColumnIndex("name")));
         user.setEmail(cursor.getString(cursor.getColumnIndex("email")));
         user.setUsername(cursor.getString(cursor.getColumnIndex("username")));
-        user.setPlan(cursor.getString(cursor.getColumnIndex("plan")));
         user.setEventId(cursor.getString(cursor.getColumnIndex("eventId")));
+
+        Gson gson = new Gson();
+        user.setV_Plan(gson.fromJson(cursor.getString(cursor.getColumnIndex("plan")), Plan.class));
         return user;
     }
 
@@ -36,8 +40,10 @@ public class UserWrapper implements EntityWrapper<User> {
         values.put("name", user.getName());
         values.put("email", user.getEmail());
         values.put("username", user.getUsername());
-        values.put("plan", user.getPlan());
         values.put("eventId", user.getEventId());
+
+        Gson gson = new Gson();
+        values.put("plan", gson.toJson(user.getV_Plan()));
         return values;
     }
 

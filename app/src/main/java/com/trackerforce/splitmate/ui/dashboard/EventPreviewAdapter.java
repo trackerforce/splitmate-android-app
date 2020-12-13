@@ -120,7 +120,12 @@ public class EventPreviewAdapter extends ListAdapter<Event, EventPreviewAdapter.
             this.event = event;
 
             ((TextView) itemView.findViewById(R.id.textEventName)).setText(event.getName());
-            ((TextView) itemView.findViewById(R.id.textEventLocation)).setText(event.getLocation());
+
+            if (event.getLocation() == null || event.getLocation().isEmpty()) {
+               itemView.findViewById(R.id.textEventLocation).setVisibility(View.GONE);
+            } else {
+                ((TextView) itemView.findViewById(R.id.textEventLocation)).setText(event.getLocation());
+            }
 
             @SuppressLint("SimpleDateFormat")
             final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E, dd MMM yyyy hh:mm aa");

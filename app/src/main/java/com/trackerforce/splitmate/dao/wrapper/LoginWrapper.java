@@ -3,8 +3,10 @@ package com.trackerforce.splitmate.dao.wrapper;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import com.google.gson.Gson;
 import com.trackerforce.splitmate.model.Jwt;
 import com.trackerforce.splitmate.model.Login;
+import com.trackerforce.splitmate.model.Plan;
 import com.trackerforce.splitmate.model.User;
 
 public class LoginWrapper implements EntityWrapper<Login> {
@@ -28,7 +30,9 @@ public class LoginWrapper implements EntityWrapper<Login> {
         user.setName(cursor.getString(cursor.getColumnIndex("name")));
         user.setEmail(cursor.getString(cursor.getColumnIndex("email")));
         user.setUsername(cursor.getString(cursor.getColumnIndex("username")));
-        user.setPlan(cursor.getString(cursor.getColumnIndex("plan")));
+
+        Gson gson = new Gson();
+        user.setV_Plan(gson.fromJson(cursor.getString(cursor.getColumnIndex("plan")), Plan.class));
 
         Login login = new Login();
         login.setJwt(new Jwt());
@@ -45,8 +49,10 @@ public class LoginWrapper implements EntityWrapper<Login> {
         values.put("name", entity.getUser().getName());
         values.put("email", entity.getUser().getEmail());
         values.put("username", entity.getUser().getUsername());
-        values.put("plan", entity.getUser().getPlan());
         values.put("token", entity.getJwt().getToken());
+
+        Gson gson = new Gson();
+        values.put("plan", gson.toJson(entity.getUser().getV_Plan()));
         return values;
     }
 }
