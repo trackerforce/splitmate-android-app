@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -119,7 +120,7 @@ public class PollActivity extends SplitmateActivity {
                 if (pusherPollItemDTO.getPollItemId().equals(poll.getId())) {
                     poll.addVote(pusherPollItemDTO.getVoter());
                 } else {
-                    if (Arrays.binarySearch(poll.getVotes(), pusherPollItemDTO.getVoter()) >= 0) {
+                    if (Arrays.stream(poll.getVotes()).anyMatch(p -> p.equals(pusherPollItemDTO.getVoter()))) {
                         poll.removeVote(pusherPollItemDTO.getVoter());
                     }
                 }
@@ -129,7 +130,7 @@ public class PollActivity extends SplitmateActivity {
         });
     }
 
-    private void onUpdateItem(Object... args) {
+    private void onUpdateItem(@Nullable Object... args) {
         runOnUiThread(this::loadItem);
     }
 
