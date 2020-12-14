@@ -150,6 +150,11 @@ public class NewEventActivity extends SplitmateActivity {
             @Override
             public void onSuccess(Event data) {
                 progress.dismiss();
+                Intent intent = new Intent(NewEventActivity.this, EventDetailActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra(SplitConstants.EVENT_ID.toString(), data.getId());
+                startActivity(intent);
+
                 setResult(Activity.RESULT_OK);
                 finish();
             }

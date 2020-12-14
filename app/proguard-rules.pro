@@ -19,3 +19,16 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# SOCKET.IO STILL NOT WOKING
+#-dontwarn okio.**
+#-dontwarn retrofit2.**
+#-keep class retrofit2.* { *; }
+#-keepattributes Signature
+#-keepattributes Exceptions
+#
+## Gson specific classes
+#-keep class com.google.gson.stream.* { *; }
+#
+## Application classes that will be serialized/deserialized over Gson
+#-keep class com.trackerforce.splitmate.model.* { *; }

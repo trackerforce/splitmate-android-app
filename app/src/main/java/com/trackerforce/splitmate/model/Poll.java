@@ -42,8 +42,10 @@ public class Poll implements Serializable {
             votes[0] = vote;
         } else {
             List<String> votesList = new LinkedList<>(Arrays.asList(votes));
-            votesList.add(vote);
-            votes = votesList.toArray(new String[0]);
+            if (!votesList.contains(vote)) {
+                votesList.add(vote);
+                votes = votesList.toArray(new String[0]);
+            }
         }
     }
 
