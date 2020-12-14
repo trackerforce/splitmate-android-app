@@ -10,10 +10,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.trackerforce.splitmate.R;
 import com.trackerforce.splitmate.ui.dashboard.DashboardPageAdapter;
+import com.trackerforce.splitmate.utils.Config;
 
 public class DashboardFragment extends Fragment {
 
@@ -31,6 +34,7 @@ public class DashboardFragment extends Fragment {
         TabLayout tabLayout = root.findViewById(R.id.tabDashboard);
         new TabLayoutMediator(tabLayout, viewDashboard, this::createTabMediator).attach();
 
+        loadAdView(root);
         return root;
     }
 
@@ -44,6 +48,16 @@ public class DashboardFragment extends Fragment {
         } else {
             tab.setText(DashNotificationsFragment.TITLE);
             tab.setIcon(android.R.drawable.ic_dialog_info);
+        }
+    }
+
+    private void loadAdView(View view) {
+        AdView adView = (AdView) view.findViewById(R.id.adView);
+        if (Config.getInstance().getLoggedUser().getUser().getV_Plan().isEnable_ads()) {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            adView.loadAd(adRequest);
+        } else {
+            adView.setVisibility(View.GONE);
         }
     }
 }
