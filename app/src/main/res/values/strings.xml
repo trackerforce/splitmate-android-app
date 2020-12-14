@@ -20,6 +20,7 @@
     <string name="switchLight">Toggle Light</string>
     <string name="labelAccountType_Member">Free Account</string>
     <string name="labelAccountType_Founder">Founder Account</string>
+    <string name="labelSwipeToRefresh">Swipe down to refresh</string>
 
     <!--    Messages  -->
     <string name="msgNotConnected">You must be connected</string>

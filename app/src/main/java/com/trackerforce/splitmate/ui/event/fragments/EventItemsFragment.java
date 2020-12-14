@@ -26,6 +26,7 @@ import com.trackerforce.splitmate.pusher.PusherClient;
 import com.trackerforce.splitmate.pusher.PusherEvents;
 import com.trackerforce.splitmate.ui.event.ItemPreviewAdapter;
 import com.trackerforce.splitmate.utils.AppUtils;
+import com.trackerforce.splitmate.utils.Config;
 import com.trackerforce.splitmate.utils.SplitConstants;
 
 public class EventItemsFragment extends AbstractEventFragment {
@@ -44,6 +45,9 @@ public class EventItemsFragment extends AbstractEventFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        getTextView(R.id.txtSwipeRefresh).setVisibility(
+                Config.getInstance().isEconomicEnabled(getContext()) ? View.VISIBLE : View.GONE);
 
         swipeContainer = getComponent(R.id.swipeContainer, SwipeRefreshLayout.class);
         swipeContainer.setOnRefreshListener(this::onRefreshLayout);
@@ -79,19 +83,6 @@ public class EventItemsFragment extends AbstractEventFragment {
         pusher.unsubscribeAll();
     }
 
-    private void updateAdapter(Event event) {
-        setEvent(event);
-
-        if (adapter != null) {
-            adapter.setOrganizerId(event.getOrganizer());
-            adapter.setEventId(getEventId());
-            adapter.updateAdapter(event.getItems());
-
-            getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
-            getComponent(R.id.listItems, RecyclerView.class).setVisibility(View.VISIBLE);
-        }
-    }
-
     private void loadEvent(boolean force) {
         getComponent(R.id.listItems, RecyclerView.class).setVisibility(View.INVISIBLE);
         getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.VISIBLE);
@@ -108,6 +99,22 @@ public class EventItemsFragment extends AbstractEventFragment {
                 getComponent(R.id.listItems, RecyclerView.class).setVisibility(View.VISIBLE);
             }
         }, force);
+    }
+
+    private void updateAdapter(Event event) {
+        setEvent(event);
+
+        if (event.getItems().length > 0)
+            getTextView(R.id.txtSwipeRefresh).setVisibility(View.GONE);
+
+        if (adapter != null) {
+            adapter.setOrganizerId(event.getOrganizer());
+            adapter.setEventId(getEventId());
+            adapter.updateAdapter(event.getItems());
+
+            getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
+            getComponent(R.id.listItems, RecyclerView.class).setVisibility(View.VISIBLE);
+        }
     }
 
     private void onRefreshLayout() {

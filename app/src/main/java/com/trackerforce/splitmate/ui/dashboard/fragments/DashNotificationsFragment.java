@@ -1,8 +1,10 @@
 package com.trackerforce.splitmate.ui.dashboard.fragments;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,6 +14,7 @@ import com.trackerforce.splitmate.model.Event;
 import com.trackerforce.splitmate.ui.dashboard.components.EventNotificationComponent;
 import com.trackerforce.splitmate.ui.fragment.IFragmentSubscriber;
 import com.trackerforce.splitmate.utils.AppUtils;
+import com.trackerforce.splitmate.utils.Config;
 
 public class DashNotificationsFragment extends AbstractDashFragment implements IFragmentSubscriber {
 
@@ -20,6 +23,13 @@ public class DashNotificationsFragment extends AbstractDashFragment implements I
     public DashNotificationsFragment() {
         super();
         setComponent(new EventNotificationComponent(this));
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getTextView(R.id.txtSwipeRefresh).setVisibility(
+                Config.getInstance().isEconomicEnabled(getContext()) ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -33,6 +43,9 @@ public class DashNotificationsFragment extends AbstractDashFragment implements I
         getEventController().myEventsInvited(new ServiceCallback<Event[]>() {
             @Override
             public void onSuccess(Event[] data) {
+                if (data.length > 0)
+                    getTextView(R.id.txtSwipeRefresh).setVisibility(View.GONE);
+
                 if (adapter != null) {
                     adapter.updateAdapter(data);
 

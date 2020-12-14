@@ -1,8 +1,10 @@
 package com.trackerforce.splitmate.ui.dashboard.fragments;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,6 +13,7 @@ import com.trackerforce.splitmate.controller.ServiceCallback;
 import com.trackerforce.splitmate.model.Event;
 import com.trackerforce.splitmate.ui.dashboard.components.EventArchiveComponent;
 import com.trackerforce.splitmate.utils.AppUtils;
+import com.trackerforce.splitmate.utils.Config;
 
 public class DashArchiveFragment extends AbstractDashFragment implements ServiceCallback<Event[]> {
 
@@ -19,6 +22,13 @@ public class DashArchiveFragment extends AbstractDashFragment implements Service
     public DashArchiveFragment() {
         super();
         setComponent(new EventArchiveComponent(this));
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getTextView(R.id.txtSwipeRefresh).setVisibility(
+                Config.getInstance().isEconomicEnabled(getContext()) ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -44,6 +54,9 @@ public class DashArchiveFragment extends AbstractDashFragment implements Service
 
     @Override
     public void onSuccess(Event[] data) {
+        if (data.length > 0)
+            getTextView(R.id.txtSwipeRefresh).setVisibility(View.GONE);
+
         if (adapter != null) {
             adapter.updateAdapter(data);
 

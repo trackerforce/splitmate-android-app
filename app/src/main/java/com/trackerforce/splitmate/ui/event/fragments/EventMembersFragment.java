@@ -24,6 +24,7 @@ import com.trackerforce.splitmate.pusher.PusherClient;
 import com.trackerforce.splitmate.pusher.PusherEvents;
 import com.trackerforce.splitmate.ui.event.MemberPreviewAdapter;
 import com.trackerforce.splitmate.utils.AppUtils;
+import com.trackerforce.splitmate.utils.Config;
 import com.trackerforce.splitmate.utils.SplitConstants;
 
 import java.util.ArrayList;
@@ -42,6 +43,9 @@ public class EventMembersFragment extends AbstractEventFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        getTextView(R.id.txtSwipeRefresh).setVisibility(
+                Config.getInstance().isEconomicEnabled(getContext()) ? View.VISIBLE : View.GONE);
 
         swipeContainer = getComponent(R.id.swipeContainer, SwipeRefreshLayout.class);
         swipeContainer.setOnRefreshListener(this::onRefreshLayout);
@@ -101,6 +105,9 @@ public class EventMembersFragment extends AbstractEventFragment {
 
     private void updateAdapter(Event event) {
         setEvent(event);
+
+        if (event.getMembers().length > 0)
+            getTextView(R.id.txtSwipeRefresh).setVisibility(View.GONE);
 
         if (adapter != null) {
             adapter.setEvent(event);

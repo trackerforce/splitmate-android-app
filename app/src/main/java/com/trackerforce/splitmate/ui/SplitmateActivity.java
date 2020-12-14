@@ -96,7 +96,7 @@ public abstract class SplitmateActivity extends AppCompatActivity implements Spl
 
     private boolean onToggleConnection(MenuItem item) {
         boolean isToggleOffline = Config.getInstance().getSettings(
-                getBaseContext(), SplitConstants.TOGGLE_OFFLINE, false, Boolean.class);
+                getBaseContext(), SplitConstants.TOGGLE_OFFLINE, false);
 
         if (isToggleOffline) {
             item.setTitle(R.string.switcherOnline);
@@ -113,7 +113,7 @@ public abstract class SplitmateActivity extends AppCompatActivity implements Spl
 
     private boolean onToggleUI(MenuItem item) {
         boolean isToggleDark = Config.getInstance().getSettings(
-                getBaseContext(), SplitConstants.TOGGLE_DARK, false, Boolean.class);
+                getBaseContext(), SplitConstants.TOGGLE_DARK, false);
 
         if (isToggleDark) {
             item.setTitle(R.string.switcherDark);
@@ -130,7 +130,7 @@ public abstract class SplitmateActivity extends AppCompatActivity implements Spl
 
     private void setToggleLabel(MenuItem menuItem) {
         boolean isToggleOffline = Config.getInstance().getSettings(
-                getBaseContext(), SplitConstants.TOGGLE_OFFLINE, false, Boolean.class);
+                getBaseContext(), SplitConstants.TOGGLE_OFFLINE, false);
 
         if (isToggleOffline) {
             menuItem.setTitle(R.string.switcherOnline);
@@ -141,7 +141,7 @@ public abstract class SplitmateActivity extends AppCompatActivity implements Spl
 
     private void setToggleDarkLabel(MenuItem menuItem) {
         boolean isToggleDark = Config.getInstance().getSettings(
-                getBaseContext(), SplitConstants.TOGGLE_DARK, false, Boolean.class);
+                getBaseContext(), SplitConstants.TOGGLE_DARK, false);
 
         if (isToggleDark) {
             menuItem.setTitle(R.string.switchLight);

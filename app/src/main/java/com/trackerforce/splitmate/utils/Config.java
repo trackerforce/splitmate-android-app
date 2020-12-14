@@ -45,19 +45,18 @@ public class Config {
         editor.apply();
     }
 
-    public <T> T getSettings(Context context, SplitConstants key, T defaultValue, Class<T> clazz) {
+    public <T> T getSettings(Context context, SplitConstants key, T defaultValue) {
         final SharedPreferences sharedPreference = PreferenceManager.getDefaultSharedPreferences(context);
 
-        T settings = null;
+        Class<? extends T> clazz = (Class<? extends T>) defaultValue.getClass();
         if (defaultValue instanceof Boolean) {
-            settings = clazz.cast(sharedPreference.getBoolean(key.toString(), (Boolean) defaultValue));
+            return clazz.cast(sharedPreference.getBoolean(key.toString(), (Boolean) defaultValue));
         } else if (defaultValue instanceof String) {
-            settings = clazz.cast(sharedPreference.getString(key.toString(), (String) defaultValue));
+            return clazz.cast(sharedPreference.getString(key.toString(), (String) defaultValue));
         } else if (defaultValue instanceof Integer) {
-            settings = clazz.cast(sharedPreference.getInt(key.toString(), (Integer) defaultValue));
+            return clazz.cast(sharedPreference.getInt(key.toString(), (Integer) defaultValue));
         }
-
-        return settings;
+        return defaultValue;
     }
 
     /**
@@ -65,11 +64,15 @@ public class Config {
      */
     public void loadSettings(Context context) {
         boolean isToggleDark = Config.getInstance().getSettings(
-                context, SplitConstants.TOGGLE_DARK, false, Boolean.class);
+                context, SplitConstants.TOGGLE_DARK, false);
 
         if (isToggleDark) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
+    }
+
+    public boolean isEconomicEnabled(Context context) {
+        return getSettings(context, SplitConstants.TOGGLE_OFFLINE, false);
     }
 
     public String getToken() {

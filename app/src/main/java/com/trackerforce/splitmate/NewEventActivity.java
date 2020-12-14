@@ -106,20 +106,20 @@ public class NewEventActivity extends SplitmateActivity {
     }
 
     private void onSubmitEvent(View view) {
-        ProgressDialog progress = openLoading("Loading", "Applying changes");
-
         event.setName(getTextViewValue(R.id.txtEventName));
         event.setLocation(getTextViewValue(R.id.txtLocation));
         event.setDescription(getTextViewValue(R.id.txtEventDescription));
 
+        AppUtils.hideKeyboard(this, getView());
         if (event.getId() == null) {
-            saveEvent(progress);
+            saveEvent();
         } else {
-            editEvent(progress);
+            editEvent();
         }
     }
 
-    private void editEvent(ProgressDialog progress) {
+    private void editEvent() {
+        ProgressDialog progress = openLoading("Event", "Updating...");
         eventController.edit(event, new ServiceCallback<Event>() {
             @Override
             public void onSuccess(Event data) {
@@ -145,7 +145,8 @@ public class NewEventActivity extends SplitmateActivity {
         }, true);
     }
 
-    private void saveEvent(ProgressDialog progress) {
+    private void saveEvent() {
+        ProgressDialog progress = openLoading("Event", "Saving...");
         eventController.create(event, new ServiceCallback<Event>() {
             @Override
             public void onSuccess(Event data) {
