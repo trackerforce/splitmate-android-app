@@ -3,6 +3,12 @@
     <string name="app_name">SplitMATE</string>
     <string name="logoDescription">SplitMATE</string>
     <string name="labelVersion">v1.0.0</string>
+
+<!--    working unit-->
+    <string name="banner_ad_unit_id">ca-app-pub-7427031180930158/9419984432</string>
+<!--    test unit-->
+<!--    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
+
     <string name="btnNew">New</string>
     <string name="btnEdit">Edit</string>
     <string name="btnAdd">Add</string>

@@ -7,6 +7,7 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.ads.MobileAds;
 import com.trackerforce.splitmate.controller.ServiceCallback;
 import com.trackerforce.splitmate.model.User;
 import com.trackerforce.splitmate.ui.SplitmateActivity;
@@ -27,6 +28,8 @@ public class MainActivity extends SplitmateActivity {
      protected void onCreateView() {
          Objects.requireNonNull(getSupportActionBar()).hide();
          setOnClickListener(R.id.buttonGoDashboard, this::initAPI);
+
+         MobileAds.initialize(this);
          initAPI(getView());
      }
 

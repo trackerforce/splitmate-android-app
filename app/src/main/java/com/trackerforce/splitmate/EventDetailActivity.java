@@ -2,10 +2,13 @@ package com.trackerforce.splitmate;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.trackerforce.splitmate.model.Event;
@@ -13,6 +16,7 @@ import com.trackerforce.splitmate.pusher.PusherClient;
 import com.trackerforce.splitmate.ui.SplitmateActivity;
 import com.trackerforce.splitmate.ui.event.EventPageAdapter;
 import com.trackerforce.splitmate.ui.event.fragments.AbstractEventFragment;
+import com.trackerforce.splitmate.utils.Config;
 import com.trackerforce.splitmate.utils.SplitConstants;
 
 import java.util.Objects;
@@ -35,6 +39,8 @@ public class EventDetailActivity extends SplitmateActivity {
 
         viewEvent.setAdapter(new EventPageAdapter(this));
         new TabLayoutMediator(tabLayout, viewEvent, this::createTabMediator).attach();
+
+        loadAdView();
     }
 
     @Override
@@ -68,6 +74,16 @@ public class EventDetailActivity extends SplitmateActivity {
         } else {
             tab.setText(getResources().getString(R.string.labelMembers));
             tab.setIcon(android.R.drawable.ic_menu_myplaces);
+        }
+    }
+
+    private void loadAdView() {
+        AdView adView = getComponent(R.id.adView, AdView.class);
+        if (Config.getInstance().getLoggedUser().getUser().getV_Plan().isEnable_ads()) {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            adView.loadAd(adRequest);
+        } else {
+            adView.setVisibility(View.GONE);
         }
     }
 
