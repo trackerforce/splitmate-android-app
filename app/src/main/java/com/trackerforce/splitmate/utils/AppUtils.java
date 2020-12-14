@@ -63,13 +63,9 @@ public class AppUtils {
                 .show();
     }
 
-    public static boolean isOnline(Context context) {
-        return isOnline(context, false);
-    }
-
     public static boolean isOnline(Context context, boolean force) {
         boolean isToggleOffline = Config.getInstance().getSettings(
-                context, SplitConstants.TOGGLE_OFFLINE, false, Boolean.class);
+                context, SplitConstants.TOGGLE_OFFLINE, false);
 
         if (!isToggleOffline || force) {
             ConnectivityManager cm =

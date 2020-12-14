@@ -48,7 +48,7 @@ public class PusherClient extends Application {
 
     public void connect(Context context, String channel) {
         boolean autoSync = Config.getInstance().getSettings(
-                context, SplitConstants.TOGGLE_AUTO_SYNC, true, Boolean.class);
+                context, SplitConstants.TOGGLE_AUTO_SYNC, true);
 
         if (autoSync) {
             if (socket == null || !socket.connected()) {

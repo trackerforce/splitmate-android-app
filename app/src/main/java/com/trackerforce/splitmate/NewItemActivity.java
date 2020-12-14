@@ -107,8 +107,6 @@ public class NewItemActivity extends SplitmateActivity {
     }
 
     private void onSubmitItem(@Nullable View view) {
-        ProgressDialog progress = openLoading("Loading", "Applying changes");
-
         adapter.getDataSet().removeIf(item -> item.getValue().isEmpty() || item.getType().isEmpty());
         item.setDetails(adapter.getDataSet().toArray(new ItemValue[0]));
 
@@ -117,10 +115,11 @@ public class NewItemActivity extends SplitmateActivity {
 
         item.setName(getTextViewValue(R.id.txtItemName));
 
+        AppUtils.hideKeyboard(this, getView());
         if (item.getId() == null) {
-            saveItem(progress);
+            saveItem();
         } else {
-            editItem(progress);
+            editItem();
         }
     }
 
@@ -177,7 +176,8 @@ public class NewItemActivity extends SplitmateActivity {
         return item.getCreated_by().equals(user.getId()) || user.getId().equals(organizerId);
     }
 
-    private void editItem(ProgressDialog progress) {
+    private void editItem() {
+        ProgressDialog progress = openLoading("Item", "Updating...");
         eventController.editItem(eventId, item, new ServiceCallback<Event>() {
             @Override
             public void onSuccess(Event data) {
@@ -211,7 +211,8 @@ public class NewItemActivity extends SplitmateActivity {
         }, true);
     }
 
-    private void saveItem(ProgressDialog progress) {
+    private void saveItem() {
+        ProgressDialog progress = openLoading("Item", "Saving...");
         eventController.addItem(eventId, item, new ServiceCallback<Event>() {
             @Override
             public void onSuccess(Event data) {

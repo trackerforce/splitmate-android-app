@@ -35,6 +35,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.SplitmateApp.Button.Rounded" />
 
+        <TextView
+            android:id="@+id/txtSwipeRefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/labelSwipeToRefresh"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/swipeContainer"
+            app:layout_constraintStart_toStartOf="@+id/swipeContainer"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeContainer"
             android:layout_width="wrap_content"
@@ -50,7 +61,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true" />
+                android:layout_alignParentTop="true"
+                android:visibility="invisible" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <EditText

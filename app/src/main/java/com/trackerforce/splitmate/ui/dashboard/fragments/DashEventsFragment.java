@@ -16,6 +16,7 @@ import com.trackerforce.splitmate.controller.ServiceCallback;
 import com.trackerforce.splitmate.model.Event;
 import com.trackerforce.splitmate.ui.dashboard.components.EventComponent;
 import com.trackerforce.splitmate.utils.AppUtils;
+import com.trackerforce.splitmate.utils.Config;
 import com.trackerforce.splitmate.utils.SplitConstants;
 
 public class DashEventsFragment extends AbstractDashFragment implements ServiceCallback<Event[]> {
@@ -31,6 +32,8 @@ public class DashEventsFragment extends AbstractDashFragment implements ServiceC
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setOnClickListener(R.id.btnNewEvent, this::onNewEvent);
+        getTextView(R.id.txtSwipeRefresh).setVisibility(
+                Config.getInstance().isEconomicEnabled(getContext()) ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -56,6 +59,9 @@ public class DashEventsFragment extends AbstractDashFragment implements ServiceC
 
     @Override
     public void onSuccess(Event[] data) {
+        if (data.length > 0)
+            getTextView(R.id.txtSwipeRefresh).setVisibility(View.GONE);
+
         if (adapter != null) {
             adapter.updateAdapter(data);
 
