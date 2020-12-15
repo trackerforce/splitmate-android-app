@@ -26,6 +26,8 @@ public class MainActivity extends SplitmateActivity {
 
      @Override
      protected void onCreateView() {
+         getTextView(R.id.txtVersion).setText(BuildConfig.VERSION_NAME);
+
          Objects.requireNonNull(getSupportActionBar()).hide();
          setOnClickListener(R.id.buttonGoDashboard, this::initAPI);
 

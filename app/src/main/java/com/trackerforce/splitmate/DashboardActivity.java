@@ -48,6 +48,8 @@ public class DashboardActivity extends SplitmateActivity {
         final NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        getTextView(R.id.txtAppVersion).setText(BuildConfig.VERSION_NAME);
     }
 
     @Override
