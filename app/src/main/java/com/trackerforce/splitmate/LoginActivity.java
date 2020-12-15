@@ -19,6 +19,8 @@ public class LoginActivity extends SplitmateActivity {
 
     @Override
     protected void onCreateView() {
+        getTextView(R.id.txtVersion).setText(BuildConfig.VERSION_NAME);
+
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         ViewPager2 viewLogin = findViewById(R.id.viewPagerLogin);
 

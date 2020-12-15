@@ -159,7 +159,7 @@ public class EventViewFragment extends AbstractEventFragment {
                 setOnClickListener(R.id.btnTransferAdmin, this::onTransfer);
                 setOnClickListener(R.id.btnLeaveDelete, this::onDelete);
             } else {
-                getButton(R.id.btnTransferAdmin).setVisibility(View.GONE);
+                getButton(R.id.btnTransferAdmin).setVisibility(View.INVISIBLE);
                 setOnClickListener(R.id.btnLeaveDelete, this::onLeave);
             }
         }

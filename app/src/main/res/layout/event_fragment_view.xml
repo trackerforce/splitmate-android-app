@@ -175,6 +175,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:backgroundTint="?android:attr/windowBackgroundFallback"
+            android:visibility="invisible"
             app:icon="@android:drawable/ic_menu_myplaces"
             app:iconSize="20dp"
             app:iconTint="?attr/editTextColor"

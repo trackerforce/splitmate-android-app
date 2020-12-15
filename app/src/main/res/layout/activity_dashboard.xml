@@ -34,20 +34,19 @@
                 android:layout_height="60dp"
                 android:background="@color/darker_grey"
                 android:contentDescription="@string/app_name"
-                app:layout_constraintBottom_toTopOf="@+id/textView"
+                app:layout_constraintBottom_toTopOf="@+id/txtAppVersion"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:srcCompat="@drawable/trackerforce" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/txtAppVersion"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@color/darker_grey"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
-                android:text="@string/labelVersion"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
