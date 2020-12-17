@@ -17,6 +17,7 @@ import com.trackerforce.splitmate.controller.event.EventController;
 import com.trackerforce.splitmate.controller.user.UserController;
 import com.trackerforce.splitmate.model.Event;
 import com.trackerforce.splitmate.ui.SplitmateView;
+import com.trackerforce.splitmate.ui.fragment.FragmentListener;
 
 public abstract class AbstractEventFragment extends Fragment implements SplitmateView {
 
@@ -76,6 +77,10 @@ public abstract class AbstractEventFragment extends Fragment implements Splitmat
 
     public UserController getUserController() {
         return ((EventDetailActivity) requireActivity()).getUserController();
+    }
+
+    public FragmentListener getFragmentListener() {
+        return ((EventDetailActivity) requireActivity()).getFragmentListener();
     }
 
     public abstract void onRefresh(@Nullable View view);

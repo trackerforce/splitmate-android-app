@@ -23,7 +23,6 @@ import com.trackerforce.splitmate.R;
 import com.trackerforce.splitmate.controller.ServiceCallback;
 import com.trackerforce.splitmate.ui.SplitmateView;
 import com.trackerforce.splitmate.utils.AppUtils;
-import com.trackerforce.splitmate.utils.Config;
 import com.trackerforce.splitmate.utils.SplitConstants;
 
 public class SettingsFragment extends Fragment implements SplitmateView {
@@ -66,9 +65,6 @@ public class SettingsFragment extends Fragment implements SplitmateView {
         activity.getUserController().logout(new ServiceCallback<Boolean>() {
             @Override
             public void onSuccess(Boolean data) {
-                Config.getInstance().saveSettings(activity.getBaseContext(),
-                        SplitConstants.TOGGLE_DARK, false);
-
                 Intent intent = new Intent(activity, LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -139,7 +135,7 @@ public class SettingsFragment extends Fragment implements SplitmateView {
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
 
-            SwitchPreferenceCompat toggleDark = findPreference("TOGGLE_DARK");
+            SwitchPreferenceCompat toggleDark = findPreference(SplitConstants.TOGGLE_DARK.toString());
             assert toggleDark != null;
             toggleDark.setOnPreferenceChangeListener((arg0, isEnabled) -> {
                 if ((Boolean) isEnabled)

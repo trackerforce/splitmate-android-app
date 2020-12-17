@@ -132,7 +132,7 @@ public class EventItemsFragment extends AbstractEventFragment {
     private void onAddItem(@Nullable View view) {
         Intent intent = new Intent(getActivity(), NewItemActivity.class);
         intent.putExtra(SplitConstants.EVENT_ID.toString(), getEventId());
-        startActivityForResult(intent, SplitConstants.ITEM.ordinal());
+        getActivity().startActivityForResult(intent, SplitConstants.EDIT_ITEM.ordinal());
     }
 
     private void onToggleFilter(View view) {

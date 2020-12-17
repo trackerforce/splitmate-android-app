@@ -21,13 +21,19 @@ public class Event implements Serializable {
     private String category;
 
     public float getTotalCost() {
+        int unit;
         float total = 0;
         for (Item item : items) {
             if (item.getDetails() != null) {
+                unit = Arrays.stream(item.getDetails())
+                        .filter(val -> val.getType().equals("Unit"))
+                        .map(val -> Integer.parseInt(val.getValue()))
+                        .reduce(0, Integer::sum);
+
                 total += Arrays.stream(item.getDetails())
                         .filter(val -> val.getType().equals("Cost"))
                         .map(val -> Float.parseFloat(val.getValue()))
-                        .reduce(0f, Float::sum);
+                        .reduce(0f, Float::sum) * (unit == 0 ? 1 : unit) ;
             }
         }
         return total;

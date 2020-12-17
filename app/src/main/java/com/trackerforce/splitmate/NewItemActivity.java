@@ -127,7 +127,7 @@ public class NewItemActivity extends SplitmateActivity {
         eventController.deleteItem(eventId, item, new ServiceCallback<Event>() {
             @Override
             public void onSuccess(Event data) {
-                setResult(Activity.RESULT_OK);
+                setResult(Activity.RESULT_OK, new Intent().putExtra(SplitConstants.EVENT.toString(), data));
                 finish();
                 notifyPusher(item.getId(), PusherEvents.DELETE_ITEM);
             }
@@ -140,7 +140,7 @@ public class NewItemActivity extends SplitmateActivity {
             @Override
             public void onError(String error, Object obj) {
                 AppUtils.showMessage(getBaseContext(), "Refreshing Event");
-                setResult(Activity.RESULT_OK);
+                setResult(Activity.RESULT_CANCELED);
                 finish();
             }
         }, true);
@@ -182,7 +182,7 @@ public class NewItemActivity extends SplitmateActivity {
             @Override
             public void onSuccess(Event data) {
                 progress.dismiss();
-                setResult(Activity.RESULT_OK);
+                setResult(Activity.RESULT_OK, new Intent().putExtra(SplitConstants.EVENT.toString(), data));
                 finish();
                 notifyPusher(item.getId(), PusherEvents.EDIT_ITEM);
             }
@@ -204,7 +204,7 @@ public class NewItemActivity extends SplitmateActivity {
                     startActivity(intent);
                 } else {
                     AppUtils.showMessage(getBaseContext(), getResources().getString(R.string.msgItemHasRemoved));
-                    setResult(Activity.RESULT_OK);
+                    setResult(Activity.RESULT_CANCELED);
                     finish();
                 }
             }
@@ -217,7 +217,7 @@ public class NewItemActivity extends SplitmateActivity {
             @Override
             public void onSuccess(Event data) {
                 progress.dismiss();
-                setResult(Activity.RESULT_OK);
+                setResult(Activity.RESULT_OK, new Intent().putExtra(SplitConstants.EVENT.toString(), data));
                 finish();
 
                 final Item newItem = Arrays.stream(data.getItems())
@@ -245,7 +245,7 @@ public class NewItemActivity extends SplitmateActivity {
                     startActivity(intent);
                 } else {
                     AppUtils.showMessage(getBaseContext(), "Item has been removed");
-                    setResult(Activity.RESULT_OK);
+                    setResult(Activity.RESULT_CANCELED);
                     finish();
                 }
             }

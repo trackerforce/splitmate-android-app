@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.trackerforce.splitmate.DashboardActivity;
+import com.trackerforce.splitmate.EventDetailActivity;
 import com.trackerforce.splitmate.NewItemActivity;
 import com.trackerforce.splitmate.PollActivity;
 import com.trackerforce.splitmate.R;
@@ -31,6 +32,7 @@ import com.trackerforce.splitmate.model.Item;
 import com.trackerforce.splitmate.model.pusher.PusherItemDTO;
 import com.trackerforce.splitmate.pusher.PusherClient;
 import com.trackerforce.splitmate.pusher.PusherEvents;
+import com.trackerforce.splitmate.ui.event.fragments.EventPreviewFragment;
 import com.trackerforce.splitmate.utils.Config;
 import com.trackerforce.splitmate.utils.AppUtils;
 import com.trackerforce.splitmate.utils.SplitConstants;
@@ -152,7 +154,7 @@ public class ItemPreviewAdapter extends ListAdapter<Item, ItemPreviewAdapter.Ite
             switchPickItem.setClickable(isPickable(item));
 
             //set up not/assignee
-            if (item.getAssigned_to() != null) {
+            if (item.getV_assigned_to() != null) {
                 switchPickItem.setChecked(true);
                 ((TextView) itemView.findViewById(R.id.textPickedBy)).setText(item.getV_assigned_to().getName());
             } else {
@@ -212,6 +214,9 @@ public class ItemPreviewAdapter extends ListAdapter<Item, ItemPreviewAdapter.Ite
                     switchPickItem.setClickable(true);
                     toggleSlider();
                     notifyPusher(item.getId(), item.getAssigned_to(), PusherEvents.PICK_ITEM);
+
+                    ((EventDetailActivity) convertView.getContext()).getFragmentListener()
+                            .notifySubscriber(EventPreviewFragment.TITLE, data);
                 }
 
                 @Override
@@ -245,6 +250,9 @@ public class ItemPreviewAdapter extends ListAdapter<Item, ItemPreviewAdapter.Ite
                     switchPickItem.setClickable(true);
                     toggleSlider();
                     notifyPusher(item.getId(), null, PusherEvents.UNPICK_ITEM);
+
+                    ((EventDetailActivity) convertView.getContext()).getFragmentListener()
+                            .notifySubscriber(EventPreviewFragment.TITLE, data);
                 }
 
                 @Override
