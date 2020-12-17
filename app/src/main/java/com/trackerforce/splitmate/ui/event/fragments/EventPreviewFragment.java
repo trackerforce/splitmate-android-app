@@ -15,12 +15,15 @@ import com.trackerforce.splitmate.model.pusher.PusherData;
 import com.trackerforce.splitmate.model.pusher.PusherMemberDTO;
 import com.trackerforce.splitmate.pusher.PusherClient;
 import com.trackerforce.splitmate.pusher.PusherEvents;
+import com.trackerforce.splitmate.ui.fragment.IFragmentSubscriber;
 import com.trackerforce.splitmate.utils.AppUtils;
 import com.trackerforce.splitmate.utils.Config;
 
 import java.text.DecimalFormat;
 
-public class EventPreviewFragment extends AbstractEventFragment {
+public class EventPreviewFragment extends AbstractEventFragment implements IFragmentSubscriber {
+
+    public static final String TITLE = "Preview";
 
     private final DecimalFormat df = new DecimalFormat("'$'0.##");
     private float totalCost;
@@ -34,6 +37,7 @@ public class EventPreviewFragment extends AbstractEventFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        getFragmentListener().subscribe(this);
         getComponent(R.id.txtQtMembers, EditText.class).setOnKeyListener(this::onChangeMember);
 
         pusher = PusherClient.getInstance();
@@ -58,6 +62,17 @@ public class EventPreviewFragment extends AbstractEventFragment {
         pusher.unsubscribe(PusherEvents.EDIT_ITEM.toString());
         pusher.unsubscribe(PusherEvents.CREATE_ITEM.toString());
         pusher.unsubscribe(PusherEvents.REMOVE_MEMBER.toString());
+    }
+
+    @Override
+    public void notifyFragment(@Nullable Object... args) {
+        Event event = (Event) args[0];
+        loadPreview(event);
+    }
+
+    @Override
+    public String getFragmentTag() {
+        return TITLE;
     }
 
     public void loadPreview(Event event) {

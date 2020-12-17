@@ -15,7 +15,9 @@ import com.trackerforce.splitmate.model.Event;
 import com.trackerforce.splitmate.pusher.PusherClient;
 import com.trackerforce.splitmate.ui.SplitmateActivity;
 import com.trackerforce.splitmate.ui.event.EventPageAdapter;
-import com.trackerforce.splitmate.ui.event.fragments.AbstractEventFragment;
+import com.trackerforce.splitmate.ui.event.fragments.EventItemsFragment;
+import com.trackerforce.splitmate.ui.event.fragments.EventPreviewFragment;
+import com.trackerforce.splitmate.ui.fragment.FragmentListener;
 import com.trackerforce.splitmate.utils.Config;
 import com.trackerforce.splitmate.utils.SplitConstants;
 
@@ -23,11 +25,13 @@ import java.util.Objects;
 
 public class EventDetailActivity extends SplitmateActivity {
 
+    private final FragmentListener fragmentListener;
     private Event event;
     private String eventId;
 
     public EventDetailActivity() {
         super(R.layout.activity_event_detail);
+        fragmentListener = new FragmentListener();
     }
 
     @Override
@@ -52,7 +56,10 @@ public class EventDetailActivity extends SplitmateActivity {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (Activity.RESULT_OK == resultCode && SplitConstants.EDIT_ITEM.ordinal() == requestCode) {
-            ((AbstractEventFragment) Objects.requireNonNull(getSupportFragmentManager()
+            final Event event = (Event) data.getSerializableExtra(SplitConstants.EVENT.toString());
+            fragmentListener.notifySubscriber(EventPreviewFragment.TITLE, event);
+
+            ((EventItemsFragment) Objects.requireNonNull(getSupportFragmentManager()
                     .findFragmentByTag("f1")))
                     .onRefresh(getView());
         }
@@ -101,6 +108,10 @@ public class EventDetailActivity extends SplitmateActivity {
 
     public void setEvent(Event event) {
         this.event = event;
+    }
+
+    public FragmentListener getFragmentListener() {
+        return fragmentListener;
     }
 
 }
