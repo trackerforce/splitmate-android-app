@@ -56,12 +56,7 @@ public class EventPreviewFragment extends AbstractEventFragment implements IFrag
     @Override
     public void onDestroy() {
         super.onDestroy();
-        pusher.unsubscribe(PusherEvents.UNPICK_ITEM.toString());
-        pusher.unsubscribe(PusherEvents.PICK_ITEM.toString());
-        pusher.unsubscribe(PusherEvents.DELETE_ITEM.toString());
-        pusher.unsubscribe(PusherEvents.EDIT_ITEM.toString());
-        pusher.unsubscribe(PusherEvents.CREATE_ITEM.toString());
-        pusher.unsubscribe(PusherEvents.REMOVE_MEMBER.toString());
+        pusher.unsubscribeAll();
     }
 
     @Override
