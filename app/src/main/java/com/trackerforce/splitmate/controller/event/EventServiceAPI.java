@@ -345,6 +345,7 @@ public class EventServiceAPI {
                 if (response.code() == 200) {
                     assert response.body() != null;
                     callback.onSuccess(response.body());
+                    syncItem(eventServiceLocal, response.body(), eventId, callback);
                 } else if (response.code() == 404) {
                     assert response.errorBody() != null;
                     notFoundEvent(eventId, eventServiceLocal, response.errorBody(), callback);

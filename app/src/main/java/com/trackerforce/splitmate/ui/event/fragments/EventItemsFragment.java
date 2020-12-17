@@ -146,7 +146,6 @@ public class EventItemsFragment extends AbstractEventFragment {
     private void onNotifyItemPick(Object... args) {
         requireActivity().runOnUiThread(() -> {
             PusherItemDTO pusherItemDTO = PusherData.getDTO(PusherItemDTO.class, args);
-
             for (Item item : adapter.getDataSet()) {
                 if (item.getId().equals(pusherItemDTO.getItemId())) {
                     getEventController().pickItemLocal(item, pusherItemDTO.getAssigned_to());
@@ -154,13 +153,14 @@ public class EventItemsFragment extends AbstractEventFragment {
                     break;
                 }
             }
+
+            updateEventPreview(pusherItemDTO);
         });
     }
 
     private void onNotifyItemUnpick(Object... args) {
         requireActivity().runOnUiThread(() -> {
             PusherItemDTO pusherItemDTO = PusherData.getDTO(PusherItemDTO.class, args);
-
             for (Item item : adapter.getDataSet()) {
                 if (item.getId().equals(pusherItemDTO.getItemId())) {
                     getEventController().unpickItemLocal(item);
@@ -168,13 +168,14 @@ public class EventItemsFragment extends AbstractEventFragment {
                     break;
                 }
             }
+
+            updateEventPreview(pusherItemDTO);
         });
     }
 
     private void onNotifyItemDeleted(Object... args) {
         requireActivity().runOnUiThread(() -> {
             PusherItemDTO pusherItemDTO = PusherData.getDTO(PusherItemDTO.class, args);
-
             for (Item item : adapter.getDataSet()) {
                 if (item.getId().equals(pusherItemDTO.getItemId())) {
                     getEventController().deleteItemLocal(item.getId());
@@ -183,6 +184,8 @@ public class EventItemsFragment extends AbstractEventFragment {
                     break;
                 }
             }
+
+            updateEventPreview(pusherItemDTO);
         });
     }
 
@@ -196,6 +199,7 @@ public class EventItemsFragment extends AbstractEventFragment {
                 public void onSuccess(Item data) {
                     adapter.getDataSet().add(data);
                     adapter.notifyDataSetChanged();
+                    updateEventPreview(pusherItemDTO);
                 }
 
                 @Override
@@ -220,10 +224,13 @@ public class EventItemsFragment extends AbstractEventFragment {
                             item.setName(data.getName());
                             item.setPoll_name(data.getPoll_name());
                             item.setPoll(data.getPoll());
+                            item.setDetails(data.getDetails());
                             adapter.notifyDataSetChanged();
                             break;
                         }
                     }
+
+                    updateEventPreview(pusherItemDTO);
                 }
 
                 @Override
@@ -231,6 +238,20 @@ public class EventItemsFragment extends AbstractEventFragment {
                     Log.d(TAG, error);
                 }
             }, true);
+        });
+    }
+
+    private void updateEventPreview(PusherItemDTO pusherItemDTO) {
+        getEventController().getLocalEventById(pusherItemDTO.getEventId(), new ServiceCallback<Event>() {
+            @Override
+            public void onSuccess(Event data) {
+                getFragmentListener().notifySubscriber(EventPreviewFragment.TITLE, data);
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.d(TAG, error);
+            }
         });
     }
 
