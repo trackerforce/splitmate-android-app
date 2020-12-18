@@ -14,6 +14,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.trackerforce.splitmate.R;
 import com.trackerforce.splitmate.TransferActivity;
 import com.trackerforce.splitmate.model.User;
+import com.trackerforce.splitmate.utils.AppUtils;
 import com.trackerforce.splitmate.utils.Config;
 
 import java.util.Arrays;
@@ -92,7 +93,7 @@ public class MemberTransferAdapter extends ListAdapter<User, MemberTransferAdapt
 
             FloatingActionButton btnSelectMember = itemView.findViewById(R.id.btnSelectMember);
             btnSelectMember.setVisibility(isOrganizer(member) ? View.VISIBLE : View.INVISIBLE);
-            btnSelectMember.setOnClickListener(view -> onSelect(member));
+            AppUtils.setListener(btnSelectMember, view -> onSelect(member));
         }
 
         private void onSelect(User memberSelected) {

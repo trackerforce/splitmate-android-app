@@ -24,6 +24,7 @@ import com.trackerforce.splitmate.utils.AppUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class MemberPreviewAdapter extends ListAdapter<User, MemberPreviewAdapter.MemberViewHolder> {
@@ -67,6 +68,7 @@ public class MemberPreviewAdapter extends ListAdapter<User, MemberPreviewAdapter
     public void updateAdapter(User[] data) {
         localDataSet.clear();
         localDataSet.addAll(Arrays.asList(data));
+        localDataSet.sort((user, t1) -> user.getName().compareTo(t1.getName()));
 
         originalLocalData.clear();
         originalLocalData.addAll(Arrays.asList(data));
@@ -168,8 +170,8 @@ public class MemberPreviewAdapter extends ListAdapter<User, MemberPreviewAdapter
             }
 
             FloatingActionButton btnRemoveMember = itemView.findViewById(R.id.btnRemoveMember);
-            btnRemoveMember.setOnClickListener(view -> onClickRemove(itemView, member));
             btnRemoveMember.setVisibility(isOrganizer(member) ? View.VISIBLE : View.INVISIBLE);
+            AppUtils.setListener(btnRemoveMember, view -> onClickRemove(itemView, member));
         }
     }
 

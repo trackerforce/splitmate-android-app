@@ -70,6 +70,7 @@ public class PollVotePreviewAdapter extends ListAdapter<Poll, PollVotePreviewAda
         if (data != null) {
             localDataSet.clear();
             localDataSet.addAll(Arrays.asList(data));
+            localDataSet.sort((poll, t1) -> poll.getValue().compareTo(t1.getValue()));
 
             this.totalVotes = 0;
             for (Poll poll : data)
@@ -116,7 +117,7 @@ public class PollVotePreviewAdapter extends ListAdapter<Poll, PollVotePreviewAda
         public void bind(Poll poll) {
             this.poll = poll;
 
-            itemView.setOnClickListener(this::onVote);
+            AppUtils.setListener(itemView, this::onVote);
 
             TextView textValue = itemView.findViewById(R.id.textValue);
             textValue.setText(poll.getValue());

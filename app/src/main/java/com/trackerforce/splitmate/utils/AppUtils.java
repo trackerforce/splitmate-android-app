@@ -107,4 +107,13 @@ public class AppUtils {
     public static String getString(Context context, int resourceId) {
         return context.getResources().getString(resourceId);
     }
+
+    public static void setListener(View view, View.OnClickListener listener) {
+        view.setOnClickListener(new SplitOnClickListener() {
+            @Override
+            protected void onClicking(View view) {
+                listener.onClick(view);
+            }
+        });
+    }
 }

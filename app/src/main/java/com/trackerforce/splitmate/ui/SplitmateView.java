@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.trackerforce.splitmate.utils.AppUtils;
+
 public interface SplitmateView {
 
     View getView();
@@ -33,7 +35,7 @@ public interface SplitmateView {
     }
 
     default void setOnClickListener(int id, View.OnClickListener handler) {
-        getComponent(id, Button.class).setOnClickListener(handler);
+        AppUtils.setListener(getComponent(id, Button.class), handler);
     }
 
     default void openConfirmDialog(String title, String message, SplitmateDialog callback) {
