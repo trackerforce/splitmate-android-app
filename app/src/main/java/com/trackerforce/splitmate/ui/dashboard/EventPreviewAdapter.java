@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.trackerforce.splitmate.R;
 import com.trackerforce.splitmate.model.Event;
 import com.trackerforce.splitmate.ui.dashboard.components.IEventDashComponent;
+import com.trackerforce.splitmate.utils.AppUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,6 +62,7 @@ public class EventPreviewAdapter extends ListAdapter<Event, EventPreviewAdapter.
     public void updateAdapter(Event[] data) {
         localDataSet.clear();
         localDataSet.addAll(Arrays.asList(data));
+        localDataSet.sort((event, t1) -> event.getName().compareTo(t1.getName()));
 
         originalLocalData.clear();
         originalLocalData.addAll(Arrays.asList(data));
@@ -110,10 +112,10 @@ public class EventPreviewAdapter extends ListAdapter<Event, EventPreviewAdapter.
             super(itemView);
 
             final Button btnEventTop = itemView.findViewById(R.id.btnEventUp);
-            btnEventTop.setOnClickListener(view -> eventDashComponent.onButtonTop(itemView, event));
+            AppUtils.setListener(btnEventTop, view -> eventDashComponent.onButtonTop(itemView, event));
 
             final View btnEventBottom = itemView.findViewById(R.id.btnEventDown);
-            btnEventBottom.setOnClickListener(view -> eventDashComponent.onButtonBottom(itemView, event));
+            AppUtils.setListener(btnEventBottom, view -> eventDashComponent.onButtonBottom(itemView, event));
         }
 
         public void bind(Event event) {

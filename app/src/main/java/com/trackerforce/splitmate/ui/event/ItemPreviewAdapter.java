@@ -101,6 +101,7 @@ public class ItemPreviewAdapter extends ListAdapter<Item, ItemPreviewAdapter.Ite
     public void updateAdapter(Item[] data) {
         localDataSet.clear();
         localDataSet.addAll(Arrays.asList(data));
+        localDataSet.sort((item, t1) -> item.getName().compareTo(t1.getName()));
 
         originalLocalData.clear();
         originalLocalData.addAll(Arrays.asList(data));
@@ -145,7 +146,7 @@ public class ItemPreviewAdapter extends ListAdapter<Item, ItemPreviewAdapter.Ite
             ((TextView) itemView.findViewById(R.id.textItemName)).setText(item.getName());
 
             final FloatingActionButton btnEditItem = itemView.findViewById(R.id.btnEditItem);
-            btnEditItem.setOnClickListener(view -> onEdit(itemView, item));
+            AppUtils.setListener(btnEditItem, view -> onEdit(itemView, item));
 
             progressBar = itemView.findViewById(R.id.itemProgressBar);
             switchPickItem = itemView.findViewById(R.id.switchPickItem);
@@ -167,7 +168,7 @@ public class ItemPreviewAdapter extends ListAdapter<Item, ItemPreviewAdapter.Ite
             if (item.hasPoll()) {
                 iconPoll.setVisibility(View.VISIBLE);
                 itemView.setClickable(true);
-                iconPoll.setOnClickListener(view -> this.onShowPoll(itemView, item));
+                AppUtils.setListener(iconPoll, view -> this.onShowPoll(itemView, item));
             } else {
                 iconPoll.setVisibility(View.GONE);
                 itemView.setClickable(false);
