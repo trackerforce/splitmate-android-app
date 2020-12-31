@@ -59,15 +59,12 @@ public class PusherClient extends Application {
     }
 
     public void disconnect() {
-        if (socket.connected())
-            socket.disconnect();
+        socket.disconnect();
     }
 
     public void subscribe(String event, Emitter.Listener listener) {
-        if (socket.connected()) {
-            socket.on(event, listener);
-            events.add(event);
-        }
+        socket.on(event, listener);
+        events.add(event);
     }
 
     public void unsubscribe(String event) {
