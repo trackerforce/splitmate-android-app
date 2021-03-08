@@ -1,7 +1,9 @@
 package com.trackerforce.splitmate.dao;
 
 import android.content.Context;
-import com.trackerforce.splitmate.dao.wrapper.EntityResolver;
+
+import com.github.petruki.dblite.AbstractRepository;
+import com.github.petruki.dblite.wrapper.EntityResolver;
 import com.trackerforce.splitmate.dao.wrapper.ItemWrapper;
 import com.trackerforce.splitmate.model.Item;
 import com.trackerforce.splitmate.model.User;
@@ -14,7 +16,7 @@ public class ItemRepository extends AbstractRepository<Item> implements EntityRe
     private final UserRepository userRepository;
 
     public ItemRepository(Context context, UserRepository userRepository) {
-        super(context, new ItemWrapper());
+        super(context, new ItemWrapper(), SplitmateDB.class);
         this.userRepository = userRepository;
     }
 

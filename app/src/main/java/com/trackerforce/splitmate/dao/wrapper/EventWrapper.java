@@ -3,23 +3,15 @@ package com.trackerforce.splitmate.dao.wrapper;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import com.github.petruki.dblite.wrapper.DbLiteWrapper;
+import com.github.petruki.dblite.wrapper.EntityWrapper;
 import com.trackerforce.splitmate.model.Event;
 
 import java.util.Date;
 
+@DbLiteWrapper(entityName = "EVENT", columns = {
+        "id", "name", "description", "location", "organizer", "version", "date", "category" })
 public class EventWrapper implements EntityWrapper<Event> {
-
-    @Override
-    public String getTableName() {
-        return "EVENT";
-    }
-
-    @Override
-    public String getCreateTable() {
-        return String.format(
-                "CREATE TABLE %s (id, name, description, location, organizer, version, date, category)",
-                getTableName());
-    }
 
     @Override
     public Event unWrap(Cursor cursor) {

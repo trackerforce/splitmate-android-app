@@ -45,6 +45,7 @@ public class Config {
         editor.apply();
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T getSettings(Context context, SplitConstants key, T defaultValue) {
         final SharedPreferences sharedPreference = PreferenceManager.getDefaultSharedPreferences(context);
 
