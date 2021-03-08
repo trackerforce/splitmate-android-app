@@ -3,21 +3,15 @@ package com.trackerforce.splitmate.dao.wrapper;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import com.github.petruki.dblite.wrapper.DbLiteWrapper;
+import com.github.petruki.dblite.wrapper.EntityWrapper;
 import com.google.gson.Gson;
 import com.trackerforce.splitmate.model.Plan;
 import com.trackerforce.splitmate.model.User;
 
+@DbLiteWrapper(entityName = "USER", columns = {
+        "id", "name", "email", "username", "plan", "eventId" })
 public class UserWrapper implements EntityWrapper<User> {
-
-    @Override
-    public String getTableName() {
-        return "USER";
-    }
-
-    @Override
-    public String getCreateTable() {
-        return String.format("CREATE TABLE %s (id, name, email, username, plan, eventId)", getTableName());
-    }
 
     @Override
     public User unWrap(Cursor cursor) {

@@ -2,6 +2,7 @@ package com.trackerforce.splitmate.dao;
 
 import android.content.Context;
 
+import com.github.petruki.dblite.AbstractRepository;
 import com.trackerforce.splitmate.dao.wrapper.EventWrapper;
 import com.trackerforce.splitmate.model.Event;
 import com.trackerforce.splitmate.model.Item;
@@ -16,7 +17,7 @@ public class EventRepository extends AbstractRepository<Event> {
     private final ItemRepository itemRepository;
 
     public EventRepository(Context context) {
-        super(context, new EventWrapper());
+        super(context, new EventWrapper(), SplitmateDB.class);
         userRepository = new UserRepository(context);
         itemRepository = new ItemRepository(context, userRepository);
     }

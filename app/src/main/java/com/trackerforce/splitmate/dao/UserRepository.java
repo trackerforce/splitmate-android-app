@@ -2,6 +2,7 @@ package com.trackerforce.splitmate.dao;
 
 import android.content.Context;
 
+import com.github.petruki.dblite.AbstractRepository;
 import com.trackerforce.splitmate.dao.wrapper.UserWrapper;
 import com.trackerforce.splitmate.model.User;
 
@@ -11,7 +12,7 @@ import java.util.List;
 public class UserRepository extends AbstractRepository<User> {
 
     public UserRepository(Context context) {
-        super(context, new UserWrapper());
+        super(context, new UserWrapper(), SplitmateDB.class);
     }
 
     public List<User> findByEventId(String eventId) throws Exception {
