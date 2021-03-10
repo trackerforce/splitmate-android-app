@@ -5,7 +5,6 @@ import android.database.Cursor;
 
 import com.github.petruki.dblite.wrapper.DbLiteWrapper;
 import com.github.petruki.dblite.wrapper.EntityWrapper;
-import com.google.gson.Gson;
 import com.trackerforce.splitmate.model.Jwt;
 import com.trackerforce.splitmate.model.Login;
 import com.trackerforce.splitmate.model.Plan;
@@ -18,17 +17,15 @@ public class LoginWrapper implements EntityWrapper<Login> {
     @Override
     public Login unWrap(Cursor cursor) {
         User user = new User();
-        user.setId(cursor.getString(cursor.getColumnIndex("id")));
-        user.setName(cursor.getString(cursor.getColumnIndex("name")));
-        user.setEmail(cursor.getString(cursor.getColumnIndex("email")));
-        user.setUsername(cursor.getString(cursor.getColumnIndex("username")));
-
-        Gson gson = new Gson();
-        user.setV_Plan(gson.fromJson(cursor.getString(cursor.getColumnIndex("plan")), Plan.class));
+        user.setId(getString(cursor, "id"));
+        user.setName(getString(cursor, "name"));
+        user.setEmail(getString(cursor, "email"));
+        user.setUsername(getString(cursor, "username"));
+        user.setV_Plan(getJson(cursor, "plan", Plan.class));
 
         Login login = new Login();
         login.setJwt(new Jwt());
-        login.getJwt().setToken(cursor.getString(cursor.getColumnIndex("token")));
+        login.getJwt().setToken(getString(cursor, "token"));
         login.setUser(user);
 
         return login;
@@ -42,9 +39,7 @@ public class LoginWrapper implements EntityWrapper<Login> {
         values.put("email", entity.getUser().getEmail());
         values.put("username", entity.getUser().getUsername());
         values.put("token", entity.getJwt().getToken());
-
-        Gson gson = new Gson();
-        values.put("plan", gson.toJson(entity.getUser().getV_Plan()));
+        values.put("plan", toJson(entity.getUser().getV_Plan()));
         return values;
     }
 }

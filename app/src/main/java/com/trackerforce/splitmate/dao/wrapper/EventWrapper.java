@@ -16,14 +16,14 @@ public class EventWrapper implements EntityWrapper<Event> {
     @Override
     public Event unWrap(Cursor cursor) {
         Event event = new Event();
-        event.setId(cursor.getString(cursor.getColumnIndex("id")));
-        event.setName(cursor.getString(cursor.getColumnIndex("name")));
-        event.setDescription(cursor.getString(cursor.getColumnIndex("description")));
-        event.setLocation(cursor.getString(cursor.getColumnIndex("location")));
-        event.setOrganizer(cursor.getString(cursor.getColumnIndex("organizer")));
-        event.setVersion(cursor.getString(cursor.getColumnIndex("version")));
-        event.setDate(new Date(cursor.getLong(cursor.getColumnIndex("date"))));
-        event.setCategory(cursor.getString(cursor.getColumnIndex("category")));
+        event.setId(getString(cursor, "id"));
+        event.setName(getString(cursor, "name"));
+        event.setDescription(getString(cursor, "description"));
+        event.setLocation(getString(cursor, "location"));
+        event.setOrganizer(getString(cursor, "organizer"));
+        event.setVersion(getString(cursor, "version"));
+        event.setDate(new Date(getLong(cursor, "date")));
+        event.setCategory(getString(cursor, "category"));
         return event;
     }
 
