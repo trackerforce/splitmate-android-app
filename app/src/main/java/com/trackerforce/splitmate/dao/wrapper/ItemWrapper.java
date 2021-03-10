@@ -5,7 +5,6 @@ import android.database.Cursor;
 
 import com.github.petruki.dblite.wrapper.DbLiteWrapper;
 import com.github.petruki.dblite.wrapper.EntityWrapper;
-import com.google.gson.Gson;
 import com.trackerforce.splitmate.model.Item;
 import com.trackerforce.splitmate.model.ItemValue;
 import com.trackerforce.splitmate.model.Poll;
@@ -17,16 +16,14 @@ public class ItemWrapper implements EntityWrapper<Item> {
     @Override
     public Item unWrap(Cursor cursor) {
         Item item = new Item();
-        item.setId(cursor.getString(cursor.getColumnIndex("id")));
-        item.setName(cursor.getString(cursor.getColumnIndex("name")));
-        item.setPoll_name(cursor.getString(cursor.getColumnIndex("poll_name")));
-        item.setAssigned_to(cursor.getString(cursor.getColumnIndex("assigned_to")));
-        item.setCreated_by(cursor.getString(cursor.getColumnIndex("created_by")));
-        item.setEventId(cursor.getString(cursor.getColumnIndex("eventId")));
-
-        Gson gson = new Gson();
-        item.setDetails(gson.fromJson(cursor.getString(cursor.getColumnIndex("details")), ItemValue[].class));
-        item.setPoll(gson.fromJson(cursor.getString(cursor.getColumnIndex("poll")), Poll[].class));
+        item.setId(getString(cursor, "id"));
+        item.setName(getString(cursor, "name"));
+        item.setPoll_name(getString(cursor, "poll_name"));
+        item.setAssigned_to(getString(cursor, "assigned_to"));
+        item.setCreated_by(getString(cursor, "created_by"));
+        item.setEventId(getString(cursor, "eventId"));
+        item.setDetails(getJson(cursor, "details", ItemValue[].class));
+        item.setPoll(getJson(cursor, "poll", Poll[].class));
         return item;
     }
 
@@ -39,10 +36,8 @@ public class ItemWrapper implements EntityWrapper<Item> {
         values.put("assigned_to", entity.getAssigned_to());
         values.put("created_by", entity.getCreated_by());
         values.put("eventId", entity.getEventId());
-
-        Gson gson = new Gson();
-        values.put("details", gson.toJson(entity.getDetails()));
-        values.put("poll", gson.toJson(entity.getPoll()));
+        values.put("details", toJson(entity.getDetails()));
+        values.put("poll", toJson(entity.getPoll()));
         return values;
     }
 }

@@ -77,5 +77,5 @@ dependencies {
     implementation 'com.google.android.gms:play-services-safetynet:17.0.0'
     implementation 'com.google.android.gms:play-services-ads-lite:19.7.0'
 
-    implementation 'com.github.petruki:dblite-library:0.1.1-rc'
+    implementation 'com.github.petruki:dblite-library:0.1.2-rc'
 }
