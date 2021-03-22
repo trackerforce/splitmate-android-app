@@ -46,9 +46,11 @@ public class AppUtils {
 
     public static void showMessage(Context context, String message) {
         if (context != null) {
-            Toast dialog = Toast.makeText(context, message, Toast.LENGTH_LONG);
-            dialog.setGravity(Gravity.BOTTOM, 0, 200);
-            dialog.show();
+            ((Activity) context).runOnUiThread(() -> {
+                Toast dialog = Toast.makeText(context, message, Toast.LENGTH_LONG);
+                dialog.setGravity(Gravity.BOTTOM, 0, 200);
+                dialog.show();
+            });
         }
     }
 

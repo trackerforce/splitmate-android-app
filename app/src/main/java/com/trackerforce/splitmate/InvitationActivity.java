@@ -69,7 +69,7 @@ public class InvitationActivity extends SplitmateActivity {
 
             @Override
             public void onError(String error) {
-                AppUtils.showMessage(getBaseContext(), "User not found");
+                AppUtils.showMessage(InvitationActivity.this, "User not found");
             }
         });
     }
@@ -109,15 +109,19 @@ public class InvitationActivity extends SplitmateActivity {
         eventController.inviteAll(eventId, emailsDTO, new ServiceCallback<Map<String, String>>() {
             @Override
             public void onSuccess(Map<String, String> data) {
-                progress.dismiss();
-                setResult(Activity.RESULT_OK);
-                finish();
+                runOnUiThread(() -> {
+                    progress.dismiss();
+                    setResult(Activity.RESULT_OK);
+                    finish();
+                });
             }
 
             @Override
             public void onError(String error) {
-                progress.dismiss();
-                AppUtils.showMessage(getBaseContext(), error);
+                runOnUiThread(() -> {
+                    progress.dismiss();
+                    AppUtils.showMessage(InvitationActivity.this, error);
+                });
             }
         }, true);
     }

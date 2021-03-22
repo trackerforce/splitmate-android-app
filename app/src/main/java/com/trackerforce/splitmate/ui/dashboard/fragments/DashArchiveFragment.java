@@ -54,22 +54,26 @@ public class DashArchiveFragment extends AbstractDashFragment implements Service
 
     @Override
     public void onSuccess(Event[] data) {
-        if (data.length > 0)
-            getTextView(R.id.txtSwipeRefresh).setVisibility(View.GONE);
+        requireActivity().runOnUiThread(() -> {
+            if (data.length > 0)
+                getTextView(R.id.txtSwipeRefresh).setVisibility(View.GONE);
 
-        if (adapter != null) {
-            adapter.updateAdapter(data);
+            if (adapter != null) {
+                adapter.updateAdapter(data);
 
-            getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
-            getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.VISIBLE);
-        }
+                getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
+                getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
     public void onError(String error) {
-        AppUtils.showMessage(getContext(), error);
-        getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
-        getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.VISIBLE);
+        requireActivity().runOnUiThread(() -> {
+            AppUtils.showMessage(getContext(), error);
+            getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
+            getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.VISIBLE);
+        });
     }
 
     private void loadEvents(boolean force) {

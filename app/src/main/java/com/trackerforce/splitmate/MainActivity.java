@@ -1,6 +1,7 @@
 package com.trackerforce.splitmate;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -15,8 +16,6 @@ import com.trackerforce.splitmate.utils.AppUtils;
 import com.trackerforce.splitmate.utils.Config;
 
 import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends SplitmateActivity {
 
@@ -40,25 +39,19 @@ public class MainActivity extends SplitmateActivity {
          getButton(R.id.buttonGoDashboard).setVisibility(View.GONE);
          Config.getInstance().loadSettings(getBaseContext());
 
-         TimerTask task = new TimerTask() {
-             @Override
-             public void run() {
-                 initApp();
-             }
-         };
-
          userController.checkAPI(new ServiceCallback<String>() {
              @Override
              public void onSuccess(String data) {
-                 Timer opening = new Timer();
-                 opening.schedule(task, 2000);
+                 new Handler().postDelayed(() -> initApp(), 2000);
              }
 
              @Override
              public void onError(String error) {
-                 AppUtils.showMessage(MainActivity.this.getBaseContext(), error);
-                 getComponent(R.id.progressLoading, ProgressBar.class).setVisibility(View.GONE);
-                 getButton(R.id.buttonGoDashboard).setVisibility(View.VISIBLE);
+                 runOnUiThread(() -> {
+                     AppUtils.showMessage(MainActivity.this, error);
+                     getComponent(R.id.progressLoading, ProgressBar.class).setVisibility(View.GONE);
+                     getButton(R.id.buttonGoDashboard).setVisibility(View.VISIBLE);
+                 });
              }
          });
      }
@@ -93,11 +86,11 @@ public class MainActivity extends SplitmateActivity {
 
                  @Override
                  public void onError(String error, Object obj) {
-                     AppUtils.showMessage(MainActivity.this.getBaseContext(), obj.toString());
+                     AppUtils.showMessage(MainActivity.this, obj.toString());
                  }
              });
          } catch (Exception e) {
-             AppUtils.showMessage(MainActivity.this.getBaseContext(), e.getMessage());
+             AppUtils.showMessage(MainActivity.this, e.getMessage());
          }
      }
 
