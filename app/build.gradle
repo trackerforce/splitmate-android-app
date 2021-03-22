@@ -24,7 +24,7 @@ android {
         minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
-        versionName "v1.0.3"
+        versionName "v1.0.4-SNAPSHOT"
         manifestPlaceholders.screenOrientation = "portrait"
 
         buildConfigField("String", "API_URL", "\"${getProperties("api_url")}\"")

@@ -1,6 +1,7 @@
 package com.trackerforce.splitmate.controller.user;
 
 import android.content.Context;
+import android.os.AsyncTask;
 
 import com.trackerforce.splitmate.R;
 import com.trackerforce.splitmate.controller.ServiceCallback;
@@ -22,11 +23,13 @@ public class UserController {
     }
 
     public void checkAPI(ServiceCallback<String> callback) {
-        if (AppUtils.isOnline(context, true)) {
-            userServiceAPI.checkAPI(callback);
-        } else {
-            callback.onSuccess(null);
-        }
+        AsyncTask.execute(() -> {
+            if (AppUtils.isOnline(context, true)) {
+                userServiceAPI.checkAPI(callback);
+            } else {
+                callback.onSuccess(null);
+            }
+        });
     }
 
     public void login(String login, String password, ServiceCallback<User> callback) {
@@ -34,19 +37,23 @@ public class UserController {
         user.setUsername(login);
         user.setPassword(password);
 
-        if (AppUtils.isOnline(context, true)) {
-            userServiceAPI.login(user, callback, this.userServiceLocal);
-        } else {
-            callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
-        }
+        AsyncTask.execute(() -> {
+            if (AppUtils.isOnline(context, true)) {
+                userServiceAPI.login(user, callback, this.userServiceLocal);
+            } else {
+                callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
+            }
+        });
     }
 
     public void logout(ServiceCallback<Boolean> callback) {
-        if (AppUtils.isOnline(context, true)) {
-            userServiceAPI.logout(callback, this.userServiceLocal);
-        } else {
-            callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
-        }
+        AsyncTask.execute(() -> {
+            if (AppUtils.isOnline(context, true)) {
+                userServiceAPI.logout(callback, this.userServiceLocal);
+            } else {
+                callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
+            }
+        });
     }
 
     public void signUp(String name, String username, String email,
@@ -71,51 +78,63 @@ public class UserController {
         user.setPassword(password);
         user.setToken(token);
 
-        if (AppUtils.isOnline(context, true)) {
-            userServiceAPI.signUp(user, callback, this.userServiceLocal);
-        } else {
-            callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
-        }
+        AsyncTask.execute(() -> {
+            if (AppUtils.isOnline(context, true)) {
+                userServiceAPI.signUp(user, callback, this.userServiceLocal);
+            } else {
+                callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
+            }
+        });
     }
 
     public void getUser(ServiceCallback<User> callback) {
-        if (AppUtils.isOnline(context, true)) {
-            userServiceAPI.getUser(callback);
-        } else {
-            userServiceLocal.getUser(callback);
-        }
+        AsyncTask.execute(() -> {
+            if (AppUtils.isOnline(context, true)) {
+                userServiceAPI.getUser(callback);
+            } else {
+                userServiceLocal.getUser(callback);
+            }
+        });
     }
 
     public void find(String username, ServiceCallback<User> callback) {
-        if (AppUtils.isOnline(context, true)) {
-            userServiceAPI.find(username, callback);
-        } else {
-            callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
-        }
+        AsyncTask.execute(() -> {
+            if (AppUtils.isOnline(context, true)) {
+                userServiceAPI.find(username, callback);
+            } else {
+                callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
+            }
+        });
     }
 
     public void joinEvent(String eventId, ServiceCallback<User> callback, boolean force) {
-        if (AppUtils.isOnline(context, force)) {
-            userServiceAPI.joinEvent(eventId, callback, this.userServiceLocal);
-        } else {
-            callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
-        }
+        AsyncTask.execute(() -> {
+            if (AppUtils.isOnline(context, force)) {
+                userServiceAPI.joinEvent(eventId, callback, this.userServiceLocal);
+            } else {
+                callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
+            }
+        });
     }
 
     public void dismissEvent(String eventId, ServiceCallback<User> callback, boolean force) {
-        if (AppUtils.isOnline(context, force)) {
-            userServiceAPI.dismissEvent(eventId, callback, this.userServiceLocal);
-        } else {
-            callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
-        }
+        AsyncTask.execute(() -> {
+            if (AppUtils.isOnline(context, force)) {
+                userServiceAPI.dismissEvent(eventId, callback, this.userServiceLocal);
+            } else {
+                callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
+            }
+        });
     }
 
     public void leaveEvent(String eventId, ServiceCallback<User> callback, boolean force) {
-        if (AppUtils.isOnline(context, force)) {
-            userServiceAPI.leaveEvent(eventId, callback, new EventServiceLocal(context));
-        } else {
-            callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
-        }
+        AsyncTask.execute(() -> {
+            if (AppUtils.isOnline(context, force)) {
+                userServiceAPI.leaveEvent(eventId, callback, new EventServiceLocal(context));
+            } else {
+                callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
+            }
+        });
     }
 
     public void addEventToArchive(String eventId, ServiceCallback<User> callback, boolean force) {
@@ -127,20 +146,24 @@ public class UserController {
     }
 
     public void deleteAccount(ServiceCallback<String> callback, boolean force) {
-        if (AppUtils.isOnline(context, force)) {
-            userServiceAPI.deleteAccount(callback, this.userServiceLocal);
-        } else {
-            callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
-        }
+        AsyncTask.execute(() -> {
+            if (AppUtils.isOnline(context, force)) {
+                userServiceAPI.deleteAccount(callback, this.userServiceLocal);
+            } else {
+                callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
+            }
+        });
     }
 
     private void archiveEvent(String action, String eventId, ServiceCallback<User> callback,
                               boolean force) {
-        if (AppUtils.isOnline(context, force)) {
-            userServiceAPI.archiveEvent(action, eventId, callback, new UserServiceLocal(context));
-        } else {
-            callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
-        }
+        AsyncTask.execute(() -> {
+            if (AppUtils.isOnline(context, force)) {
+                userServiceAPI.archiveEvent(action, eventId, callback, new UserServiceLocal(context));
+            } else {
+                callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
+            }
+        });
     }
 
     public void syncToken() throws Exception {

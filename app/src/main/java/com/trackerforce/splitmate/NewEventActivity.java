@@ -131,13 +131,13 @@ public class NewEventActivity extends SplitmateActivity {
             @Override
             public void onError(String error) {
                 progress.dismiss();
-                AppUtils.showMessage(getBaseContext(), error);
+                AppUtils.showMessage(NewEventActivity.this, error);
             }
 
             @Override
             public void onError(String error, Object obj) {
                 progress.dismiss();
-                AppUtils.showMessage(getBaseContext(), getResources().getString(R.string.msgEventHasRemoved));
+                AppUtils.showMessage(NewEventActivity.this, getResources().getString(R.string.msgEventHasRemoved));
                 Intent intent = new Intent(getView().getContext(), DashboardActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -163,7 +163,7 @@ public class NewEventActivity extends SplitmateActivity {
             @Override
             public void onError(String error) {
                 progress.dismiss();
-                AppUtils.showMessage(getBaseContext(), error);
+                AppUtils.showMessage(NewEventActivity.this, error);
             }
         }, true);
     }

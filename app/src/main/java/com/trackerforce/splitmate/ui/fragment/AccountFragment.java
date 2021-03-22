@@ -47,17 +47,20 @@ public class AccountFragment extends Fragment implements SplitmateView {
         ((DashboardActivity) requireActivity()).getUserController().getUser(new ServiceCallback<User>() {
             @Override
             public void onSuccess(User data) {
-                switch (data.getV_Plan().getName()) {
-                    case "MEMBER":
-                        getTextView(R.id.txtAccountType).setText(getResources().getString(R.string.labelAccountType_Member));
-                        break;
-                    case "FOUNDER":
-                        getTextView(R.id.txtAccountType).setText(getResources().getString(R.string.labelAccountType_Founder));
-                        getComponent(R.id.imgAvatar, ImageView.class)
-                                .setBackgroundColor(getResources().getColor(R.color.gold, getContext().getTheme()));
-                        break;
-                }
-                getComponent(R.id.groupPlanPerk, Group.class).setVisibility(View.VISIBLE);
+                requireActivity().runOnUiThread(() -> {
+                    switch (data.getV_Plan().getName()) {
+                        case "MEMBER":
+                            getTextView(R.id.txtAccountType).setText(getResources().getString(R.string.labelAccountType_Member));
+                            break;
+                        case "FOUNDER":
+                            getTextView(R.id.txtAccountType).setText(getResources().getString(R.string.labelAccountType_Founder));
+                            getComponent(R.id.imgAvatar, ImageView.class)
+                                    .setBackgroundColor(getResources().getColor(R.color.gold, getContext().getTheme()));
+                            break;
+                    }
+                    getComponent(R.id.groupPlanPerk, Group.class).setVisibility(View.VISIBLE);
+                });
+
             }
 
             @Override

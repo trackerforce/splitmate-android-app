@@ -134,12 +134,12 @@ public class NewItemActivity extends SplitmateActivity {
 
             @Override
             public void onError(String error) {
-                AppUtils.showMessage(getBaseContext(), error);
+                AppUtils.showMessage(NewItemActivity.this, error);
             }
 
             @Override
             public void onError(String error, Object obj) {
-                AppUtils.showMessage(getBaseContext(), "Refreshing Event");
+                AppUtils.showMessage(NewItemActivity.this, "Refreshing Event");
                 setResult(Activity.RESULT_CANCELED);
                 finish();
             }
@@ -190,7 +190,7 @@ public class NewItemActivity extends SplitmateActivity {
             @Override
             public void onError(String error) {
                 progress.dismiss();
-                AppUtils.showMessage(getBaseContext(), error);
+                AppUtils.showMessage(NewItemActivity.this, error);
             }
 
             @Override
@@ -198,12 +198,12 @@ public class NewItemActivity extends SplitmateActivity {
                 progress.dismiss();
                 final ErrorResponse errorResponse = (ErrorResponse) obj;
                 if ("event".equals(errorResponse.getDocument())) {
-                    AppUtils.showMessage(getBaseContext(), getResources().getString(R.string.msgEventHasRemoved));
+                    AppUtils.showMessage(NewItemActivity.this, getResources().getString(R.string.msgEventHasRemoved));
                     Intent intent = new Intent(getView().getContext(), DashboardActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
-                    AppUtils.showMessage(getBaseContext(), getResources().getString(R.string.msgItemHasRemoved));
+                    AppUtils.showMessage(NewItemActivity.this, getResources().getString(R.string.msgItemHasRemoved));
                     setResult(Activity.RESULT_CANCELED);
                     finish();
                 }
@@ -231,7 +231,7 @@ public class NewItemActivity extends SplitmateActivity {
             @Override
             public void onError(String error) {
                 progress.dismiss();
-                AppUtils.showMessage(getBaseContext(), error);
+                AppUtils.showMessage(NewItemActivity.this, error);
             }
 
             @Override
@@ -239,12 +239,12 @@ public class NewItemActivity extends SplitmateActivity {
                 progress.dismiss();
                 final ErrorResponse errorResponse = (ErrorResponse) obj;
                 if ("event".equals(errorResponse.getDocument())) {
-                    AppUtils.showMessage(getBaseContext(), "Event has been removed");
+                    AppUtils.showMessage(NewItemActivity.this, "Event has been removed");
                     Intent intent = new Intent(getView().getContext(), DashboardActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
-                    AppUtils.showMessage(getBaseContext(), "Item has been removed");
+                    AppUtils.showMessage(NewItemActivity.this, "Item has been removed");
                     setResult(Activity.RESULT_CANCELED);
                     finish();
                 }

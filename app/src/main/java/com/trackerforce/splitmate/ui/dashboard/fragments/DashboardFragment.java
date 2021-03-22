@@ -52,7 +52,7 @@ public class DashboardFragment extends Fragment {
     }
 
     private void loadAdView(View view) {
-        AdView adView = (AdView) view.findViewById(R.id.adView);
+        AdView adView = view.findViewById(R.id.adView);
         if (Config.getInstance().getLoggedUser().getUser().getV_Plan().isEnable_ads()) {
             AdRequest adRequest = new AdRequest.Builder().build();
             adView.loadAd(adRequest);

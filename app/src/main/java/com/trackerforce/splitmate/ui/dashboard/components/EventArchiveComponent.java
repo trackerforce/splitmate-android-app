@@ -15,8 +15,6 @@ import com.trackerforce.splitmate.ui.dashboard.fragments.AbstractDashFragment;
 import com.trackerforce.splitmate.utils.AppUtils;
 import com.trackerforce.splitmate.utils.SplitConstants;
 
-import java.util.Objects;
-
 public class EventArchiveComponent implements IEventDashComponent {
 
     private final AbstractDashFragment context;
