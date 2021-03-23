@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class TransferActivity extends SplitmateActivity {
 
-    private Event event;
+    private String eventId;
     private MemberTransferAdapter adapter;
 
     public TransferActivity() {
@@ -38,8 +38,19 @@ public class TransferActivity extends SplitmateActivity {
 
     @Override
     protected void initActivityData() {
-        event = (Event) getIntent().getSerializableExtra(SplitConstants.EVENT.toString());
-        adapter.updateAdapter(event.getV_members());
+        eventId = getIntent().getStringExtra(SplitConstants.EVENT_ID.toString());
+        eventController.getEventById(eventId, new ServiceCallback<Event>() {
+            @Override
+            public void onSuccess(Event data) {
+                adapter.updateAdapter(data.getV_members());
+            }
+
+            @Override
+            public void onError(String error) {
+                AppUtils.showMessage(TransferActivity.this, error);
+                finish();
+            }
+        }, true);
     }
 
     private void onCancel(@Nullable View view) {
@@ -49,7 +60,7 @@ public class TransferActivity extends SplitmateActivity {
 
     public class TransferAdapterResult {
         public void onSelectedMember(User member) {
-            getEventController().transfer(event.getId(), member.getId(), new ServiceCallback<Event>() {
+            getEventController().transfer(eventId, member.getId(), new ServiceCallback<Event>() {
                 @Override
                 public void onSuccess(Event data) {
                     AppUtils.showMessage(TransferActivity.this,
