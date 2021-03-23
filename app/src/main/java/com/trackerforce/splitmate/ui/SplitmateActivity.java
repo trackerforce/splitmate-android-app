@@ -36,8 +36,8 @@ public abstract class SplitmateActivity extends AppCompatActivity implements Spl
         super.onCreate(savedInstanceState);
         setContentView(layout);
 
-        userController = new UserController(getBaseContext());
-        eventController = new EventController(getBaseContext());
+        userController = new UserController(this);
+        eventController = new EventController(this);
 
         onCreateView();
         initActivityData();

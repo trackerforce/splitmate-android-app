@@ -36,13 +36,13 @@ public class UserServiceAPI {
                                    @NonNull Response<Map<String, String>> response) {
                 if (response.code() == 200) {
                     assert response.body() != null;
-                    callback.onSuccess(response.body().get("message"));
+                    callback.onSuccessResponse(context, response.body().get("message"));
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<Map<String, String>> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgOpsTryItAgain));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgOpsTryItAgain));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -55,17 +55,17 @@ public class UserServiceAPI {
             public void onResponse(@NonNull Call<Login> call, @NonNull Response<Login> response) {
                 if (response.code() == 200) {
                     assert response.body() != null;
-                    callback.onSuccess(response.body().getUser());
+                    callback.onSuccessResponse(context, response.body().getUser());
                     userServiceLocal.cleanLocalStorage();
                     syncJwt(userServiceLocal, response.body(), callback);
                 } else {
-                    callback.onError(AppUtils.getString(context, R.string.msgFailedLogin));
+                    callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgFailedLogin));
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<Login> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgOpsTryItAgain));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgOpsTryItAgain));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -77,7 +77,7 @@ public class UserServiceAPI {
             public void onResponse(@NonNull Call<Map<String, String>> call,
                                    @NonNull Response<Map<String, String>> response) {
                 if (response.code() == 200) {
-                    callback.onSuccess(true);
+                    callback.onSuccessResponse(context, true);
                     userServiceLocal.cleanLocalStorage();
                     syncJwt(userServiceLocal, null, callback);
                 } else {
@@ -87,7 +87,7 @@ public class UserServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<Map<String, String>> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgOpsTryItAgain));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgOpsTryItAgain));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -99,7 +99,7 @@ public class UserServiceAPI {
             public void onResponse(@NonNull Call<Login> call, @NonNull Response<Login> response) {
                 if (response.code() == 201) {
                     assert response.body() != null;
-                    callback.onSuccess(response.body().getUser());
+                    callback.onSuccessResponse(context, response.body().getUser());
                     userServiceLocal.cleanLocalStorage();
                     syncJwt(userServiceLocal, response.body(), callback);
                 } else {
@@ -109,7 +109,7 @@ public class UserServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<Login> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgOpsTryItAgain));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgOpsTryItAgain));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -124,7 +124,7 @@ public class UserServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgOpsTryItAgain));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgOpsTryItAgain));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -139,7 +139,7 @@ public class UserServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgOpsTryItAgain));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgOpsTryItAgain));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -152,7 +152,7 @@ public class UserServiceAPI {
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 if (response.code() == 200) {
                     assert response.body() != null;
-                    callback.onSuccess(response.body());
+                    callback.onSuccessResponse(context, response.body());
                     syncUser(userServiceLocal, response.body(), callback);
                 } else {
                     callback.errorHandler(context, response);
@@ -161,7 +161,7 @@ public class UserServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgOpsTryItAgain));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgOpsTryItAgain));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -174,7 +174,7 @@ public class UserServiceAPI {
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 if (response.code() == 200) {
                     assert response.body() != null;
-                    callback.onSuccess(response.body());
+                    callback.onSuccessResponse(context, response.body());
                     syncUser(userServiceLocal, response.body(), callback);
                 } else {
                     callback.errorHandler(context, response);
@@ -183,7 +183,7 @@ public class UserServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgOpsTryItAgain));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgOpsTryItAgain));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -196,7 +196,7 @@ public class UserServiceAPI {
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 if (response.code() == 200) {
                     assert response.body() != null;
-                    callback.onSuccess(response.body());
+                    callback.onSuccessResponse(context, response.body());
                     eventServiceLocal.removeEvent(eventId);
                 } else {
                     callback.errorHandler(context, response);
@@ -205,7 +205,7 @@ public class UserServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgOpsTryItAgain));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgOpsTryItAgain));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -218,7 +218,7 @@ public class UserServiceAPI {
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 if (response.code() == 200) {
                     assert response.body() != null;
-                    callback.onSuccess(response.body());
+                    callback.onSuccessResponse(context, response.body());
                     syncUser(userServiceLocal, response.body(), callback);
                 } else {
                     callback.errorHandler(context, response);
@@ -227,7 +227,7 @@ public class UserServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgOpsTryItAgain));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgOpsTryItAgain));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -240,7 +240,7 @@ public class UserServiceAPI {
                                    @NonNull Response<Map<String, String>> response) {
                 if (response.code() == 200) {
                     assert response.body() != null;
-                    callback.onSuccess(response.body().get("message"));
+                    callback.onSuccessResponse(context, response.body().get("message"));
                     userServiceLocal.cleanLocalStorage();
                 } else {
                     callback.errorHandler(context, response);
@@ -249,7 +249,7 @@ public class UserServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<Map<String, String>> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgOpsTryItAgain));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgOpsTryItAgain));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -263,7 +263,7 @@ public class UserServiceAPI {
         try {
             userServiceLocal.syncUser(user);
         } catch (Exception e) {
-            callback.onError(e.getMessage());
+            callback.onErrorResponse(context, e.getMessage());
             Log.d(TAG, e.getMessage());
         }
     }
@@ -276,7 +276,7 @@ public class UserServiceAPI {
         try {
             userServiceLocal.syncJwt(login);
         } catch (Exception e) {
-            callback.onError(e.getMessage());
+            callback.onErrorResponse(context, e.getMessage());
             Log.d(TAG, e.getMessage());
         }
     }

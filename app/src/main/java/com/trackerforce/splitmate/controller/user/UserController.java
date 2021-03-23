@@ -41,7 +41,7 @@ public class UserController {
             if (AppUtils.isOnline(context, true)) {
                 userServiceAPI.login(user, callback, this.userServiceLocal);
             } else {
-                callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgNotConnected));
             }
         });
     }
@@ -51,7 +51,7 @@ public class UserController {
             if (AppUtils.isOnline(context, true)) {
                 userServiceAPI.logout(callback, this.userServiceLocal);
             } else {
-                callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgNotConnected));
             }
         });
     }
@@ -82,7 +82,7 @@ public class UserController {
             if (AppUtils.isOnline(context, true)) {
                 userServiceAPI.signUp(user, callback, this.userServiceLocal);
             } else {
-                callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgNotConnected));
             }
         });
     }
@@ -102,7 +102,7 @@ public class UserController {
             if (AppUtils.isOnline(context, true)) {
                 userServiceAPI.find(username, callback);
             } else {
-                callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgNotConnected));
             }
         });
     }
@@ -112,7 +112,7 @@ public class UserController {
             if (AppUtils.isOnline(context, force)) {
                 userServiceAPI.joinEvent(eventId, callback, this.userServiceLocal);
             } else {
-                callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgNotConnected));
             }
         });
     }
@@ -122,7 +122,7 @@ public class UserController {
             if (AppUtils.isOnline(context, force)) {
                 userServiceAPI.dismissEvent(eventId, callback, this.userServiceLocal);
             } else {
-                callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgNotConnected));
             }
         });
     }
@@ -132,7 +132,7 @@ public class UserController {
             if (AppUtils.isOnline(context, force)) {
                 userServiceAPI.leaveEvent(eventId, callback, new EventServiceLocal(context));
             } else {
-                callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgNotConnected));
             }
         });
     }
@@ -150,7 +150,7 @@ public class UserController {
             if (AppUtils.isOnline(context, force)) {
                 userServiceAPI.deleteAccount(callback, this.userServiceLocal);
             } else {
-                callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgNotConnected));
             }
         });
     }
@@ -161,7 +161,7 @@ public class UserController {
             if (AppUtils.isOnline(context, force)) {
                 userServiceAPI.archiveEvent(action, eventId, callback, new UserServiceLocal(context));
             } else {
-                callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgNotConnected));
             }
         });
     }

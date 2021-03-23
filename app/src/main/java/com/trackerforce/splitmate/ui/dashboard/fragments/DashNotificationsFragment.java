@@ -16,7 +16,8 @@ import com.trackerforce.splitmate.ui.fragment.IFragmentSubscriber;
 import com.trackerforce.splitmate.utils.AppUtils;
 import com.trackerforce.splitmate.utils.Config;
 
-public class DashNotificationsFragment extends AbstractDashFragment implements IFragmentSubscriber {
+public class DashNotificationsFragment extends AbstractDashFragment implements IFragmentSubscriber,
+        ServiceCallback<Event[]> {
 
     public static final String TITLE = "Notifications";
 
@@ -40,36 +41,31 @@ public class DashNotificationsFragment extends AbstractDashFragment implements I
     private void loadEvents(boolean force) {
         getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.INVISIBLE);
         getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.VISIBLE);
-        getEventController().myEventsInvited(new ServiceCallback<Event[]>() {
-            @Override
-            public void onSuccess(Event[] data) {
-                requireActivity().runOnUiThread(() -> {
-                    if (data.length > 0)
-                        getTextView(R.id.txtSwipeRefresh).setVisibility(View.GONE);
+        getEventController().myEventsInvited(this, force);
+    }
 
-                    if (adapter != null) {
-                        adapter.updateAdapter(data);
+    @Override
+    public void onSuccess(Event[] data) {
+        if (data.length > 0)
+            getTextView(R.id.txtSwipeRefresh).setVisibility(View.GONE);
 
-                        getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
-                        getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.VISIBLE);
-                    }
-                });
-            }
+        if (adapter != null) {
+            adapter.updateAdapter(data);
 
-            @Override
-            public void onError(String error) {
-                requireActivity().runOnUiThread(() -> {
-                    AppUtils.showMessage(getContext(), error);
-                    getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
-                    getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.VISIBLE);
-                });
-            }
-        }, force);
+            getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
+            getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onError(String error) {
+        AppUtils.showMessage(getContext(), error);
+        getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
+        getComponent(R.id.listEvents, RecyclerView.class).setVisibility(View.VISIBLE);
     }
 
     @Override
     public String getFragmentTag() {
         return TITLE;
     }
-
 }

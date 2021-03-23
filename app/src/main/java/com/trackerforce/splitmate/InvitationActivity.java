@@ -19,8 +19,9 @@ import com.trackerforce.splitmate.utils.SplitConstants;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class InvitationActivity extends SplitmateActivity {
+public class InvitationActivity extends SplitmateActivity implements ServiceCallback<Map<String, String>> {
 
+    private ProgressDialog progress;
     private MemberPreviewAdapter adapter;
     private String eventId;
 
@@ -105,24 +106,21 @@ public class InvitationActivity extends SplitmateActivity {
         for (User u : adapter.getDataSet())
             emailsDTO.getEmails()[index++] = u.getEmail();
 
-        ProgressDialog progress = openLoading("Loading", "Sending invitations");
-        eventController.inviteAll(eventId, emailsDTO, new ServiceCallback<Map<String, String>>() {
-            @Override
-            public void onSuccess(Map<String, String> data) {
-                runOnUiThread(() -> {
-                    progress.dismiss();
-                    setResult(Activity.RESULT_OK);
-                    finish();
-                });
-            }
-
-            @Override
-            public void onError(String error) {
-                runOnUiThread(() -> {
-                    progress.dismiss();
-                    AppUtils.showMessage(InvitationActivity.this, error);
-                });
-            }
-        }, true);
+        progress = openLoading("Loading", "Sending invitations");
+        eventController.inviteAll(eventId, emailsDTO, this, true);
     }
+
+    @Override
+    public void onSuccess(Map<String, String> data) {
+        progress.dismiss();
+        setResult(Activity.RESULT_OK);
+        finish();
+    }
+
+    @Override
+    public void onError(String error) {
+        progress.dismiss();
+        AppUtils.showMessage(InvitationActivity.this, error);
+    }
+
 }
