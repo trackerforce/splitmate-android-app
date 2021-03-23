@@ -138,7 +138,7 @@ public class EventViewFragment extends AbstractEventFragment {
 
     private void onTransfer(@Nullable View view) {
         Intent intent = new Intent(getContext(), TransferActivity.class);
-        intent.putExtra(SplitConstants.EVENT.toString(), getEvent());
+        intent.putExtra(SplitConstants.EVENT_ID.toString(), getEvent().getId());
         startActivityForResult(intent, SplitConstants.TRANSFER.ordinal());
     }
 
