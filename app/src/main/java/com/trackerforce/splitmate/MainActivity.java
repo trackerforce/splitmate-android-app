@@ -47,11 +47,9 @@ public class MainActivity extends SplitmateActivity {
 
              @Override
              public void onError(String error) {
-                 runOnUiThread(() -> {
-                     AppUtils.showMessage(MainActivity.this, error);
-                     getComponent(R.id.progressLoading, ProgressBar.class).setVisibility(View.GONE);
-                     getButton(R.id.buttonGoDashboard).setVisibility(View.VISIBLE);
-                 });
+                 AppUtils.showMessage(MainActivity.this, error);
+                 getComponent(R.id.progressLoading, ProgressBar.class).setVisibility(View.GONE);
+                 getButton(R.id.buttonGoDashboard).setVisibility(View.VISIBLE);
              }
          });
      }

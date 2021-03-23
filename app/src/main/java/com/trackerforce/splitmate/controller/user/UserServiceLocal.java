@@ -16,9 +16,11 @@ public class UserServiceLocal {
     private static final String TAG = UserServiceLocal.class.getSimpleName();
 
     private final LoginRepository loginRepository;
+    private final Context context;
 
     public UserServiceLocal(Context context) {
         loginRepository = new LoginRepository(context);
+        this.context = context;
     }
 
     public void getUser(ServiceCallback<User> callback) {
@@ -26,12 +28,12 @@ public class UserServiceLocal {
             List<Login> loginList = loginRepository.findAll();
 
             if (loginList.size() > 0)
-                callback.onSuccess(loginList.get(0).getUser());
+                callback.onSuccessResponse(context, loginList.get(0).getUser());
             else
-                callback.onError("User not found");
+                callback.onErrorResponse(context, "User not found");
 
         } catch (Exception e) {
-            callback.onError(e.getMessage());
+            callback.onErrorResponse(context, e.getMessage());
             Log.d(TAG, e.getMessage());
         }
     }

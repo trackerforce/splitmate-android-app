@@ -41,7 +41,7 @@ public class EventServiceAPI {
             public void onResponse(@NonNull Call<Event> call, @NonNull Response<Event> response) {
                 if (response.code() == 201) {
                     assert response.body() != null;
-                    callback.onSuccess(response.body());
+                    callback.onSuccessResponse(context, response.body());
                     syncEvent(eventServiceLocal, response.body(), callback);
                 } else {
                     callback.errorHandler(context, response);
@@ -50,7 +50,7 @@ public class EventServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<Event> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgFailedCreateEvent));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgFailedCreateEvent));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -64,7 +64,7 @@ public class EventServiceAPI {
             public void onResponse(@NonNull Call<Event> call, @NonNull Response<Event> response) {
                 if (response.code() == 200) {
                     assert response.body() != null;
-                    callback.onSuccess(response.body());
+                    callback.onSuccessResponse(context, response.body());
                     syncEvent(eventServiceLocal, response.body(), callback);
                 } else if (response.code() == 404) {
                     assert response.errorBody() != null;
@@ -76,7 +76,7 @@ public class EventServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<Event> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgFailedEditingEvent));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgFailedEditingEvent));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -89,7 +89,7 @@ public class EventServiceAPI {
             public void onResponse(@NonNull Call<Event> call, @NonNull Response<Event> response) {
                 if (response.code() == 200) {
                     assert response.body() != null;
-                    callback.onSuccess(response.body());
+                    callback.onSuccessResponse(context, response.body());
                     syncEvent(eventServiceLocal, response.body(), callback);
                 } else if (response.code() == 404) {
                     assert response.errorBody() != null;
@@ -101,7 +101,7 @@ public class EventServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<Event> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgFailedAddingItem));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgFailedAddingItem));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -114,7 +114,7 @@ public class EventServiceAPI {
             public void onResponse(@NonNull Call<Event> call, @NonNull Response<Event> response) {
                 if (response.code() == 200) {
                     assert response.body() != null;
-                    callback.onSuccess(response.body());
+                    callback.onSuccessResponse(context, response.body());
                     syncEvent(eventServiceLocal, response.body(), callback);
                 } else if (response.code() == 404) {
                     assert response.errorBody() != null;
@@ -126,7 +126,7 @@ public class EventServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<Event> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgFailedEditingItem));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgFailedEditingItem));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -139,7 +139,7 @@ public class EventServiceAPI {
             public void onResponse(@NonNull Call<Event> call, @NonNull Response<Event> response) {
                 if (response.code() == 200) {
                     assert response.body() != null;
-                    callback.onSuccess(response.body());
+                    callback.onSuccessResponse(context, response.body());
                     eventServiceLocal.removeItem(item.getId());
                 } else if (response.code() == 404) {
                     assert response.errorBody() != null;
@@ -151,7 +151,7 @@ public class EventServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<Event> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgFailedDeletingItem));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgFailedDeletingItem));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -164,7 +164,7 @@ public class EventServiceAPI {
             public void onResponse(@NonNull Call<Event> call, @NonNull Response<Event> response) {
                 if (response.code() == 200) {
                     assert response.body() != null;
-                    callback.onSuccess(response.body());
+                    callback.onSuccessResponse(context, response.body());
                     syncEvent(eventServiceLocal, response.body(), callback);
                 } else if (response.code() == 404) {
                     assert response.errorBody() != null;
@@ -176,7 +176,7 @@ public class EventServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<Event> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgFailedPickingItem));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgFailedPickingItem));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -189,7 +189,7 @@ public class EventServiceAPI {
             public void onResponse(@NonNull Call<Event> call, @NonNull Response<Event> response) {
                 if (response.code() == 200) {
                     assert response.body() != null;
-                    callback.onSuccess(response.body());
+                    callback.onSuccessResponse(context, response.body());
                     syncEvent(eventServiceLocal, response.body(), callback);
                 } else if (response.code() == 404) {
                     assert response.errorBody() != null;
@@ -201,7 +201,7 @@ public class EventServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<Event> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgFailedUnpickingItem));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgFailedUnpickingItem));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -215,7 +215,7 @@ public class EventServiceAPI {
                                   @NonNull Response<Map<String, String>> response) {
                if (response.code() == 200) {
                    assert response.body() != null;
-                   callback.onSuccess(response.body().get("message"));
+                   callback.onSuccessResponse(context, response.body().get("message"));
                    eventServiceLocal.removeEvent(id);
                } else if (response.code() == 404) {
                    assert response.errorBody() != null;
@@ -227,7 +227,7 @@ public class EventServiceAPI {
 
            @Override
            public void onFailure(@NonNull Call<Map<String, String>> call, @NonNull Throwable t) {
-               callback.onError(AppUtils.getString(context, R.string.msgFailedDeletingEvent));
+               callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgFailedDeletingEvent));
                Log.d(TAG, t.getMessage());
            }
        });
@@ -240,14 +240,14 @@ public class EventServiceAPI {
             public void onResponse(@NonNull Call<Event> call, @NonNull Response<Event> response) {
                 if (response.code() == 200) {
                     assert response.body() != null;
-                    callback.onSuccess(response.body());
+                    callback.onSuccessResponse(context, response.body());
                     syncEvent(eventServiceLocal, response.body(), callback);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<Event> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgFailedRemoveMember));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgFailedRemoveMember));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -269,7 +269,7 @@ public class EventServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<Map<String, String>> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgFailedInviteUser));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgFailedInviteUser));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -297,7 +297,7 @@ public class EventServiceAPI {
             public void onResponse(@NonNull Call<Event[]> call, @NonNull Response<Event[]> response) {
                 if (response.code() == 200) {
                     assert response.body() != null;
-                    callback.onSuccess(response.body());
+                    callback.onSuccessResponse(context, response.body());
                     syncMyEvents(eventServiceLocal, category, response.body(), callback);
                 } else {
                     callback.errorHandler(context, response);
@@ -306,7 +306,7 @@ public class EventServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<Event[]> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgFailedReturnEvents));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgFailedReturnEvents));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -319,7 +319,7 @@ public class EventServiceAPI {
             public void onResponse(@NonNull Call<Event> call, @NonNull Response<Event> response) {
                 if (response.code() == 200) {
                     assert response.body() != null;
-                    callback.onSuccess(response.body());
+                    callback.onSuccessResponse(context, response.body());
                     syncEvent(eventServiceLocal, response.body(), callback);
                 } else if (response.code() == 404) {
                     assert response.errorBody() != null;
@@ -331,7 +331,7 @@ public class EventServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<Event> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgFailedReturnEvents));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgFailedReturnEvents));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -344,7 +344,7 @@ public class EventServiceAPI {
             public void onResponse(@NonNull Call<Item> call, @NonNull Response<Item> response) {
                 if (response.code() == 200) {
                     assert response.body() != null;
-                    callback.onSuccess(response.body());
+                    callback.onSuccessResponse(context, response.body());
                     syncItem(eventServiceLocal, response.body(), eventId, callback);
                 } else if (response.code() == 404) {
                     assert response.errorBody() != null;
@@ -356,7 +356,7 @@ public class EventServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<Item> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgFailedReturnEvents));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgFailedReturnEvents));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -369,7 +369,7 @@ public class EventServiceAPI {
             public void onResponse(@NonNull Call<Event> call, @NonNull Response<Event> response) {
                 if (response.code() == 200) {
                     assert response.body() != null;
-                    callback.onSuccess(response.body());
+                    callback.onSuccessResponse(context, response.body());
                     syncEvent(eventServiceLocal, response.body(), callback);
                 } else if (response.code() == 404) {
                     assert response.errorBody() != null;
@@ -381,7 +381,7 @@ public class EventServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<Event> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgFailedTransferEvent));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgFailedTransferEvent));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -394,7 +394,7 @@ public class EventServiceAPI {
             public void onResponse(@NonNull Call<Item> call, @NonNull Response<Item> response) {
                 if (response.code() == 200) {
                     assert response.body() != null;
-                    callback.onSuccess(response.body());
+                    callback.onSuccessResponse(context, response.body());
                     syncItem(eventServiceLocal, response.body(), eventId, callback);
                 } else if (response.code() == 404) {
                     assert response.errorBody() != null;
@@ -406,7 +406,7 @@ public class EventServiceAPI {
 
             @Override
             public void onFailure(@NonNull Call<Item> call, @NonNull Throwable t) {
-                callback.onError(AppUtils.getString(context, R.string.msgFailedUnpickingItem));
+                callback.onErrorResponse(context, AppUtils.getString(context, R.string.msgFailedUnpickingItem));
                 Log.d(TAG, t.getMessage());
             }
         });
@@ -420,7 +420,7 @@ public class EventServiceAPI {
         try {
             eventServiceLocal.syncEvent(event);
         } catch (Exception e) {
-            callback.onError(e.getMessage());
+            callback.onErrorResponse(context, e.getMessage());
             Log.d(TAG, e.getMessage());
         }
     }
@@ -433,7 +433,7 @@ public class EventServiceAPI {
         try {
             eventServiceLocal.syncMyEvents(category, events);
         } catch (Exception e) {
-            callback.onError(e.getMessage());
+            callback.onErrorResponse(context, e.getMessage());
             Log.d(TAG, e.getMessage());
         }
     }
@@ -443,7 +443,7 @@ public class EventServiceAPI {
         try {
             eventServiceLocal.syncItem(item, eventId);
         } catch (Exception e) {
-            callback.onError(e.getMessage());
+            callback.onErrorResponse(context, e.getMessage());
             Log.d(TAG, e.getMessage());
         }
     }

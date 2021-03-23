@@ -1,5 +1,6 @@
 package com.trackerforce.splitmate.controller;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
@@ -17,6 +18,18 @@ public interface ServiceCallback<T> {
 
     void onError(String error);
 
+    default void onSuccessResponse(Context context, T data) {
+        ((Activity) context).runOnUiThread(() -> {
+            onSuccess(data);
+        });
+    }
+
+    default void onErrorResponse(Context context, String error) {
+        ((Activity) context).runOnUiThread(() -> {
+            onError(error);
+        });
+    }
+
     default void onError(String error, Object obj) {}
 
     default void errorHandler(Context context, Response<?> response) {
@@ -29,10 +42,10 @@ public interface ServiceCallback<T> {
             this.onError("Unauthorized access");
         } else if (response.code() == 422) {
             assert response.errorBody() != null;
-            this.onError(AppUtils.getJsonError(response.errorBody(), "msg"));
+            this.onErrorResponse(context, AppUtils.getJsonError(response.errorBody(), "msg"));
         } else {
             assert response.errorBody() != null;
-            this.onError(AppUtils.getJsonValue(response.errorBody(), "error"));
+            this.onErrorResponse(context, AppUtils.getJsonValue(response.errorBody(), "error"));
         }
     }
 
@@ -40,7 +53,7 @@ public interface ServiceCallback<T> {
                                      ServiceCallback<T> callback) {
         if (response.code() == expectedStatus) {
             assert response.body() != null;
-            callback.onSuccess(response.body());
+            callback.onSuccessResponse(context, response.body());
         } else {
             callback.errorHandler(context, response);
         }

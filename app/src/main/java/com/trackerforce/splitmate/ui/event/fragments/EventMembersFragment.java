@@ -89,16 +89,14 @@ public class EventMembersFragment extends AbstractEventFragment {
                 getEventController().getEventById(getEventId(), new ServiceCallback<Event>() {
                     @Override
                     public void onSuccess(Event data) {
-                        requireActivity().runOnUiThread(() -> updateAdapter(data));
+                        updateAdapter(data);
                     }
 
                     @Override
                     public void onError(String error) {
-                        requireActivity().runOnUiThread(() -> {
-                            AppUtils.showMessage(getContext(), error);
-                            getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
-                            getComponent(R.id.listMembers, RecyclerView.class).setVisibility(View.VISIBLE);
-                        });
+                        AppUtils.showMessage(getContext(), error);
+                        getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
+                        getComponent(R.id.listMembers, RecyclerView.class).setVisibility(View.VISIBLE);
                     }
                 }, force);
             }

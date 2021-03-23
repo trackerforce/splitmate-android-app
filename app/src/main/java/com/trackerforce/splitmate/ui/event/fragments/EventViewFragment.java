@@ -66,22 +66,18 @@ public class EventViewFragment extends AbstractEventFragment {
             getEventController().getEventById(getEventId(), new ServiceCallback<Event>() {
                 @Override
                 public void onSuccess(Event data) {
-                    requireActivity().runOnUiThread(() -> {
-                        setEvent(data);
+                    setEvent(data);
 
-                        loadViewFieldValues();
-                        loadPreviewFragment(data);
-                        getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
-                        getComponent(R.id.groupControls, Group.class).setVisibility(View.VISIBLE);
-                    });
+                    loadViewFieldValues();
+                    loadPreviewFragment(data);
+                    getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
+                    getComponent(R.id.groupControls, Group.class).setVisibility(View.VISIBLE);
                 }
 
                 @Override
                 public void onError(String error) {
-                    requireActivity().runOnUiThread(() -> {
-                        AppUtils.showMessage(getContext(), error);
-                        getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
-                    });
+                    AppUtils.showMessage(getContext(), error);
+                    getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
                 }
             }, force);
         }

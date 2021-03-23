@@ -20,9 +20,11 @@ public class EventServiceLocal {
     private static final String TAG = EventServiceLocal.class.getSimpleName();
 
     private final EventRepository eventRepository;
+    private final Context context;
 
     public EventServiceLocal(Context context) {
         eventRepository = new EventRepository(context);
+        this.context = context;
     }
 
     public void myEventsCurrent(ServiceCallback<Event[]> callback) {
@@ -40,26 +42,26 @@ public class EventServiceLocal {
     private void myEvents(String category, ServiceCallback<Event[]> callback) {
         try {
             List<Event> events = eventRepository.findByCategory(category);
-            callback.onSuccess(events.toArray(new Event[0]));
+            callback.onSuccessResponse(context, events.toArray(new Event[0]));
         } catch (Exception e) {
-            callback.onError(e.getMessage());
+            callback.onErrorResponse(context, e.getMessage());
             Log.d(TAG, e.getMessage());
         }
     }
 
     public void getEventById(String id, ServiceCallback<Event> callback) {
         try {
-            callback.onSuccess(eventRepository.findById(id, true));
+            callback.onSuccessResponse(context, eventRepository.findById(id, true));
         } catch (Exception e) {
-            callback.onError(e.getMessage());
+            callback.onErrorResponse(context, e.getMessage());
         }
     }
 
     public void getEvenItemById(String itemId, ServiceCallback<Item> callback) {
         try {
-            callback.onSuccess(eventRepository.getItemRepository().findById(itemId));
+            callback.onSuccessResponse(context, eventRepository.getItemRepository().findById(itemId));
         } catch (Exception e) {
-            callback.onError(e.getMessage());
+            callback.onErrorResponse(context, e.getMessage());
             Log.d(TAG, e.getMessage());
         }
     }
