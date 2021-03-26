@@ -27,7 +27,7 @@ public class UserController {
             if (AppUtils.isOnline(context, true)) {
                 userServiceAPI.checkAPI(callback);
             } else {
-                callback.onSuccess(null);
+                callback.onSuccessResponse(context, null);
             }
         });
     }
