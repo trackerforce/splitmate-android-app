@@ -17,12 +17,6 @@ public class FragmentListener {
         subscribers.add(subscriber);
     }
 
-    public void notifySubscribers(@Nullable Object... args) {
-        for (IFragmentSubscriber s : subscribers) {
-            s.notifyFragment(args);
-        }
-    }
-
     public void notifySubscriber(String fragmentTag, @Nullable Object... args) {
         for (IFragmentSubscriber s : subscribers) {
             if (s.getFragmentTag().equals(fragmentTag)) {

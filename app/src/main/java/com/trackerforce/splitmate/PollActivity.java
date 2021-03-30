@@ -24,13 +24,12 @@ import com.trackerforce.splitmate.utils.SplitConstants;
 
 import java.util.Arrays;
 
-public class PollActivity extends SplitmateActivity {
+public class PollActivity extends SplitmateActivity implements ServiceCallback<Item> {
 
     private PollVotePreviewAdapter adapter;
     private SwipeRefreshLayout swipeContainer;
     private String itemId;
     private String eventId;
-    private PusherClient pusher;
 
     public PollActivity() {
         super(R.layout.activity_poll);
@@ -56,57 +55,51 @@ public class PollActivity extends SplitmateActivity {
         loadPusher();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        pusher.unsubscribeAll();
-    }
-
     private void loadItem() {
         getComponent(R.id.swipeContainer, SwipeRefreshLayout.class).setVisibility(View.INVISIBLE);
         getComponent(R.id.progressBarPoll, ProgressBar.class).setVisibility(View.VISIBLE);
-        eventController.getEventItemById(eventId, itemId, new ServiceCallback<Item>() {
-            @Override
-            public void onSuccess(Item data) {
-                getTextView(R.id.txtPollName).setText(data.getPoll_name());
+        eventController.getEventItemById(eventId, itemId, this, true);
+    }
 
-                getTextView(R.id.pollTitle).setText(data.getName());
-                adapter.setEventId(eventId);
-                adapter.setItemId(itemId);
-                adapter.updateAdapter(data.getPoll());
+    @Override
+    public void onSuccess(Item data) {
+        getTextView(R.id.txtPollName).setText(data.getPoll_name());
 
-                showPoll();
-            }
+        getTextView(R.id.pollTitle).setText(data.getName());
+        adapter.setEventId(eventId);
+        adapter.setItemId(itemId);
+        adapter.updateAdapter(data.getPoll());
 
-            @Override
-            public void onError(String error) {
-                AppUtils.showMessage(PollActivity.this, error);
-                showPoll();
-            }
+        showPoll();
+    }
 
-            @Override
-            public void onError(String error, Object obj) {
-                final ErrorResponse errorResponse = (ErrorResponse) obj;
-                showPoll();
+    @Override
+    public void onError(String error) {
+        AppUtils.showMessage(PollActivity.this, error);
+        showPoll();
+    }
 
-                if ("event".equals(errorResponse.getDocument())) {
-                    AppUtils.showMessage(PollActivity.this,
-                            PollActivity.this.getResources().getString(R.string.msgEventHasRemoved));
+    @Override
+    public void onError(String error, Object obj) {
+        final ErrorResponse errorResponse = (ErrorResponse) obj;
+        showPoll();
 
-                    Intent intent = new Intent(PollActivity.this, DashboardActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                } else {
-                    AppUtils.showMessage(PollActivity.this,
-                            PollActivity.this.getResources().getString(R.string.msgItemHasRemoved));
-                    finish();
-                }
-            }
-        }, true);
+        if ("event".equals(errorResponse.getDocument())) {
+            AppUtils.showMessage(PollActivity.this,
+                    PollActivity.this.getResources().getString(R.string.msgEventHasRemoved));
+
+            Intent intent = new Intent(PollActivity.this, DashboardActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        } else {
+            AppUtils.showMessage(PollActivity.this,
+                    PollActivity.this.getResources().getString(R.string.msgItemHasRemoved));
+            finish();
+        }
     }
 
     private void loadPusher() {
-        pusher = PusherClient.getInstance();
+        final PusherClient pusher = PusherClient.getInstance();
         pusher.connect(this, eventId);
         pusher.subscribe(PusherEvents.UPDATE_POLL.toString(), this::onUpdatePoll);
         pusher.subscribe(PusherEvents.EDIT_ITEM.toString(), this::onUpdateItem);

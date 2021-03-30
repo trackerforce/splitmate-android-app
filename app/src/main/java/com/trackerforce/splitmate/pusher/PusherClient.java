@@ -21,6 +21,7 @@ import io.socket.engineio.client.transports.WebSocket;
 public class PusherClient extends Application {
 
     private static final String TAG = PusherClient.class.getSimpleName();
+    private static final String SOCKET_PARAMS = "auth=%s&channel=%s";
     private static PusherClient instance;
     private final List<String> events;
     private Socket socket;
@@ -39,7 +40,7 @@ public class PusherClient extends Application {
         try {
             IO.Options opts = new IO.Options();
             opts.transports = new String[]{WebSocket.NAME};
-            opts.query = String.format("auth=%s&channel=%s", Config.getInstance().getToken(), channel);
+            opts.query = String.format(SOCKET_PARAMS, Config.getInstance().getToken(), channel);
             socket = IO.socket(Config.getInstance().API_URL, opts);
         } catch (URISyntaxException e) {
             Log.d(TAG, e.getMessage());

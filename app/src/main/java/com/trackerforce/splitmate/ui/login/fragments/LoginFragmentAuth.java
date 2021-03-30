@@ -21,10 +21,11 @@ import com.trackerforce.splitmate.utils.AppUtils;
 
 import com.trackerforce.splitmate.ui.SplitmateView;
 
-public class LoginFragmentAuth extends Fragment implements SplitmateView {
+public class LoginFragmentAuth extends Fragment implements SplitmateView, ServiceCallback<User> {
 
     public static final String TITLE = "Login";
     private final UserController userController;
+    private ProgressDialog progressDialog;
 
     public LoginFragmentAuth(UserController userController) {
         this.userController = userController;
@@ -52,26 +53,26 @@ public class LoginFragmentAuth extends Fragment implements SplitmateView {
         final String login = getTextViewValue(R.id.textLogin);
         final String password = getTextViewValue(R.id.textPassword);
 
-        ProgressDialog progressDialog = openLoading("Authenticating", "Verifying credentials");
-        userController.login(login, password, new ServiceCallback<User>() {
-            @Override
-            public void onSuccess(User data) {
-                progressDialog.dismiss();
-                AppUtils.showMessage(requireView().getContext(), String.format("Welcome %s", data.getName()));
+        progressDialog = openLoading("Authenticating", "Verifying credentials");
+        userController.login(login, password, this);
+    }
 
-                requireActivity().finish();
-                Intent intent = new Intent(view.getContext(), DashboardActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
+    @Override
+    public void onSuccess(User data) {
+        progressDialog.dismiss();
+        AppUtils.showMessage(requireView().getContext(), String.format("Welcome %s", data.getName()));
 
-            @Override
-            public void onError(String error) {
-                progressDialog.dismiss();
-                AppUtils.showMessage(getContext(), error);
-            }
-        });
+        requireActivity().finish();
+        Intent intent = new Intent(getContext(), DashboardActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onError(String error) {
+        progressDialog.dismiss();
+        AppUtils.showMessage(getContext(), error);
     }
 
 }

@@ -16,12 +16,13 @@ import com.trackerforce.splitmate.DashboardActivity;
 import com.trackerforce.splitmate.LoginActivity;
 import com.trackerforce.splitmate.R;
 import com.trackerforce.splitmate.controller.ServiceCallback;
+import com.trackerforce.splitmate.controller.ServiceCallbackAdapter;
 import com.trackerforce.splitmate.model.User;
 import com.trackerforce.splitmate.ui.SplitmateView;
 import com.trackerforce.splitmate.utils.AppUtils;
 import com.trackerforce.splitmate.utils.Config;
 
-public class AccountFragment extends Fragment implements SplitmateView {
+public class AccountFragment extends Fragment implements SplitmateView, ServiceCallback<User> {
 
     @Nullable
     @Override
@@ -44,53 +45,48 @@ public class AccountFragment extends Fragment implements SplitmateView {
 
     private void setAccountPlan() {
         getComponent(R.id.groupPlanPerk, Group.class).setVisibility(View.GONE);
-        ((DashboardActivity) requireActivity()).getUserController().getUser(new ServiceCallback<User>() {
-            @Override
-            public void onSuccess(User data) {
-                requireActivity().runOnUiThread(() -> {
-                    switch (data.getV_Plan().getName()) {
-                        case "MEMBER":
-                            getTextView(R.id.txtAccountType).setText(getResources().getString(R.string.labelAccountType_Member));
-                            break;
-                        case "FOUNDER":
-                            getTextView(R.id.txtAccountType).setText(getResources().getString(R.string.labelAccountType_Founder));
-                            getComponent(R.id.imgAvatar, ImageView.class)
-                                    .setBackgroundColor(getResources().getColor(R.color.gold, getContext().getTheme()));
-                            break;
-                    }
-                    getComponent(R.id.groupPlanPerk, Group.class).setVisibility(View.VISIBLE);
-                });
+        ((DashboardActivity) requireActivity()).getUserController().getUser(this);
+    }
 
+    @Override
+    public void onSuccess(User data) {
+        requireActivity().runOnUiThread(() -> {
+            switch (data.getV_Plan().getName()) {
+                case "MEMBER":
+                    getTextView(R.id.txtAccountType).setText(getResources().getString(R.string.labelAccountType_Member));
+                    break;
+                case "FOUNDER":
+                    getTextView(R.id.txtAccountType).setText(getResources().getString(R.string.labelAccountType_Founder));
+                    getComponent(R.id.imgAvatar, ImageView.class)
+                            .setBackgroundColor(getResources().getColor(R.color.gold, requireContext().getTheme()));
+                    break;
             }
-
-            @Override
-            public void onError(String error) {
-                AppUtils.showMessage(getContext(), error);
-            }
+            getComponent(R.id.groupPlanPerk, Group.class).setVisibility(View.VISIBLE);
         });
+    }
+
+    @Override
+    public void onError(String error) {
+        AppUtils.showMessage(getContext(), error);
     }
 
     private void onClickDeleteAccount(@Nullable View view) {
         openConfirmDialog(getResources().getString(R.string.btnDeleteAccount),
                 getResources().getString(R.string.msgConfirmDeleteAccount), answer -> {
-            if (answer) {
-                ((DashboardActivity) requireActivity()).getUserController().deleteAccount(new ServiceCallback<String>() {
-                    @Override
-                    public void onSuccess(String data) {
-                        requireActivity().finish();
+                    if (answer) {
+                        ((DashboardActivity) requireActivity()).getUserController().deleteAccount(
+                                new ServiceCallbackAdapter<String>(getContext()) {
+                            @Override
+                            public void onSuccessAdapter(String data) {
+                                requireActivity().finish();
 
-                        Intent intent = new Intent(getContext(), LoginActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        requireActivity().startActivity(intent);
+                                Intent intent = new Intent(getContext(), LoginActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                requireActivity().startActivity(intent);
+                            }
+                        }, true);
                     }
-
-                    @Override
-                    public void onError(String error) {
-                        AppUtils.showMessage(getContext(), error);
-                    }
-                }, true);
-            }
-        });
+                });
     }
 }

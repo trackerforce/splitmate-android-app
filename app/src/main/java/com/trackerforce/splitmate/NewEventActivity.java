@@ -23,11 +23,12 @@ import java.util.Calendar;
 import java.util.Date;
 
 @SuppressLint("SimpleDateFormat")
-public class NewEventActivity extends SplitmateActivity {
+public class NewEventActivity extends SplitmateActivity implements ServiceCallback<Event> {
 
     private final Calendar calendar = Calendar.getInstance();
     private DatePickerDialog pickDate;
     private TimePickerDialog pickTime;
+    private ProgressDialog progress;
 
     private Event event;
 
@@ -119,7 +120,7 @@ public class NewEventActivity extends SplitmateActivity {
     }
 
     private void editEvent() {
-        ProgressDialog progress = openLoading("Event", "Updating...");
+        progress = openLoading("Event", "Updating...");
         eventController.edit(event, new ServiceCallback<Event>() {
             @Override
             public void onSuccess(Event data) {
@@ -146,26 +147,26 @@ public class NewEventActivity extends SplitmateActivity {
     }
 
     private void saveEvent() {
-        ProgressDialog progress = openLoading("Event", "Saving...");
-        eventController.create(event, new ServiceCallback<Event>() {
-            @Override
-            public void onSuccess(Event data) {
-                progress.dismiss();
-                Intent intent = new Intent(NewEventActivity.this, EventDetailActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra(SplitConstants.EVENT_ID.toString(), data.getId());
-                startActivity(intent);
+        progress = openLoading("Event", "Saving...");
+        eventController.create(event, this, true);
+    }
 
-                setResult(Activity.RESULT_OK);
-                finish();
-            }
+    @Override
+    public void onSuccess(Event data) {
+        progress.dismiss();
+        Intent intent = new Intent(NewEventActivity.this, EventDetailActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(SplitConstants.EVENT_ID.toString(), data.getId());
+        startActivity(intent);
 
-            @Override
-            public void onError(String error) {
-                progress.dismiss();
-                AppUtils.showMessage(NewEventActivity.this, error);
-            }
-        }, true);
+        setResult(Activity.RESULT_OK);
+        finish();
+    }
+
+    @Override
+    public void onError(String error) {
+        progress.dismiss();
+        AppUtils.showMessage(NewEventActivity.this, error);
     }
 
 }

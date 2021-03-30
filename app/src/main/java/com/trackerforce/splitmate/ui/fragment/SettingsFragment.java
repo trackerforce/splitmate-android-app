@@ -72,7 +72,7 @@ public class SettingsFragment extends Fragment implements SplitmateView {
 
             @Override
             public void onError(String error) {
-                AppUtils.showMessage(activity.getBaseContext(), error);
+                AppUtils.showMessage(activity, error);
             }
         });
     }

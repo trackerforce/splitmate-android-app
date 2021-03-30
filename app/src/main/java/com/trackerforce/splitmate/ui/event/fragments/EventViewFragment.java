@@ -20,8 +20,8 @@ import com.trackerforce.splitmate.TransferActivity;
 import com.trackerforce.splitmate.controller.ServiceCallback;
 import com.trackerforce.splitmate.model.Event;
 import com.trackerforce.splitmate.model.User;
-import com.trackerforce.splitmate.utils.Config;
 import com.trackerforce.splitmate.utils.AppUtils;
+import com.trackerforce.splitmate.utils.Config;
 import com.trackerforce.splitmate.utils.SplitConstants;
 
 import java.text.SimpleDateFormat;
@@ -79,6 +79,13 @@ public class EventViewFragment extends AbstractEventFragment {
                     AppUtils.showMessage(getContext(), error);
                     getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.GONE);
                 }
+
+                @Override
+                public void onError(String error, Object obj) {
+                    AppUtils.showMessage(getContext(), "This Event was deleted");
+                    requireActivity().setResult(Activity.RESULT_CANCELED);
+                    requireActivity().finish();
+                }
             }, force);
         }
     }
@@ -104,7 +111,7 @@ public class EventViewFragment extends AbstractEventFragment {
                         @Override
                         public void onSuccess(User data) {
                             requireActivity().setResult(Activity.RESULT_OK);
-                            getActivity().finish();
+                            requireActivity().finish();
                         }
 
                         @Override
@@ -124,7 +131,7 @@ public class EventViewFragment extends AbstractEventFragment {
                         @Override
                         public void onSuccess(String data) {
                             requireActivity().setResult(Activity.RESULT_OK);
-                            getActivity().finish();
+                            requireActivity().finish();
                         }
 
                         @Override

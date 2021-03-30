@@ -24,7 +24,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ItemValuePreviewAdapter extends ListAdapter<ItemValue, ItemValuePreviewAdapter.ItemValueViewHolder> {
+public class ItemValuePreviewAdapter extends ListAdapter<ItemValue,
+        ItemValuePreviewAdapter.ItemValueViewHolder> {
 
     private final List<ItemValue> localDataSet;
 
