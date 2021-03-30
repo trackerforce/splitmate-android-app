@@ -17,10 +17,6 @@ public class PusherData {
         return gson.fromJson(args[0].toString(), dtoType);
     }
 
-    public String getAction() {
-        return action;
-    }
-
     public String getChannel() {
         return channel;
     }

@@ -105,7 +105,7 @@ public class PollVotePreviewAdapter extends ListAdapter<Poll, PollVotePreviewAda
         }
     }
 
-    class PollViewHolder extends RecyclerView.ViewHolder {
+    class PollViewHolder extends RecyclerView.ViewHolder implements ServiceCallback<Item> {
 
         private Poll poll;
 
@@ -137,38 +137,38 @@ public class PollVotePreviewAdapter extends ListAdapter<Poll, PollVotePreviewAda
 
         private void onVote(View view) {
             setLoading(true);
-            eventController.votePoll(eventId, itemId, poll.getId(), new ServiceCallback<Item>() {
-                @Override
-                public void onSuccess(Item data) {
-                    setLoading(false);
-                    updateAdapter(data.getPoll());
+            eventController.votePoll(eventId, itemId, poll.getId(), this, true);
+        }
 
-                    PusherClient pusher = PusherClient.getInstance();
-                    PusherPollItemDTO pusherPollItemDTO = new PusherPollItemDTO(eventId, itemId, PusherEvents.UPDATE_POLL);
-                    pusherPollItemDTO.setPollItemId(poll.getId());
-                    pusherPollItemDTO.setVoter(Config.getInstance().getLoggedUser().getUser().getId());
-                    pusher.notifyEvent(pusherPollItemDTO);
-                }
+        @Override
+        public void onSuccess(Item data) {
+            setLoading(false);
+            updateAdapter(data.getPoll());
 
-                @Override
-                public void onError(String error) {
-                    setLoading(false);
-                    AppUtils.showMessage(itemView.getContext(), error);
-                }
+            PusherClient pusher = PusherClient.getInstance();
+            PusherPollItemDTO pusherPollItemDTO = new PusherPollItemDTO(eventId, itemId, PusherEvents.UPDATE_POLL);
+            pusherPollItemDTO.setPollItemId(poll.getId());
+            pusherPollItemDTO.setVoter(Config.getInstance().getLoggedUser().getUser().getId());
+            pusher.notifyEvent(pusherPollItemDTO);
+        }
 
-                @Override
-                public void onError(String error, Object obj) {
-                    final ErrorResponse errorResponse = (ErrorResponse) obj;
+        @Override
+        public void onError(String error) {
+            setLoading(false);
+            AppUtils.showMessage(itemView.getContext(), error);
+        }
 
-                    if ("event".equals(errorResponse.getDocument())) {
-                        Intent intent = new Intent(itemView.getContext(), DashboardActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        itemView.getContext().startActivity(intent);
-                    } else {
-                        ((Activity) itemView.getContext()).finish();
-                    }
-                }
-            }, true);
+        @Override
+        public void onError(String error, Object obj) {
+            final ErrorResponse errorResponse = (ErrorResponse) obj;
+
+            if ("event".equals(errorResponse.getDocument())) {
+                Intent intent = new Intent(itemView.getContext(), DashboardActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                itemView.getContext().startActivity(intent);
+            } else {
+                ((Activity) itemView.getContext()).finish();
+            }
         }
 
         private void setLoading(boolean status) {

@@ -17,7 +17,7 @@ import com.trackerforce.splitmate.utils.SplitConstants;
 
 import java.util.ArrayList;
 
-public class TransferActivity extends SplitmateActivity {
+public class TransferActivity extends SplitmateActivity implements ServiceCallback<Event> {
 
     private String eventId;
     private MemberTransferAdapter adapter;
@@ -39,18 +39,18 @@ public class TransferActivity extends SplitmateActivity {
     @Override
     protected void initActivityData() {
         eventId = getIntent().getStringExtra(SplitConstants.EVENT_ID.toString());
-        eventController.getEventById(eventId, new ServiceCallback<Event>() {
-            @Override
-            public void onSuccess(Event data) {
-                adapter.updateAdapter(data.getV_members());
-            }
+        eventController.getEventById(eventId, this, true);
+    }
 
-            @Override
-            public void onError(String error) {
-                AppUtils.showMessage(TransferActivity.this, error);
-                finish();
-            }
-        }, true);
+    @Override
+    public void onSuccess(Event data) {
+        adapter.updateAdapter(data.getV_members());
+    }
+
+    @Override
+    public void onError(String error) {
+        AppUtils.showMessage(TransferActivity.this, error);
+        finish();
     }
 
     private void onCancel(@Nullable View view) {
@@ -58,25 +58,29 @@ public class TransferActivity extends SplitmateActivity {
         finish();
     }
 
-    public class TransferAdapterResult {
+    public class TransferAdapterResult implements ServiceCallback<Event> {
+
+        private User member;
+
         public void onSelectedMember(User member) {
-            getEventController().transfer(eventId, member.getId(), new ServiceCallback<Event>() {
-                @Override
-                public void onSuccess(Event data) {
-                    AppUtils.showMessage(TransferActivity.this,
-                            String.format(
-                                    getResources().getString(R.string.msgSuccessTransferEvent),
-                                    member.getName()));
+            this.member = member;
+            getEventController().transfer(eventId, member.getId(), this, true);
+        }
 
-                    setResult(Activity.RESULT_OK);
-                    finish();
-                }
+        @Override
+        public void onSuccess(Event data) {
+            AppUtils.showMessage(TransferActivity.this,
+                    String.format(
+                            getResources().getString(R.string.msgSuccessTransferEvent),
+                            member.getName()));
 
-                @Override
-                public void onError(String error) {
-                    AppUtils.showMessage(TransferActivity.this, error);
-                }
-            }, true);
+            setResult(Activity.RESULT_OK);
+            finish();
+        }
+
+        @Override
+        public void onError(String error) {
+            AppUtils.showMessage(TransferActivity.this, error);
         }
     }
 }

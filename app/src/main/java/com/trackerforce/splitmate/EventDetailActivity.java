@@ -56,6 +56,7 @@ public class EventDetailActivity extends SplitmateActivity {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (Activity.RESULT_OK == resultCode && SplitConstants.EDIT_ITEM.ordinal() == requestCode) {
+            assert data != null;
             final Event event = (Event) data.getSerializableExtra(SplitConstants.EVENT.toString());
             fragmentListener.notifySubscriber(EventPreviewFragment.TITLE, event);
 

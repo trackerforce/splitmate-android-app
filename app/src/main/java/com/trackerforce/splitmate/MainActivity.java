@@ -17,7 +17,7 @@ import com.trackerforce.splitmate.utils.Config;
 
 import java.util.Objects;
 
-public class MainActivity extends SplitmateActivity {
+public class MainActivity extends SplitmateActivity implements ServiceCallback<User> {
 
      public MainActivity() {
          super(R.layout.activity_main);
@@ -63,34 +63,34 @@ public class MainActivity extends SplitmateActivity {
      private void initApp() {
          try {
              userController.syncToken();
-             userController.getUser(new ServiceCallback<User>() {
-                 @Override
-                 public void onSuccess(User data) {
-                     Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
-                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                     startActivity(intent);
-
-                     finish();
-                 }
-
-                 @Override
-                 public void onError(String error) {
-                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                     startActivity(intent);
-
-                     finish();
-                 }
-
-                 @Override
-                 public void onError(String error, Object obj) {
-                     AppUtils.showMessage(MainActivity.this, obj.toString());
-                 }
-             });
+             userController.getUser(this);
          } catch (Exception e) {
              AppUtils.showMessage(MainActivity.this, e.getMessage());
          }
      }
+
+    @Override
+    public void onSuccess(User data) {
+        Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+
+        finish();
+    }
+
+    @Override
+    public void onError(String error) {
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+
+        finish();
+    }
+
+    @Override
+    public void onError(String error, Object obj) {
+        AppUtils.showMessage(MainActivity.this, obj.toString());
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
