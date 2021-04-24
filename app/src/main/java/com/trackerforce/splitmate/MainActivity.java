@@ -2,6 +2,7 @@ package com.trackerforce.splitmate;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -42,7 +43,7 @@ public class MainActivity extends SplitmateActivity implements ServiceCallback<U
          userController.checkAPI(new ServiceCallback<String>() {
              @Override
              public void onSuccess(String data) {
-                 new Handler().postDelayed(() -> initApp(), 2000);
+                 new Handler(Looper.getMainLooper()).postDelayed(() -> initApp(), 2000);
              }
 
              @Override

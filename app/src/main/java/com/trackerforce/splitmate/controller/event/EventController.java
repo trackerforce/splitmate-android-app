@@ -1,7 +1,6 @@
 package com.trackerforce.splitmate.controller.event;
 
 import android.content.Context;
-import android.os.AsyncTask;
 
 import com.trackerforce.splitmate.R;
 import com.trackerforce.splitmate.controller.ServiceCallback;
@@ -9,6 +8,7 @@ import com.trackerforce.splitmate.model.EmailsDTO;
 import com.trackerforce.splitmate.model.Event;
 import com.trackerforce.splitmate.model.Item;
 import com.trackerforce.splitmate.utils.AppUtils;
+import com.trackerforce.splitmate.utils.SplitThreadPoster;
 
 import java.util.Map;
 
@@ -17,11 +17,13 @@ public class EventController {
     private final Context context;
     private final EventServiceAPI eventServiceAPI;
     private final EventServiceLocal eventServiceLocal;
+    private final SplitThreadPoster threadPoster;
 
     public EventController(Context context) {
         this.context = context;
         this.eventServiceLocal = new EventServiceLocal(context);
         this.eventServiceAPI = new EventServiceAPI(context);
+        this.threadPoster = new SplitThreadPoster();
     }
 
     public void inviteAll(String eventId, EmailsDTO emails,
@@ -32,7 +34,7 @@ public class EventController {
             callback.onError(AppUtils.getString(context, R.string.msgEmailIsEmpty));
         } else {
             if (AppUtils.isOnline(context, force)) {
-                AsyncTask.execute(() ->
+                threadPoster.post(() ->
                     eventServiceAPI.inviteAll(eventId, emails, callback, eventServiceLocal));
             } else {
                 callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
@@ -41,7 +43,7 @@ public class EventController {
     }
 
     public void myEventsCurrent(ServiceCallback<Event[]> callback, boolean force) {
-        AsyncTask.execute(() -> {
+        threadPoster.post(() -> {
             if (AppUtils.isOnline(context, force)) {
                 eventServiceAPI.myEventsCurrent(callback, eventServiceLocal);
             } else {
@@ -55,7 +57,7 @@ public class EventController {
     }
 
     public void myEventsArchived(ServiceCallback<Event[]> callback, boolean force) {
-        AsyncTask.execute(() -> {
+        threadPoster.post(() -> {
             if (AppUtils.isOnline(context, force)) {
                 eventServiceAPI.myEventsArchived(callback, eventServiceLocal);
             } else {
@@ -69,7 +71,7 @@ public class EventController {
     }
 
     public void myEventsInvited(ServiceCallback<Event[]> callback, boolean force) {
-        AsyncTask.execute(() -> {
+        threadPoster.post(() -> {
             if (AppUtils.isOnline(context, force)) {
                 eventServiceAPI.myEventsInvited(callback, eventServiceLocal);
             } else {
@@ -82,7 +84,7 @@ public class EventController {
         if (id == null || id.isEmpty()) {
             callback.onError(AppUtils.getString(context, R.string.msgEventIdIsEmpty));
         } else {
-            AsyncTask.execute(() -> {
+            threadPoster.post(() -> {
                 if (AppUtils.isOnline(context, force)) {
                     eventServiceAPI.getEventById(id, callback, eventServiceLocal);
                 } else {
@@ -99,7 +101,7 @@ public class EventController {
         } else if (itemId == null || itemId.isEmpty()) {
             callback.onError(AppUtils.getString(context, R.string.msgItemIdIsEmpty));
         } else {
-            AsyncTask.execute(() -> {
+            threadPoster.post(() -> {
                 if (AppUtils.isOnline(context, force)) {
                     eventServiceAPI.getEventItemById(eventId, itemId, callback, eventServiceLocal);
                 } else {
@@ -111,7 +113,7 @@ public class EventController {
 
     public void create(Event event, ServiceCallback<Event> callback, boolean force) {
         if (AppUtils.isOnline(context, force)) {
-            AsyncTask.execute(() -> eventServiceAPI.create(event, callback, eventServiceLocal));
+            threadPoster.post(() -> eventServiceAPI.create(event, callback, eventServiceLocal));
         } else {
             callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
         }
@@ -122,7 +124,7 @@ public class EventController {
             callback.onError(AppUtils.getString(context, R.string.msgEventMustExist));
         } else {
             if (AppUtils.isOnline(context, force)) {
-                AsyncTask.execute(() -> eventServiceAPI.edit(event, callback, eventServiceLocal));
+                threadPoster.post(() -> eventServiceAPI.edit(event, callback, eventServiceLocal));
             } else {
                 callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
             }
@@ -134,7 +136,7 @@ public class EventController {
             callback.onError(AppUtils.getString(context, R.string.msgEventIdIsEmpty));
         } else {
             if (AppUtils.isOnline(context, force)) {
-                AsyncTask.execute(() ->
+                threadPoster.post(() ->
                         eventServiceAPI.addItem(eventId, item, callback, eventServiceLocal));
             } else {
                 callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
@@ -149,7 +151,7 @@ public class EventController {
             callback.onError(AppUtils.getString(context, R.string.msgItemIdIsEmpty));
         } else {
             if (AppUtils.isOnline(context, force)) {
-                AsyncTask.execute(() ->
+                threadPoster.post(() ->
                         eventServiceAPI.editItem(eventId, item, callback, eventServiceLocal));
             } else {
                 callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
@@ -164,7 +166,7 @@ public class EventController {
             callback.onError(AppUtils.getString(context, R.string.msgItemIdIsEmpty));
         } else {
             if (AppUtils.isOnline(context, force)) {
-                AsyncTask.execute(() ->
+                threadPoster.post(() ->
                         eventServiceAPI.deleteItem(eventId, item, callback, eventServiceLocal));
             } else {
                 callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
@@ -179,7 +181,7 @@ public class EventController {
             callback.onError(AppUtils.getString(context, R.string.msgItemIdIsEmpty));
         } else {
             if (AppUtils.isOnline(context, force)) {
-                AsyncTask.execute(() ->
+                threadPoster.post(() ->
                         eventServiceAPI.pickupItem(eventId, item, callback, eventServiceLocal));
             } else {
                 callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
@@ -194,7 +196,7 @@ public class EventController {
             callback.onError(AppUtils.getString(context, R.string.msgItemIdIsEmpty));
         } else {
             if (AppUtils.isOnline(context, force)) {
-                AsyncTask.execute(() ->
+                threadPoster.post(() ->
                         eventServiceAPI.unpickItem(eventId, item, callback, eventServiceLocal));
             } else {
                 callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
@@ -203,20 +205,20 @@ public class EventController {
     }
 
     public void unpickItemLocal(Item item) {
-        AsyncTask.execute(() -> eventServiceLocal.unpickItem(item));
+        threadPoster.post(() -> eventServiceLocal.unpickItem(item));
     }
 
     public void pickItemLocal(Item item, String assigneeId) {
-        AsyncTask.execute(() -> eventServiceLocal.pickItem(item, assigneeId));
+        threadPoster.post(() -> eventServiceLocal.pickItem(item, assigneeId));
     }
 
     public void deleteItemLocal(String itemId) {
-        AsyncTask.execute(() -> eventServiceLocal.deleteItem(itemId));
+        threadPoster.post(() -> eventServiceLocal.deleteItem(itemId));
     }
 
     public void delete(String id, ServiceCallback<String> callback, boolean force) {
         if (AppUtils.isOnline(context, force)) {
-            AsyncTask.execute(() -> eventServiceAPI.delete(id, callback, eventServiceLocal));
+            threadPoster.post(() -> eventServiceAPI.delete(id, callback, eventServiceLocal));
         } else {
             callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
         }
@@ -229,7 +231,7 @@ public class EventController {
     public void removeMember(String userId, String eventId,
                              ServiceCallback<Event> callback, boolean force) {
         if (AppUtils.isOnline(context, force)) {
-            AsyncTask.execute(() ->
+            threadPoster.post(() ->
                     eventServiceAPI.removeMember(userId, eventId, callback, eventServiceLocal));
         } else {
             callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
@@ -237,13 +239,13 @@ public class EventController {
     }
 
     public void removeMemberLocal(String eventId, String memberId) {
-        AsyncTask.execute(() -> eventServiceLocal.removeMember(eventId, memberId));
+        threadPoster.post(() -> eventServiceLocal.removeMember(eventId, memberId));
     }
 
     public void transfer(String eventId, String userId,
                          ServiceCallback<Event> callback, boolean force) {
         if (AppUtils.isOnline(context, force)) {
-            AsyncTask.execute(() ->
+            threadPoster.post(() ->
                     eventServiceAPI.transfer(eventId, userId, callback, eventServiceLocal));
         } else {
             callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
@@ -253,7 +255,7 @@ public class EventController {
     public void votePoll(String eventId, String itemId, String pollItemId,
                          ServiceCallback<Item> callback, boolean force) {
         if (AppUtils.isOnline(context, force)) {
-            AsyncTask.execute(() ->
+            threadPoster.post(() ->
                     eventServiceAPI.votePoll(eventId, itemId, pollItemId, callback, eventServiceLocal));
         } else {
             callback.onError(AppUtils.getString(context, R.string.msgNotConnected));
@@ -261,6 +263,6 @@ public class EventController {
     }
 
     public void getLocalEventById(String eventId, ServiceCallback<Event> callback) {
-        AsyncTask.execute(() -> eventServiceLocal.getEventById(eventId, callback));
+        threadPoster.post(() -> eventServiceLocal.getEventById(eventId, callback));
     }
 }
