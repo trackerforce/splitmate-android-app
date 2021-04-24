@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.annotation.UiThread;
+
 import com.trackerforce.splitmate.LoginActivity;
 import com.trackerforce.splitmate.utils.AppUtils;
 
@@ -18,16 +20,14 @@ public interface ServiceCallback<T> {
 
     void onError(String error);
 
+    @UiThread
     default void onSuccessResponse(Context context, T data) {
-        ((Activity) context).runOnUiThread(() -> {
-            onSuccess(data);
-        });
+        ((Activity) context).runOnUiThread(() -> onSuccess(data));
     }
 
+    @UiThread
     default void onErrorResponse(Context context, String error) {
-        ((Activity) context).runOnUiThread(() -> {
-            onError(error);
-        });
+        ((Activity) context).runOnUiThread(() -> onError(error));
     }
 
     default void onError(String error, Object obj) {}

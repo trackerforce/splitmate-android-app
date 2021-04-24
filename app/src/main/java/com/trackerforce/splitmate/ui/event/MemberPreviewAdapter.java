@@ -19,12 +19,11 @@ import com.trackerforce.splitmate.model.User;
 import com.trackerforce.splitmate.model.pusher.PusherMemberDTO;
 import com.trackerforce.splitmate.pusher.PusherClient;
 import com.trackerforce.splitmate.pusher.PusherEvents;
-import com.trackerforce.splitmate.utils.Config;
 import com.trackerforce.splitmate.utils.AppUtils;
+import com.trackerforce.splitmate.utils.Config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 public class MemberPreviewAdapter extends ListAdapter<User, MemberPreviewAdapter.MemberViewHolder> {

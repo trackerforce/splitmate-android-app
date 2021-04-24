@@ -1,29 +1,31 @@
 package com.trackerforce.splitmate.controller.user;
 
 import android.content.Context;
-import android.os.AsyncTask;
 
 import com.trackerforce.splitmate.R;
 import com.trackerforce.splitmate.controller.ServiceCallback;
 import com.trackerforce.splitmate.controller.event.EventServiceLocal;
 import com.trackerforce.splitmate.model.User;
-import com.trackerforce.splitmate.utils.Config;
 import com.trackerforce.splitmate.utils.AppUtils;
+import com.trackerforce.splitmate.utils.SplitThreadPoster;
+import com.trackerforce.splitmate.utils.Config;
 
 public class UserController {
 
     private final Context context;
     private final UserServiceAPI userServiceAPI;
     private final UserServiceLocal userServiceLocal;
+    private final SplitThreadPoster threadPoster;
 
     public UserController(Context context) {
         this.context = context;
         this.userServiceLocal = new UserServiceLocal(context);
         this.userServiceAPI = new UserServiceAPI(context);
+        this.threadPoster = new SplitThreadPoster();
     }
 
     public void checkAPI(ServiceCallback<String> callback) {
-        AsyncTask.execute(() -> {
+        threadPoster.post(() -> {
             if (AppUtils.isOnline(context, true)) {
                 userServiceAPI.checkAPI(callback);
             } else {
@@ -37,7 +39,7 @@ public class UserController {
         user.setUsername(login);
         user.setPassword(password);
 
-        AsyncTask.execute(() -> {
+        threadPoster.post(() -> {
             if (AppUtils.isOnline(context, true)) {
                 userServiceAPI.login(user, callback, this.userServiceLocal);
             } else {
@@ -47,7 +49,7 @@ public class UserController {
     }
 
     public void logout(ServiceCallback<Boolean> callback) {
-        AsyncTask.execute(() -> {
+        threadPoster.post(() -> {
             if (AppUtils.isOnline(context, true)) {
                 userServiceAPI.logout(callback, this.userServiceLocal);
             } else {
@@ -78,7 +80,7 @@ public class UserController {
         user.setPassword(password);
         user.setToken(token);
 
-        AsyncTask.execute(() -> {
+        threadPoster.post(() -> {
             if (AppUtils.isOnline(context, true)) {
                 userServiceAPI.signUp(user, callback, this.userServiceLocal);
             } else {
@@ -88,7 +90,7 @@ public class UserController {
     }
 
     public void getUser(ServiceCallback<User> callback) {
-        AsyncTask.execute(() -> {
+        threadPoster.post(() -> {
             if (AppUtils.isOnline(context, true)) {
                 userServiceAPI.getUser(callback);
             } else {
@@ -98,7 +100,7 @@ public class UserController {
     }
 
     public void find(String username, ServiceCallback<User> callback) {
-        AsyncTask.execute(() -> {
+        threadPoster.post(() -> {
             if (AppUtils.isOnline(context, true)) {
                 userServiceAPI.find(username, callback);
             } else {
@@ -108,7 +110,7 @@ public class UserController {
     }
 
     public void joinEvent(String eventId, ServiceCallback<User> callback, boolean force) {
-        AsyncTask.execute(() -> {
+        threadPoster.post(() -> {
             if (AppUtils.isOnline(context, force)) {
                 userServiceAPI.joinEvent(eventId, callback, this.userServiceLocal);
             } else {
@@ -118,7 +120,7 @@ public class UserController {
     }
 
     public void dismissEvent(String eventId, ServiceCallback<User> callback, boolean force) {
-        AsyncTask.execute(() -> {
+        threadPoster.post(() -> {
             if (AppUtils.isOnline(context, force)) {
                 userServiceAPI.dismissEvent(eventId, callback, this.userServiceLocal);
             } else {
@@ -128,7 +130,7 @@ public class UserController {
     }
 
     public void leaveEvent(String eventId, ServiceCallback<User> callback, boolean force) {
-        AsyncTask.execute(() -> {
+        threadPoster.post(() -> {
             if (AppUtils.isOnline(context, force)) {
                 userServiceAPI.leaveEvent(eventId, callback, new EventServiceLocal(context));
             } else {
@@ -146,7 +148,7 @@ public class UserController {
     }
 
     public void deleteAccount(ServiceCallback<String> callback, boolean force) {
-        AsyncTask.execute(() -> {
+        threadPoster.post(() -> {
             if (AppUtils.isOnline(context, force)) {
                 userServiceAPI.deleteAccount(callback, this.userServiceLocal);
             } else {
@@ -157,7 +159,7 @@ public class UserController {
 
     private void archiveEvent(String action, String eventId, ServiceCallback<User> callback,
                               boolean force) {
-        AsyncTask.execute(() -> {
+        threadPoster.post(() -> {
             if (AppUtils.isOnline(context, force)) {
                 userServiceAPI.archiveEvent(action, eventId, callback, new UserServiceLocal(context));
             } else {
