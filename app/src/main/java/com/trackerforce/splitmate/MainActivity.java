@@ -1,6 +1,7 @@
 package com.trackerforce.splitmate;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.Menu;
@@ -20,55 +21,60 @@ import java.util.Objects;
 
 public class MainActivity extends SplitmateActivity implements ServiceCallback<User> {
 
-     public MainActivity() {
-         super(R.layout.activity_main);
-     }
+    public MainActivity() {
+        super(R.layout.activity_main);
+    }
 
-     @Override
-     protected void onCreateView() {
-         getTextView(R.id.txtVersion).setText(BuildConfig.VERSION_NAME);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        MobileAds.initialize(this);
+        Config.getInstance().loadSettings(getBaseContext());
 
-         Objects.requireNonNull(getSupportActionBar()).hide();
-         setOnClickListener(R.id.buttonGoDashboard, this::initAPI);
+        super.onCreate(savedInstanceState);
+    }
 
-         MobileAds.initialize(this);
-         initAPI(getView());
-     }
+    @Override
+    protected void onCreateView() {
+        getTextView(R.id.txtVersion).setText(BuildConfig.VERSION_NAME);
+        Objects.requireNonNull(getSupportActionBar()).hide();
+        setOnClickListener(R.id.buttonGoDashboard, this::initAPI);
 
-     private void initAPI(@Nullable View view) {
-         getComponent(R.id.progressLoading, ProgressBar.class).setVisibility(View.VISIBLE);
-         getButton(R.id.buttonGoDashboard).setVisibility(View.GONE);
-         Config.getInstance().loadSettings(getBaseContext());
+        initAPI(getView());
+    }
 
-         userController.checkAPI(new ServiceCallback<String>() {
-             @Override
-             public void onSuccess(String data) {
-                 new Handler(Looper.getMainLooper()).postDelayed(() -> initApp(), 2000);
-             }
+    private void initAPI(@Nullable View view) {
+        getComponent(R.id.progressLoading, ProgressBar.class).setVisibility(View.VISIBLE);
+        getButton(R.id.buttonGoDashboard).setVisibility(View.GONE);
 
-             @Override
-             public void onError(String error) {
-                 AppUtils.showMessage(MainActivity.this, error);
-                 getComponent(R.id.progressLoading, ProgressBar.class).setVisibility(View.GONE);
-                 getButton(R.id.buttonGoDashboard).setVisibility(View.VISIBLE);
-             }
-         });
-     }
+        userController.checkAPI(new ServiceCallback<String>() {
+            @Override
+            public void onSuccess(String data) {
+                new Handler(Looper.getMainLooper()).postDelayed(() -> initApp(), 2000);
+            }
 
-     /**
-      * Initialize app
-      *
-      * Verifies if user already exist and is logged, then it will redirect to the Dashboard view.
-      * Otherwise, it will redirect to login/sign up activity
-      */
-     private void initApp() {
-         try {
-             userController.syncToken();
-             userController.getUser(this);
-         } catch (Exception e) {
-             AppUtils.showMessage(MainActivity.this, e.getMessage());
-         }
-     }
+            @Override
+            public void onError(String error) {
+                AppUtils.showMessage(MainActivity.this, error);
+                getComponent(R.id.progressLoading, ProgressBar.class).setVisibility(View.GONE);
+                getButton(R.id.buttonGoDashboard).setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    /**
+     * Initialize app
+     * <p>
+     * Verifies if user already exist and is logged, then it will redirect to the Dashboard view.
+     * Otherwise, it will redirect to login/sign up activity
+     */
+    private void initApp() {
+        try {
+            userController.syncToken();
+            userController.getUser(this);
+        } catch (Exception e) {
+            AppUtils.showMessage(MainActivity.this, e.getMessage());
+        }
+    }
 
     @Override
     public void onSuccess(User data) {
@@ -98,4 +104,4 @@ public class MainActivity extends SplitmateActivity implements ServiceCallback<U
         return false;
     }
 
- }
+}
