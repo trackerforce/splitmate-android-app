@@ -24,7 +24,7 @@ android {
         minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
-        versionName "v1.0.6"
+        versionName "v1.0.7-SNAPSHOT"
         manifestPlaceholders.screenOrientation = "portrait"
 
         buildConfigField("String", "API_URL", "\"${getProperties("api_url")}\"")
@@ -49,16 +49,16 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 }
 
 dependencies {
 
-    implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'androidx.navigation:navigation-fragment:2.3.5'
     implementation 'androidx.navigation:navigation-ui:2.3.5'
@@ -75,7 +75,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     implementation 'com.google.android.gms:play-services-safetynet:17.0.1'
-    implementation 'com.google.android.gms:play-services-ads-lite:20.2.0'
+    implementation 'com.google.android.gms:play-services-ads-lite:20.4.0'
 
     implementation 'com.github.petruki:dblite-library:0.1.2-rc'
 }
