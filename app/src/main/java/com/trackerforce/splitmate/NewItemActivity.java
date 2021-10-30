@@ -23,11 +23,11 @@ import com.trackerforce.splitmate.model.User;
 import com.trackerforce.splitmate.model.pusher.PusherItemDTO;
 import com.trackerforce.splitmate.pusher.PusherClient;
 import com.trackerforce.splitmate.pusher.PusherEvents;
-import com.trackerforce.splitmate.utils.Config;
 import com.trackerforce.splitmate.ui.SplitmateActivity;
 import com.trackerforce.splitmate.ui.item.ItemValuePreviewAdapter;
 import com.trackerforce.splitmate.ui.item.PollValuePreviewAdapter;
 import com.trackerforce.splitmate.utils.AppUtils;
+import com.trackerforce.splitmate.utils.Config;
 import com.trackerforce.splitmate.utils.SplitConstants;
 
 import java.util.Arrays;
@@ -107,13 +107,11 @@ public class NewItemActivity extends SplitmateActivity {
     }
 
     private void onSubmitItem(@Nullable View view) {
-        adapter.getDataSet().removeIf(item -> item.getValue().isEmpty() || item.getType().isEmpty());
-        item.setDetails(adapter.getDataSet().toArray(new ItemValue[0]));
-
         pollAdapter.getDataSet().removeIf(item -> item.getValue().isEmpty());
-        item.setPoll(pollAdapter.getDataSet().toArray(new Poll[0]));
 
         item.setName(getTextViewValue(R.id.txtItemName));
+        item.setDetails(adapter.getDataSet().toArray(new ItemValue[0]));
+        item.setPoll(pollAdapter.getDataSet().toArray(new Poll[0]));
 
         AppUtils.hideKeyboard(this, getView());
         if (item.getId() == null) {

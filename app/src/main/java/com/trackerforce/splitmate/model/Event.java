@@ -27,12 +27,12 @@ public class Event implements Serializable {
             if (item.getDetails() != null) {
                 unit = Arrays.stream(item.getDetails())
                         .filter(val -> val.getType().equals("Unit"))
-                        .map(val -> Integer.parseInt(val.getValue()))
+                        .map(val -> Integer.parseInt(!val.getValue().isEmpty() ? val.getValue() : "0"))
                         .reduce(0, Integer::sum);
 
                 total += Arrays.stream(item.getDetails())
                         .filter(val -> val.getType().equals("Cost"))
-                        .map(val -> Float.parseFloat(val.getValue()))
+                        .map(val -> Float.parseFloat(!val.getValue().isEmpty() ? val.getValue() : "0"))
                         .reduce(0f, Float::sum) * (unit == 0 ? 1 : unit) ;
             }
         }
