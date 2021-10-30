@@ -39,6 +39,7 @@ import com.trackerforce.splitmate.utils.SplitConstants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class ItemPreviewAdapter extends ListAdapter<Item, ItemPreviewAdapter.ItemViewHolder> {
@@ -101,7 +102,7 @@ public class ItemPreviewAdapter extends ListAdapter<Item, ItemPreviewAdapter.Ite
     public void updateAdapter(Item[] data) {
         localDataSet.clear();
         localDataSet.addAll(Arrays.asList(data));
-        localDataSet.sort((item, t1) -> item.getName().compareTo(t1.getName()));
+        localDataSet.sort(Comparator.comparing(Item::getName));
 
         originalLocalData.clear();
         originalLocalData.addAll(Arrays.asList(data));

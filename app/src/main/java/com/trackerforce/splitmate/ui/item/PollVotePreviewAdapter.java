@@ -28,6 +28,7 @@ import com.trackerforce.splitmate.utils.Config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class PollVotePreviewAdapter extends ListAdapter<Poll, PollVotePreviewAdapter.PollViewHolder> {
@@ -70,7 +71,7 @@ public class PollVotePreviewAdapter extends ListAdapter<Poll, PollVotePreviewAda
         if (data != null) {
             localDataSet.clear();
             localDataSet.addAll(Arrays.asList(data));
-            localDataSet.sort((poll, t1) -> poll.getValue().compareTo(t1.getValue()));
+            localDataSet.sort(Comparator.comparing(Poll::getValue));
 
             this.totalVotes = 0;
             for (Poll poll : data)
