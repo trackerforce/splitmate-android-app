@@ -1,5 +1,6 @@
 package com.trackerforce.splitmate.ui.event;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +54,7 @@ public class MemberPreviewAdapter extends ListAdapter<User, MemberPreviewAdapter
 
     @Override
     public void onBindViewHolder(@NonNull MemberPreviewAdapter.MemberViewHolder viewHolder, int position) {
-        viewHolder.bind(localDataSet.get(position));
+        viewHolder.bind(localDataSet.get(position), position);
     }
 
     @Override
@@ -65,6 +66,7 @@ public class MemberPreviewAdapter extends ListAdapter<User, MemberPreviewAdapter
         return this.localDataSet;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void updateAdapter(User[] data) {
         localDataSet.clear();
         localDataSet.addAll(Arrays.asList(data));
@@ -76,6 +78,7 @@ public class MemberPreviewAdapter extends ListAdapter<User, MemberPreviewAdapter
         notifyDataSetChanged();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void filter(String filter) {
         localDataSet.clear();
         if(filter.isEmpty()){
@@ -92,27 +95,27 @@ public class MemberPreviewAdapter extends ListAdapter<User, MemberPreviewAdapter
         notifyDataSetChanged();
     }
 
-    private void onClickRemove(View convertView, User member) {
+    private void onClickRemove(View convertView, User member, int position) {
         if (event != null) {
             AppUtils.openConfirmDialog(convertView.getContext(),
                     convertView.getResources().getString(R.string.labelMembers),
                     String.format(convertView.getResources().getString(R.string.msgConfirmRemoveMember),
                             member.getName()), answer -> {
                     if (answer)
-                        onRemoveFromEvent(convertView, member);
+                        onRemoveFromEvent(convertView, member, position);
             });
         } else {
             localDataSet.remove(member);
-            notifyDataSetChanged();
+            notifyItemRemoved(position);
         }
     }
 
-    private void onRemoveFromEvent(View convertView, User member) {
-        eventController.removeMember(member.getId(), event.getId(), new ServiceCallback<Event>() {
+    private void onRemoveFromEvent(View convertView, User member, int position) {
+        eventController.removeMember(member.getId(), event.getId(), new ServiceCallback<>() {
             @Override
             public void onSuccess(Event data) {
                 localDataSet.remove(member);
-                notifyDataSetChanged();
+                notifyItemRemoved(position);
 
                 final PusherClient pusher = PusherClient.getInstance();
                 final PusherMemberDTO pusherMemberDTO =
@@ -158,7 +161,7 @@ public class MemberPreviewAdapter extends ListAdapter<User, MemberPreviewAdapter
             super(itemView);
         }
 
-        public void bind(User member) {
+        public void bind(User member, int position) {
             TextView textMemberName = itemView.findViewById(R.id.textMemberName);
             textMemberName.setText(member.getName());
 
@@ -171,7 +174,7 @@ public class MemberPreviewAdapter extends ListAdapter<User, MemberPreviewAdapter
 
             FloatingActionButton btnRemoveMember = itemView.findViewById(R.id.btnRemoveMember);
             btnRemoveMember.setVisibility(isOrganizer(member) ? View.VISIBLE : View.INVISIBLE);
-            AppUtils.setListener(btnRemoveMember, view -> onClickRemove(itemView, member));
+            AppUtils.setListener(btnRemoveMember, view -> onClickRemove(itemView, member, position));
         }
     }
 

@@ -47,7 +47,7 @@ public class ItemValuePreviewAdapter extends ListAdapter<ItemValue,
 
     @Override
     public void onBindViewHolder(@NonNull ItemValueViewHolder viewHolder, int position) {
-        viewHolder.bind(localDataSet.get(position));
+        viewHolder.bind(localDataSet.get(position), position);
     }
 
     @Override
@@ -55,6 +55,7 @@ public class ItemValuePreviewAdapter extends ListAdapter<ItemValue,
         return localDataSet.size();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void updateAdapter(ItemValue[] data) {
         if (data != null) {
             localDataSet.clear();
@@ -84,13 +85,15 @@ public class ItemValuePreviewAdapter extends ListAdapter<ItemValue,
     class ItemValueViewHolder extends RecyclerView.ViewHolder {
 
         private ItemValue itemValue;
+        private int position;
 
         public ItemValueViewHolder(@NonNull View itemView) {
             super(itemView);
         }
 
         @SuppressLint("ClickableViewAccessibility")
-        public void bind(ItemValue itemValue) {
+        public void bind(ItemValue itemValue, int position) {
+            this.position = position;
             this.itemValue = itemValue;
 
             final FloatingActionButton btnRemove = itemView.findViewById(R.id.btnRemove);
@@ -119,7 +122,7 @@ public class ItemValuePreviewAdapter extends ListAdapter<ItemValue,
 
         private void onRemove(View view) {
             localDataSet.remove(this.itemValue);
-            notifyDataSetChanged();
+            notifyItemRemoved(position);
             AppUtils.hideKeyboard((Activity) view.getContext(), view);
         }
 

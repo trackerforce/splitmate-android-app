@@ -60,6 +60,7 @@ public class EventPreviewAdapter extends ListAdapter<Event, EventPreviewAdapter.
         return localDataSet.size();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void updateAdapter(Event[] data) {
         localDataSet.clear();
         localDataSet.addAll(Arrays.asList(data));
@@ -71,6 +72,7 @@ public class EventPreviewAdapter extends ListAdapter<Event, EventPreviewAdapter.
         notifyDataSetChanged();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void filter(String filter) {
         localDataSet.clear();
         if(filter.isEmpty()){

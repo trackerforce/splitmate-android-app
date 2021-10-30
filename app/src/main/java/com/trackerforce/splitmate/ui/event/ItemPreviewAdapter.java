@@ -70,7 +70,7 @@ public class ItemPreviewAdapter extends ListAdapter<Item, ItemPreviewAdapter.Ite
 
     @Override
     public void onBindViewHolder(@NonNull ItemPreviewAdapter.ItemViewHolder viewHolder, int position) {
-        viewHolder.bind(localDataSet.get(position));
+        viewHolder.bind(localDataSet.get(position), position);
     }
 
     @Override
@@ -78,6 +78,7 @@ public class ItemPreviewAdapter extends ListAdapter<Item, ItemPreviewAdapter.Ite
         return localDataSet.size();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void filter(String filter) {
         localDataSet.clear();
         if(filter.isEmpty()){
@@ -99,6 +100,7 @@ public class ItemPreviewAdapter extends ListAdapter<Item, ItemPreviewAdapter.Ite
         return this.localDataSet;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void updateAdapter(Item[] data) {
         localDataSet.clear();
         localDataSet.addAll(Arrays.asList(data));
@@ -136,14 +138,17 @@ public class ItemPreviewAdapter extends ListAdapter<Item, ItemPreviewAdapter.Ite
         @SuppressLint("UseSwitchCompatOrMaterialCode")
         private Switch switchPickItem;
         private ProgressBar progressBar;
+        private int position;
         private boolean loading;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
         }
 
-        public void bind(Item item) {
-            loading = true;
+        public void bind(Item item, int position) {
+            this.position = position;
+            this.loading = true;
+
             ((TextView) itemView.findViewById(R.id.textItemName)).setText(item.getName());
 
             final FloatingActionButton btnEditItem = itemView.findViewById(R.id.btnEditItem);
@@ -206,12 +211,12 @@ public class ItemPreviewAdapter extends ListAdapter<Item, ItemPreviewAdapter.Ite
 
         private void pickItem(View convertView, CompoundButton compoundButton, Item item) {
             toggleSlider();
-            eventController.pickupItem(eventId, item, new ServiceCallback<Event>() {
+            eventController.pickupItem(eventId, item, new ServiceCallback<>() {
                 @Override
                 public void onSuccess(Event data) {
                     item.setV_assigned_to(Config.getInstance().getLoggedUser().getUser());
                     item.setAssigned_to(Config.getInstance().getLoggedUser().getUser().getId());
-                    notifyDataSetChanged();
+                    notifyItemChanged(position);
 
                     switchPickItem.setClickable(true);
                     toggleSlider();
@@ -242,12 +247,12 @@ public class ItemPreviewAdapter extends ListAdapter<Item, ItemPreviewAdapter.Ite
 
         private void unpickItem(View convertView, CompoundButton compoundButton, Item item) {
             toggleSlider();
-            eventController.unpickItem(eventId, item, new ServiceCallback<Event>() {
+            eventController.unpickItem(eventId, item, new ServiceCallback<>() {
                 @Override
                 public void onSuccess(Event data) {
                     item.setV_assigned_to(null);
                     item.setAssigned_to(null);
-                    notifyDataSetChanged();
+                    notifyItemChanged(position);
 
                     switchPickItem.setClickable(true);
                     toggleSlider();
@@ -277,7 +282,7 @@ public class ItemPreviewAdapter extends ListAdapter<Item, ItemPreviewAdapter.Ite
         }
 
         private void onEdit(View convertView, Item item) {
-            eventController.getEventItemById(eventId, item.getId(), new ServiceCallback<Item>() {
+            eventController.getEventItemById(eventId, item.getId(), new ServiceCallback<>() {
                 @Override
                 public void onSuccess(Item data) {
                     Intent intent = new Intent(convertView.getContext(), NewItemActivity.class);
@@ -310,7 +315,7 @@ public class ItemPreviewAdapter extends ListAdapter<Item, ItemPreviewAdapter.Ite
                 AppUtils.showMessage(convertView.getContext(), convertView.getResources().getString(R.string.msgItemHasRemoved));
                 localDataSet.remove(item);
                 originalLocalData.remove(item);
-                notifyDataSetChanged();
+                notifyItemRemoved(position);
             }
         }
 

@@ -1,5 +1,6 @@
 package com.trackerforce.splitmate.ui.event.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -28,6 +29,8 @@ import com.trackerforce.splitmate.utils.Config;
 import com.trackerforce.splitmate.utils.SplitConstants;
 
 import java.util.ArrayList;
+import java.util.OptionalInt;
+import java.util.stream.IntStream;
 
 public class EventMembersFragment extends AbstractEventFragment {
 
@@ -86,7 +89,7 @@ public class EventMembersFragment extends AbstractEventFragment {
                 updateAdapter(getEvent());
                 bypassOnLoad = false;
             } else {
-                getEventController().getEventById(getEventId(), new ServiceCallback<Event>() {
+                getEventController().getEventById(getEventId(), new ServiceCallback<>() {
                     @Override
                     public void onSuccess(Event data) {
                         updateAdapter(data);
@@ -143,13 +146,20 @@ public class EventMembersFragment extends AbstractEventFragment {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void onMemberRemoved(Object... args) {
         requireActivity().runOnUiThread(() -> {
             PusherMemberDTO pusherMemberDTO = PusherData.getDTO(PusherMemberDTO.class, args);
 
             getEventController().removeMemberLocal(pusherMemberDTO.getChannel(), pusherMemberDTO.getMemberId());
-            adapter.getDataSet().removeIf(member -> member.getId().equals(pusherMemberDTO.getMemberId()));
-            adapter.notifyDataSetChanged();
+            OptionalInt indexOpt = IntStream.range(0, adapter.getDataSet().size())
+                    .filter(i -> pusherMemberDTO.getMemberId().equals(adapter.getDataSet().get(i).getId()))
+                    .findFirst();
+
+            if (indexOpt.isPresent()) {
+                adapter.getDataSet().remove(indexOpt.getAsInt());
+                adapter.notifyItemRemoved(indexOpt.getAsInt());
+            }
         });
     }
 

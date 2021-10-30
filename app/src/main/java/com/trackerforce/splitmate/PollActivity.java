@@ -12,7 +12,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.trackerforce.splitmate.controller.ServiceCallback;
 import com.trackerforce.splitmate.model.ErrorResponse;
 import com.trackerforce.splitmate.model.Item;
-import com.trackerforce.splitmate.model.Poll;
 import com.trackerforce.splitmate.model.pusher.PusherData;
 import com.trackerforce.splitmate.model.pusher.PusherPollItemDTO;
 import com.trackerforce.splitmate.pusher.PusherClient;
@@ -109,17 +108,19 @@ public class PollActivity extends SplitmateActivity implements ServiceCallback<I
         runOnUiThread(() -> {
             PusherPollItemDTO pusherPollItemDTO = PusherData.getDTO(PusherPollItemDTO.class, args);
 
-            for (Poll poll : adapter.getDataSet()) {
+            for (int i = 0; i < adapter.getDataSet().size(); i++) {
+                var poll = adapter.getDataSet().get(i);
+
                 if (pusherPollItemDTO.getPollItemId().equals(poll.getId())) {
                     poll.addVote(pusherPollItemDTO.getVoter());
+                    adapter.notifyItemChanged(i);
                 } else {
                     if (Arrays.stream(poll.getVotes()).anyMatch(p -> p.equals(pusherPollItemDTO.getVoter()))) {
                         poll.removeVote(pusherPollItemDTO.getVoter());
+                        adapter.notifyItemChanged(i);
                     }
                 }
             }
-
-            adapter.notifyDataSetChanged();
         });
     }
 

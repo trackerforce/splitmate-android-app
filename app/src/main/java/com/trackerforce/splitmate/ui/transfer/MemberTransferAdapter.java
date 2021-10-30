@@ -1,5 +1,6 @@
 package com.trackerforce.splitmate.ui.transfer;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,7 @@ public class MemberTransferAdapter extends ListAdapter<User, MemberTransferAdapt
         return localDataSet.size();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void updateAdapter(User[] data) {
         localDataSet.clear();
         localDataSet.addAll(Arrays.asList(data));

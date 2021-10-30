@@ -63,7 +63,7 @@ public class EventViewFragment extends AbstractEventFragment {
             getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.VISIBLE);
             getComponent(R.id.linearLayout, LinearLayout.class).setVisibility(View.GONE);
 
-            getEventController().getEventById(getEventId(), new ServiceCallback<Event>() {
+            getEventController().getEventById(getEventId(), new ServiceCallback<>() {
                 @Override
                 public void onSuccess(Event data) {
                     setEvent(data);
@@ -107,7 +107,7 @@ public class EventViewFragment extends AbstractEventFragment {
         openConfirmDialog("Leave event", String.format("Do you want to leave %s",
             getEvent().getName()), answer -> {
                 if (answer) {
-                    getUserController().leaveEvent(getEventId(), new ServiceCallback<User>() {
+                    getUserController().leaveEvent(getEventId(), new ServiceCallback<>() {
                         @Override
                         public void onSuccess(User data) {
                             requireActivity().setResult(Activity.RESULT_OK);
@@ -127,7 +127,7 @@ public class EventViewFragment extends AbstractEventFragment {
         openConfirmDialog("Delete event", String.format("Do you want to delete %s",
                 getEvent().getName()), answer -> {
                 if (answer) {
-                    getEventController().delete(getEventId(), new ServiceCallback<String>() {
+                    getEventController().delete(getEventId(), new ServiceCallback<>() {
                         @Override
                         public void onSuccess(String data) {
                             requireActivity().setResult(Activity.RESULT_OK);
