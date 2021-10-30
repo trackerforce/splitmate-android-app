@@ -24,6 +24,7 @@ import com.trackerforce.splitmate.utils.Config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class MemberPreviewAdapter extends ListAdapter<User, MemberPreviewAdapter.MemberViewHolder> {
@@ -67,7 +68,7 @@ public class MemberPreviewAdapter extends ListAdapter<User, MemberPreviewAdapter
     public void updateAdapter(User[] data) {
         localDataSet.clear();
         localDataSet.addAll(Arrays.asList(data));
-        localDataSet.sort((user, t1) -> user.getName().compareTo(t1.getName()));
+        localDataSet.sort(Comparator.comparing(User::getName));
 
         originalLocalData.clear();
         originalLocalData.addAll(Arrays.asList(data));
