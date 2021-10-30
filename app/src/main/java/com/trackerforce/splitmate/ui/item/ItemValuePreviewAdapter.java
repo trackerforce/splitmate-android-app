@@ -73,7 +73,8 @@ public class ItemValuePreviewAdapter extends ListAdapter<ItemValue,
 
     private int getIndex(ItemValue data) {
         OptionalInt indexOpt = IntStream.range(0, localDataSet.size())
-                .filter(i -> data.getValue().equals(localDataSet.get(i).getValue()))
+                .filter(i -> data.getValue().equals(localDataSet.get(i).getValue()) &&
+                        data.getType().equals(localDataSet.get(i).getType()))
                 .findFirst();
 
         return indexOpt.isPresent() ? indexOpt.getAsInt() : -1;
