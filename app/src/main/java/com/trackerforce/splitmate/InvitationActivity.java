@@ -62,7 +62,7 @@ public class InvitationActivity extends SplitmateActivity implements ServiceCall
     }
 
     private void findEmailByUsername(String member) {
-        userController.find(member.substring(1), new ServiceCallback<User>() {
+        userController.find(member.substring(1), new ServiceCallback<>() {
             @Override
             public void onSuccess(User data) {
                 addMemberToList(member, data.getEmail());
@@ -95,7 +95,7 @@ public class InvitationActivity extends SplitmateActivity implements ServiceCall
 
         getTextView(R.id.txtMember).setText("");
         adapter.getDataSet().add(user);
-        adapter.notifyDataSetChanged();
+        adapter.notifyItemInserted(adapter.getItemCount());
     }
 
     private void onSendInvite(@Nullable View view) {

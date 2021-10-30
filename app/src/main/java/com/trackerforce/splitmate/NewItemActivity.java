@@ -93,7 +93,7 @@ public class NewItemActivity extends SplitmateActivity {
     }
 
     private void setActivityTitle() {
-        eventController.getLocalEventById(eventId, new ServiceCallback<Event>() {
+        eventController.getLocalEventById(eventId, new ServiceCallback<>() {
             @Override
             public void onSuccess(Event data) {
                 getTextView(R.id.newItemTitle).setText(data.getName());
@@ -124,7 +124,7 @@ public class NewItemActivity extends SplitmateActivity {
     }
 
     private void onRemoveItem(@Nullable View view) {
-        eventController.deleteItem(eventId, item, new ServiceCallback<Event>() {
+        eventController.deleteItem(eventId, item, new ServiceCallback<>() {
             @Override
             public void onSuccess(Event data) {
                 setResult(Activity.RESULT_OK, new Intent().putExtra(SplitConstants.EVENT.toString(), data));
@@ -149,7 +149,7 @@ public class NewItemActivity extends SplitmateActivity {
     private void onAddItemValue(View view) {
         if (adapter.getDataSet().size() < MAX_ITEM_VALUE) {
             adapter.getDataSet().add(new ItemValue());
-            adapter.notifyDataSetChanged();
+            adapter.notifyItemInserted(adapter.getItemCount());
             AppUtils.hideKeyboard(this, view);
         } else {
             AppUtils.showMessage(this, getResources().getString(R.string.msgLimitReached));
@@ -164,7 +164,7 @@ public class NewItemActivity extends SplitmateActivity {
     private void onAddPollItem(View view) {
         if (pollAdapter.getDataSet().size() < MAX_ITEM_VALUE) {
             pollAdapter.getDataSet().add(new Poll());
-            pollAdapter.notifyDataSetChanged();
+            pollAdapter.notifyItemInserted(pollAdapter.getItemCount());
             AppUtils.hideKeyboard(this, view);
         } else {
             AppUtils.showMessage(this, getResources().getString(R.string.msgLimitReached));
@@ -178,7 +178,7 @@ public class NewItemActivity extends SplitmateActivity {
 
     private void editItem() {
         ProgressDialog progress = openLoading("Item", "Updating...");
-        eventController.editItem(eventId, item, new ServiceCallback<Event>() {
+        eventController.editItem(eventId, item, new ServiceCallback<>() {
             @Override
             public void onSuccess(Event data) {
                 progress.dismiss();
@@ -213,7 +213,7 @@ public class NewItemActivity extends SplitmateActivity {
 
     private void saveItem() {
         ProgressDialog progress = openLoading("Item", "Saving...");
-        eventController.addItem(eventId, item, new ServiceCallback<Event>() {
+        eventController.addItem(eventId, item, new ServiceCallback<>() {
             @Override
             public void onSuccess(Event data) {
                 progress.dismiss();

@@ -77,7 +77,7 @@ public class PollVotePreviewAdapter extends ListAdapter<Poll, PollVotePreviewAda
             for (Poll poll : data)
                 this.totalVotes += poll.getVotes().length;
 
-            notifyDataSetChanged();
+            notifyItemRangeChanged(0, localDataSet.size());
         }
     }
 

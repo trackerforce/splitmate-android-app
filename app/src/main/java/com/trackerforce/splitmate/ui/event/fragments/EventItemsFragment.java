@@ -86,7 +86,7 @@ public class EventItemsFragment extends AbstractEventFragment {
     private void loadEvent(boolean force) {
         getComponent(R.id.listItems, RecyclerView.class).setVisibility(View.INVISIBLE);
         getComponent(R.id.progressBar, ProgressBar.class).setVisibility(View.VISIBLE);
-        getEventController().getEventById(getEventId(), new ServiceCallback<Event>() {
+        getEventController().getEventById(getEventId(), new ServiceCallback<>() {
             @Override
             public void onSuccess(Event data) {
                 updateAdapter(data);
@@ -146,10 +146,11 @@ public class EventItemsFragment extends AbstractEventFragment {
     private void onNotifyItemPick(Object... args) {
         requireActivity().runOnUiThread(() -> {
             PusherItemDTO pusherItemDTO = PusherData.getDTO(PusherItemDTO.class, args);
-            for (Item item : adapter.getDataSet()) {
+            for (int i = 0; i < adapter.getDataSet().size(); i++) {
+                var item = adapter.getDataSet().get(i);
                 if (item.getId().equals(pusherItemDTO.getItemId())) {
                     getEventController().pickItemLocal(item, pusherItemDTO.getAssigned_to());
-                    adapter.notifyDataSetChanged();
+                    adapter.notifyItemChanged(i);
                     break;
                 }
             }
@@ -161,10 +162,11 @@ public class EventItemsFragment extends AbstractEventFragment {
     private void onNotifyItemUnpick(Object... args) {
         requireActivity().runOnUiThread(() -> {
             PusherItemDTO pusherItemDTO = PusherData.getDTO(PusherItemDTO.class, args);
-            for (Item item : adapter.getDataSet()) {
+            for (int i = 0; i < adapter.getDataSet().size(); i++) {
+                var item = adapter.getDataSet().get(i);
                 if (item.getId().equals(pusherItemDTO.getItemId())) {
                     getEventController().unpickItemLocal(item);
-                    adapter.notifyDataSetChanged();
+                    adapter.notifyItemChanged(i);
                     break;
                 }
             }
@@ -176,11 +178,12 @@ public class EventItemsFragment extends AbstractEventFragment {
     private void onNotifyItemDeleted(Object... args) {
         requireActivity().runOnUiThread(() -> {
             PusherItemDTO pusherItemDTO = PusherData.getDTO(PusherItemDTO.class, args);
-            for (Item item : adapter.getDataSet()) {
+            for (int i = 0; i < adapter.getDataSet().size(); i++) {
+                var item = adapter.getDataSet().get(i);
                 if (item.getId().equals(pusherItemDTO.getItemId())) {
                     getEventController().deleteItemLocal(item.getId());
                     adapter.getDataSet().remove(item);
-                    adapter.notifyDataSetChanged();
+                    adapter.notifyItemRemoved(i);
                     break;
                 }
             }
@@ -194,19 +197,19 @@ public class EventItemsFragment extends AbstractEventFragment {
             PusherItemDTO pusherItemDTO = PusherData.getDTO(PusherItemDTO.class, args);
 
             getEventController().getEventItemById(pusherItemDTO.getEventId(),
-                    pusherItemDTO.getItemId(), new ServiceCallback<Item>() {
-                @Override
-                public void onSuccess(Item data) {
-                    adapter.getDataSet().add(data);
-                    adapter.notifyDataSetChanged();
-                    updateEventPreview(pusherItemDTO);
-                }
+                pusherItemDTO.getItemId(), new ServiceCallback<>() {
+                    @Override
+                    public void onSuccess(Item data) {
+                        adapter.getDataSet().add(data);
+                        adapter.notifyItemInserted(adapter.getItemCount());
+                        updateEventPreview(pusherItemDTO);
+                    }
 
-                @Override
-                public void onError(String error) {
-                    Log.d(TAG, error);
-                }
-            }, true);
+                    @Override
+                    public void onError(String error) {
+                        Log.d(TAG, error);
+                    }
+                }, true);
 
         });
     }
@@ -216,33 +219,34 @@ public class EventItemsFragment extends AbstractEventFragment {
             PusherItemDTO pusherItemDTO = PusherData.getDTO(PusherItemDTO.class, args);
 
             getEventController().getEventItemById(pusherItemDTO.getEventId(),
-                    pusherItemDTO.getItemId(), new ServiceCallback<Item>() {
-                @Override
-                public void onSuccess(Item data) {
-                    for (Item item : adapter.getDataSet()) {
-                        if (item.getId().equals(pusherItemDTO.getItemId())) {
-                            item.setName(data.getName());
-                            item.setPoll_name(data.getPoll_name());
-                            item.setPoll(data.getPoll());
-                            item.setDetails(data.getDetails());
-                            adapter.notifyDataSetChanged();
-                            break;
+                pusherItemDTO.getItemId(), new ServiceCallback<>() {
+                    @Override
+                    public void onSuccess(Item data) {
+                        for (int i = 0; i < adapter.getDataSet().size(); i++) {
+                            var item = adapter.getDataSet().get(i);
+                            if (item.getId().equals(pusherItemDTO.getItemId())) {
+                                item.setName(data.getName());
+                                item.setPoll_name(data.getPoll_name());
+                                item.setPoll(data.getPoll());
+                                item.setDetails(data.getDetails());
+                                adapter.notifyItemChanged(i);
+                                break;
+                            }
                         }
+
+                        updateEventPreview(pusherItemDTO);
                     }
 
-                    updateEventPreview(pusherItemDTO);
-                }
-
-                @Override
-                public void onError(String error) {
-                    Log.d(TAG, error);
-                }
-            }, true);
+                    @Override
+                    public void onError(String error) {
+                        Log.d(TAG, error);
+                    }
+                }, true);
         });
     }
 
     private void updateEventPreview(PusherItemDTO pusherItemDTO) {
-        getEventController().getLocalEventById(pusherItemDTO.getEventId(), new ServiceCallback<Event>() {
+        getEventController().getLocalEventById(pusherItemDTO.getEventId(), new ServiceCallback<>() {
             @Override
             public void onSuccess(Event data) {
                 getFragmentListener().notifySubscriber(EventPreviewFragment.TITLE, data);
