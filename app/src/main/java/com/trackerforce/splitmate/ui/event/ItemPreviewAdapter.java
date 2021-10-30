@@ -41,6 +41,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.OptionalInt;
+import java.util.stream.IntStream;
 
 public class ItemPreviewAdapter extends ListAdapter<Item, ItemPreviewAdapter.ItemViewHolder> {
 
@@ -70,7 +72,7 @@ public class ItemPreviewAdapter extends ListAdapter<Item, ItemPreviewAdapter.Ite
 
     @Override
     public void onBindViewHolder(@NonNull ItemPreviewAdapter.ItemViewHolder viewHolder, int position) {
-        viewHolder.bind(localDataSet.get(position), position);
+        viewHolder.bind(localDataSet.get(position));
     }
 
     @Override
@@ -120,6 +122,14 @@ public class ItemPreviewAdapter extends ListAdapter<Item, ItemPreviewAdapter.Ite
         this.eventId = eventId;
     }
 
+    private int getIndex(Item data) {
+        OptionalInt indexOpt = IntStream.range(0, localDataSet.size())
+                .filter(i -> data.getId().equals(localDataSet.get(i).getId()))
+                .findFirst();
+
+        return indexOpt.isPresent() ? indexOpt.getAsInt() : -1;
+    }
+
     static class ItemDiff extends DiffUtil.ItemCallback<Item> {
 
         @Override
@@ -138,15 +148,13 @@ public class ItemPreviewAdapter extends ListAdapter<Item, ItemPreviewAdapter.Ite
         @SuppressLint("UseSwitchCompatOrMaterialCode")
         private Switch switchPickItem;
         private ProgressBar progressBar;
-        private int position;
         private boolean loading;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
         }
 
-        public void bind(Item item, int position) {
-            this.position = position;
+        public void bind(Item item) {
             this.loading = true;
 
             ((TextView) itemView.findViewById(R.id.textItemName)).setText(item.getName());
@@ -216,7 +224,7 @@ public class ItemPreviewAdapter extends ListAdapter<Item, ItemPreviewAdapter.Ite
                 public void onSuccess(Event data) {
                     item.setV_assigned_to(Config.getInstance().getLoggedUser().getUser());
                     item.setAssigned_to(Config.getInstance().getLoggedUser().getUser().getId());
-                    notifyItemChanged(position);
+                    notifyItemChanged(getIndex(item));
 
                     switchPickItem.setClickable(true);
                     toggleSlider();
@@ -252,7 +260,7 @@ public class ItemPreviewAdapter extends ListAdapter<Item, ItemPreviewAdapter.Ite
                 public void onSuccess(Event data) {
                     item.setV_assigned_to(null);
                     item.setAssigned_to(null);
-                    notifyItemChanged(position);
+                    notifyItemChanged(getIndex(item));
 
                     switchPickItem.setClickable(true);
                     toggleSlider();
@@ -313,9 +321,11 @@ public class ItemPreviewAdapter extends ListAdapter<Item, ItemPreviewAdapter.Ite
                 convertView.getContext().startActivity(intent);
             } else {
                 AppUtils.showMessage(convertView.getContext(), convertView.getResources().getString(R.string.msgItemHasRemoved));
-                localDataSet.remove(item);
-                originalLocalData.remove(item);
-                notifyItemRemoved(position);
+
+                var index = getIndex(item);
+                localDataSet.remove(index);
+                originalLocalData.remove(index);
+                notifyItemRemoved(index);
             }
         }
 

@@ -21,6 +21,8 @@ import com.trackerforce.splitmate.utils.AppUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.OptionalInt;
+import java.util.stream.IntStream;
 
 public class PollValuePreviewAdapter extends ListAdapter<Poll, PollValuePreviewAdapter.PollViewHolder> {
 
@@ -44,7 +46,7 @@ public class PollValuePreviewAdapter extends ListAdapter<Poll, PollValuePreviewA
 
     @Override
     public void onBindViewHolder(@NonNull PollViewHolder viewHolder, int position) {
-        viewHolder.bind(localDataSet.get(position), position);
+        viewHolder.bind(localDataSet.get(position));
     }
 
     @Override
@@ -82,16 +84,14 @@ public class PollValuePreviewAdapter extends ListAdapter<Poll, PollValuePreviewA
     class PollViewHolder extends RecyclerView.ViewHolder {
 
         private Poll poll;
-        private int position;
 
         public PollViewHolder(@NonNull View itemView) {
             super(itemView);
         }
 
         @SuppressLint("ClickableViewAccessibility")
-        public void bind(Poll poll, int position) {
+        public void bind(Poll poll) {
             this.poll = poll;
-            this.position = position;
 
             final FloatingActionButton btnRemove = itemView.findViewById(R.id.btnRemove);
             btnRemove.setOnClickListener(this::onRemove);
@@ -103,8 +103,15 @@ public class PollValuePreviewAdapter extends ListAdapter<Poll, PollValuePreviewA
         }
 
         private void onRemove(View view) {
-            localDataSet.remove(this.poll);
-            notifyItemRemoved(position);
+            OptionalInt indexOpt = IntStream.range(0, localDataSet.size())
+                    .filter(i -> this.poll.getValue().equals(localDataSet.get(i).getValue()))
+                    .findFirst();
+
+            if (indexOpt.isPresent()) {
+                localDataSet.remove(indexOpt.getAsInt());
+                notifyItemRemoved(indexOpt.getAsInt());
+            }
+
             AppUtils.hideKeyboard((Activity) view.getContext(), view);
         }
 

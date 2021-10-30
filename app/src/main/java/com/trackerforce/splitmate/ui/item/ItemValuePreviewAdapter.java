@@ -23,6 +23,8 @@ import com.trackerforce.splitmate.utils.AppUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.OptionalInt;
+import java.util.stream.IntStream;
 
 public class ItemValuePreviewAdapter extends ListAdapter<ItemValue,
         ItemValuePreviewAdapter.ItemValueViewHolder> {
@@ -47,7 +49,7 @@ public class ItemValuePreviewAdapter extends ListAdapter<ItemValue,
 
     @Override
     public void onBindViewHolder(@NonNull ItemValueViewHolder viewHolder, int position) {
-        viewHolder.bind(localDataSet.get(position), position);
+        viewHolder.bind(localDataSet.get(position));
     }
 
     @Override
@@ -69,6 +71,14 @@ public class ItemValuePreviewAdapter extends ListAdapter<ItemValue,
         return this.localDataSet;
     }
 
+    private int getIndex(ItemValue data) {
+        OptionalInt indexOpt = IntStream.range(0, localDataSet.size())
+                .filter(i -> data.getValue().equals(localDataSet.get(i).getValue()))
+                .findFirst();
+
+        return indexOpt.isPresent() ? indexOpt.getAsInt() : -1;
+    }
+
     static class ItemValueDiff extends DiffUtil.ItemCallback<ItemValue> {
 
         @Override
@@ -85,15 +95,13 @@ public class ItemValuePreviewAdapter extends ListAdapter<ItemValue,
     class ItemValueViewHolder extends RecyclerView.ViewHolder {
 
         private ItemValue itemValue;
-        private int position;
 
         public ItemValueViewHolder(@NonNull View itemView) {
             super(itemView);
         }
 
         @SuppressLint("ClickableViewAccessibility")
-        public void bind(ItemValue itemValue, int position) {
-            this.position = position;
+        public void bind(ItemValue itemValue) {
             this.itemValue = itemValue;
 
             final FloatingActionButton btnRemove = itemView.findViewById(R.id.btnRemove);
@@ -121,8 +129,9 @@ public class ItemValuePreviewAdapter extends ListAdapter<ItemValue,
         }
 
         private void onRemove(View view) {
-            localDataSet.remove(this.itemValue);
-            notifyItemRemoved(position);
+            var index = getIndex(this.itemValue);
+            localDataSet.remove(index);
+            notifyItemRemoved(index);
             AppUtils.hideKeyboard((Activity) view.getContext(), view);
         }
 
