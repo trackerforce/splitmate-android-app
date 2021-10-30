@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.OptionalInt;
+import java.util.stream.IntStream;
 
 public class MemberPreviewAdapter extends ListAdapter<User, MemberPreviewAdapter.MemberViewHolder> {
 
@@ -54,7 +56,7 @@ public class MemberPreviewAdapter extends ListAdapter<User, MemberPreviewAdapter
 
     @Override
     public void onBindViewHolder(@NonNull MemberPreviewAdapter.MemberViewHolder viewHolder, int position) {
-        viewHolder.bind(localDataSet.get(position), position);
+        viewHolder.bind(localDataSet.get(position));
     }
 
     @Override
@@ -95,18 +97,26 @@ public class MemberPreviewAdapter extends ListAdapter<User, MemberPreviewAdapter
         notifyDataSetChanged();
     }
 
-    private void onClickRemove(View convertView, User member, int position) {
+    private int getIndex(User data) {
+        OptionalInt indexOpt = IntStream.range(0, localDataSet.size())
+                .filter(i -> data.getId().equals(localDataSet.get(i).getId()))
+                .findFirst();
+
+        return indexOpt.isPresent() ? indexOpt.getAsInt() : -1;
+    }
+
+    private void onClickRemove(View convertView, User member) {
         if (event != null) {
             AppUtils.openConfirmDialog(convertView.getContext(),
                     convertView.getResources().getString(R.string.labelMembers),
                     String.format(convertView.getResources().getString(R.string.msgConfirmRemoveMember),
                             member.getName()), answer -> {
                     if (answer)
-                        onRemoveFromEvent(convertView, member, position);
+                        onRemoveFromEvent(convertView, member, getIndex(member));
             });
         } else {
             localDataSet.remove(member);
-            notifyItemRemoved(position);
+            notifyItemRemoved(getIndex(member));
         }
     }
 
@@ -161,7 +171,7 @@ public class MemberPreviewAdapter extends ListAdapter<User, MemberPreviewAdapter
             super(itemView);
         }
 
-        public void bind(User member, int position) {
+        public void bind(User member) {
             TextView textMemberName = itemView.findViewById(R.id.textMemberName);
             textMemberName.setText(member.getName());
 
@@ -174,7 +184,7 @@ public class MemberPreviewAdapter extends ListAdapter<User, MemberPreviewAdapter
 
             FloatingActionButton btnRemoveMember = itemView.findViewById(R.id.btnRemoveMember);
             btnRemoveMember.setVisibility(isOrganizer(member) ? View.VISIBLE : View.INVISIBLE);
-            AppUtils.setListener(btnRemoveMember, view -> onClickRemove(itemView, member, position));
+            AppUtils.setListener(btnRemoveMember, view -> onClickRemove(itemView, member));
         }
     }
 
