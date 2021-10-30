@@ -20,6 +20,7 @@ import com.trackerforce.splitmate.utils.AppUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class EventPreviewAdapter extends ListAdapter<Event, EventPreviewAdapter.EventViewHolder> {
@@ -62,7 +63,7 @@ public class EventPreviewAdapter extends ListAdapter<Event, EventPreviewAdapter.
     public void updateAdapter(Event[] data) {
         localDataSet.clear();
         localDataSet.addAll(Arrays.asList(data));
-        localDataSet.sort((event, t1) -> event.getName().compareTo(t1.getName()));
+        localDataSet.sort(Comparator.comparing(Event::getName));
 
         originalLocalData.clear();
         originalLocalData.addAll(Arrays.asList(data));
