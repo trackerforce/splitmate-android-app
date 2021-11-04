@@ -11,30 +11,33 @@
         android:id="@+id/textLogin"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:autofillHints=""
         android:ems="10"
         android:hint="@string/hintUsernameEmail"
+        android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:maxEms="50"
         android:maxLength="50"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TextContrastCheck" />
 
     <EditText
         android:id="@+id/textPassword"
         android:layout_width="300sp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:autofillHints=""
         android:ems="10"
         android:hint="@string/hintPassword"
+        android:importantForAutofill="no"
         android:inputType="textPassword"
         android:maxEms="32"
         android:maxLength="32"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textLogin" />
+        app:layout_constraintTop_toBottomOf="@+id/textLogin"
+        tools:ignore="TextContrastCheck" />
 
     <Button
         android:id="@+id/buttonLogin"
