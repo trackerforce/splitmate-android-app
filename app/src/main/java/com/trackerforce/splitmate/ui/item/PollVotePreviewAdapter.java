@@ -67,6 +67,10 @@ public class PollVotePreviewAdapter extends ListAdapter<Poll, PollVotePreviewAda
         return localDataSet.size();
     }
 
+    public void updateVotes(int addRemove) {
+        this.totalVotes += addRemove;
+    }
+
     public void updateAdapter(Poll[] data) {
         if (data != null) {
             localDataSet.clear();
@@ -128,12 +132,14 @@ public class PollVotePreviewAdapter extends ListAdapter<Poll, PollVotePreviewAda
             TextView textCounter = itemView.findViewById(R.id.textCounter);
 
             textCounter.setText(String.format("%s%%", (int) percentage));
+            itemView.post(() -> {
+                if (percentage > 0) {
+                    textCounter.setWidth((textValue.getWidth() * ((int) percentage))/100);
+                } else {
+                    textCounter.setWidth(100);
+                }
+            });
 
-            if (percentage > 0) {
-                textCounter.setWidth((700*((int) percentage))/100);
-            } else {
-                textCounter.setWidth(100);
-            }
         }
 
         private void onVote(View view) {

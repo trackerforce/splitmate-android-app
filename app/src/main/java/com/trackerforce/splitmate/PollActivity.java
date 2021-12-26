@@ -113,10 +113,12 @@ public class PollActivity extends SplitmateActivity implements ServiceCallback<I
 
                 if (pusherPollItemDTO.getPollItemId().equals(poll.getId())) {
                     poll.addVote(pusherPollItemDTO.getVoter());
+                    adapter.updateVotes(1);
                     adapter.notifyItemChanged(i);
                 } else {
                     if (Arrays.stream(poll.getVotes()).anyMatch(p -> p.equals(pusherPollItemDTO.getVoter()))) {
                         poll.removeVote(pusherPollItemDTO.getVoter());
+                        adapter.updateVotes(-1);
                         adapter.notifyItemChanged(i);
                     }
                 }
