@@ -16,15 +16,15 @@ String getProperties(String propertyName) {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.trackerforce.splitmate"
         minSdkVersion 24
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
-        versionName "v1.0.7-SNAPSHOT"
+        versionName "v1.0.7"
         manifestPlaceholders.screenOrientation = "portrait"
 
         buildConfigField("String", "API_URL", "\"${getProperties("api_url")}\"")
@@ -74,8 +74,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
-    implementation 'com.google.android.gms:play-services-safetynet:17.0.1'
-    implementation 'com.google.android.gms:play-services-ads-lite:20.4.0'
+    implementation 'com.google.android.gms:play-services-safetynet:18.0.0'
+    implementation 'com.google.android.gms:play-services-ads-lite:20.5.0'
 
     implementation 'com.github.petruki:dblite-library:0.1.2-rc'
 }
