@@ -28,6 +28,7 @@
         android:importantForAutofill="no"
         android:inputType="textShortMessage"
         android:maxLength="50"
+        android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnRemove"
         app:layout_constraintStart_toEndOf="@+id/pollIcon"
