@@ -2,7 +2,8 @@ package com.trackerforce.splitmate.ui.item;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.view.KeyEvent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,7 +82,7 @@ public class PollValuePreviewAdapter extends ListAdapter<Poll, PollValuePreviewA
         }
     }
 
-    class PollViewHolder extends RecyclerView.ViewHolder {
+    class PollViewHolder extends RecyclerView.ViewHolder implements TextWatcher {
 
         private Poll poll;
 
@@ -97,7 +98,7 @@ public class PollValuePreviewAdapter extends ListAdapter<Poll, PollValuePreviewA
             btnRemove.setOnClickListener(this::onRemove);
 
             EditText textValue = itemView.findViewById(R.id.textValue);
-            textValue.setOnKeyListener(this::onUpdateValue);
+            textValue.addTextChangedListener(this);
             textValue.setText(poll.getValue());
             textValue.setEnabled(poll.getVotes() == null || poll.getVotes().length <= 0);
         }
@@ -115,9 +116,17 @@ public class PollValuePreviewAdapter extends ListAdapter<Poll, PollValuePreviewA
             AppUtils.hideKeyboard((Activity) view.getContext(), view);
         }
 
-        private boolean onUpdateValue(View view, int i, KeyEvent keyEvent) {
-            poll.setValue(((EditText) view).getText().toString().trim());
-            return false;
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            poll.setValue(charSequence.toString().trim());
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
         }
     }
 
