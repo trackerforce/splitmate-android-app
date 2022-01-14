@@ -62,6 +62,13 @@ public class PollActivity extends SplitmateActivity implements ServiceCallback<I
 
     @Override
     public void onSuccess(Item data) {
+        if (data.getPoll().length == 0) {
+            AppUtils.showMessage(PollActivity.this,
+                    PollActivity.this.getResources().getString(R.string.msgItemHasRemoved));
+            finish();
+            return;
+        }
+
         getTextView(R.id.txtPollName).setText(data.getPoll_name());
 
         getTextView(R.id.pollTitle).setText(data.getName());
@@ -108,21 +115,27 @@ public class PollActivity extends SplitmateActivity implements ServiceCallback<I
         runOnUiThread(() -> {
             PusherPollItemDTO pusherPollItemDTO = PusherData.getDTO(PusherPollItemDTO.class, args);
 
+            boolean changed = false;
             for (int i = 0; i < adapter.getDataSet().size(); i++) {
                 var poll = adapter.getDataSet().get(i);
 
                 if (pusherPollItemDTO.getPollItemId().equals(poll.getId())) {
-                    poll.addVote(pusherPollItemDTO.getVoter());
-                    adapter.updateVotes(1);
-                    adapter.notifyItemChanged(i);
+                    if (Arrays.stream(poll.getVotes()).noneMatch(p -> p.equals(pusherPollItemDTO.getVoter()))) {
+                        poll.addVote(pusherPollItemDTO.getVoter());
+                        adapter.updateVotes(1);
+                        changed = true;
+                    }
                 } else {
                     if (Arrays.stream(poll.getVotes()).anyMatch(p -> p.equals(pusherPollItemDTO.getVoter()))) {
                         poll.removeVote(pusherPollItemDTO.getVoter());
                         adapter.updateVotes(-1);
-                        adapter.notifyItemChanged(i);
+                        changed = true;
                     }
                 }
             }
+
+            if (changed)
+                adapter.notifyItemRangeChanged(0, adapter.getDataSet().size());
         });
     }
 
