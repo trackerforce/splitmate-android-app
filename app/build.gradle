@@ -24,7 +24,7 @@ android {
         minSdkVersion 24
         targetSdkVersion 31
         versionCode 1
-        versionName "v1.0.8"
+        versionName "v1.0.9"
         manifestPlaceholders.screenOrientation = "portrait"
 
         buildConfigField("String", "API_URL", "\"${getProperties("api_url")}\"")
@@ -56,14 +56,14 @@ android {
 
 dependencies {
 
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    implementation 'androidx.navigation:navigation-fragment:2.3.5'
-    implementation 'androidx.navigation:navigation-ui:2.3.5'
-    implementation 'androidx.preference:preference:1.1.1'
-    implementation ('io.socket:socket.io-client:1.0.0') {
+    implementation 'androidx.navigation:navigation-fragment:2.4.2'
+    implementation 'androidx.navigation:navigation-ui:2.4.2'
+    implementation 'androidx.preference:preference:1.2.0'
+    implementation ('io.socket:socket.io-client:2.0.0') {
         exclude group: 'org.json', module: 'json'
     }
 
@@ -75,7 +75,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     implementation 'com.google.android.gms:play-services-safetynet:18.0.1'
-    implementation 'com.google.android.gms:play-services-ads-lite:20.5.0'
+    implementation 'com.google.android.gms:play-services-ads-lite:21.0.0'
 
     implementation 'com.github.petruki:dblite-library:0.1.2-rc'
 }

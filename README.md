@@ -1,7 +1,20 @@
-![Splitmate API](https://raw.githubusercontent.com/trackerforce/splitmate-assets/master/logo/sm_logo.png)
+***
+
+<div align="center">
+<b>SplitMATE</b><br>
+Split and manage anything you want with your mates
+</div>
+
+<div align="center">
 
 ![Android CI](https://github.com/trackerforce/splitmate-android-app/workflows/Android%20CI/badge.svg?branch=master)
-[![APK Download](https://img.shields.io/badge/APK_Download-1.0.8-brightgreen.svg)](https://github.com/trackerforce/splitmate-android-app/blob/master/app/release/app-release.apk)
+[![APK Download](https://img.shields.io/badge/APK_Download-1.0.9-brightgreen.svg)](https://github.com/trackerforce/splitmate-android-app/blob/master/app/release/app-release.apk)
+
+</div>
+
+***
+
+![Splitmate API](https://raw.githubusercontent.com/trackerforce/splitmate-assets/master/logo/sm_logo.png)
 
 Costs are not the only variable when it comes to organizing events. Split whatever you want with SplitMATE, create voting polls, check items & tasks, estimate individual costs, everything in real-time, and of course, do not let the fun goes away.
 

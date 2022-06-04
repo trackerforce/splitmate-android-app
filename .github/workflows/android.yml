@@ -3,11 +3,13 @@ name: Android CI
 on:
   push:
     branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
-  test:
+  build-test-release:
+    name: Test, Build and Release
     if: "! contains(toJSON(github.event.commits.*.message), '[skip ci]')"
-    name: Test, Build and Deploy
     runs-on: ubuntu-latest
 
     steps:
@@ -16,19 +18,21 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: Unit tests
+      - name: Run tests
         run: bash ./gradlew test -Psecret="$SPLITMATE_API_SECRET" -Papi_url="$SPLITMATE_API_URL" -Pgoogle_recaptcha_key="$GOOGLE_RECAPTCHA_KEY" --stacktrace
         env:
           SPLITMATE_API_SECRET: ${{ secrets.SPLITMATE_API_SECRET }}
           SPLITMATE_API_URL: ${{ secrets.SPLITMATE_API_URL }}
           GOOGLE_RECAPTCHA_KEY: ${{ secrets.GOOGLE_RECAPTCHA_KEY }}
       - name: Build debug APK
+        if: success() && github.ref == 'refs/heads/master'
         run: bash ./gradlew assembleDebug -Psecret="$SPLITMATE_API_SECRET" -Papi_url="$SPLITMATE_API_URL" -Pgoogle_recaptcha_key="$GOOGLE_RECAPTCHA_KEY" --stacktrace
         env:
           SPLITMATE_API_SECRET: ${{ secrets.SPLITMATE_API_SECRET }}
           SPLITMATE_API_URL: ${{ secrets.SPLITMATE_API_URL }}
           GOOGLE_RECAPTCHA_KEY: ${{ secrets.GOOGLE_RECAPTCHA_KEY }}
       - name: Upload APK
+        if: success() && github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v1
         with:
           name: app
